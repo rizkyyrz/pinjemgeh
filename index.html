@@ -429,166 +429,140 @@
     </div>
     <script src="config.js"></script>
     <script>
+  let allData = [];
+  const API_URL = window.APP_CONFIG.API_BASE_URL;
 
-      let allData = [];
+  function escapeHtml(text) {
+    if (text === null || text === undefined) return '';
+    return String(text)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
 
-      function getApiBaseUrl() {
-        const configUrl = (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) || '';
-        return configUrl.replace(/\/+$/, '');
+  async function loadData() {
+    document.getElementById('tableContainer').innerHTML =
+      '<div class="loading">Memuat data penyewaan...</div>';
+
+    try {
+      const res = await fetch(API_URL + '?action=publicData', {
+        method: 'GET'
+      });
+
+      const result = await res.json();
+
+      if (!result.success) {
+        throw new Error(result.message || 'Gagal memuat data.');
       }
 
-      async function apiGet(action, params) {
-        const url = new URL(getApiBaseUrl() + '/api');
-        url.searchParams.set('action', action);
+      allData = Array.isArray(result.data) ? result.data : [];
+      updateStats(allData);
+      renderTable();
+    } catch (err) {
+      console.error('Load dashboard error:', err);
+      allData = [];
+      updateStats(allData);
+      document.getElementById('tableContainer').innerHTML =
+        '<div class="empty">Gagal memuat data.</div>';
+    }
+  }
 
-        Object.entries(params || {}).forEach(function(entry) {
-          const key = entry[0];
-          const value = entry[1];
+  function updateStats(data) {
+    const total = data.length;
+    const booking = data.filter(function(item) { return item.status === 'Booking'; }).length;
+    const disewa = data.filter(function(item) { return item.status === 'Sedang Disewa'; }).length;
+    const selesai = data.filter(function(item) { return item.status === 'Selesai'; }).length;
 
-          if (value !== undefined && value !== null && value !== '') {
-            url.searchParams.set(key, value);
-          }
-        });
+    document.getElementById('statTotal').innerText = total;
+    document.getElementById('statBooking').innerText = booking;
+    document.getElementById('statDisewa').innerText = disewa;
+    document.getElementById('statSelesai').innerText = selesai;
+  }
 
-        const response = await fetch(url.toString(), {
-          method: 'GET',
-          headers: {
-            'Accept': 'application/json'
-          }
-        });
+  function getStatusBadge(status) {
+    if (status === 'Booking') {
+      return '<span class="badge booking">Booking</span>';
+    }
+    if (status === 'Sedang Disewa') {
+      return '<span class="badge disewa">Sedang Disewa</span>';
+    }
+    if (status === 'Selesai') {
+      return '<span class="badge selesai">Selesai</span>';
+    }
+    return '<span class="badge">' + escapeHtml(status || '-') + '</span>';
+  }
 
-        const data = await response.json().catch(function() {
-          throw new Error('Respons API tidak valid.');
-        });
+  function renderTable() {
+    const keyword = document.getElementById('searchInput').value.toLowerCase();
+    const statusFilter = document.getElementById('statusFilter').value;
 
-        if (!response.ok || (data && data.success === false)) {
-          throw new Error((data && (data.message || data.error)) || 'Permintaan gagal.');
-        }
+    const filtered = allData.filter(function(item) {
+      const matchKeyword =
+        (item.nama || '').toLowerCase().includes(keyword) ||
+        (item.tipeIphone || '').toLowerCase().includes(keyword);
 
-        return data;
-      }
+      const matchStatus = !statusFilter || item.status === statusFilter;
 
-      function escapeHtml(text) {
-        if (text === null || text === undefined) return '';
-        return String(text)
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#39;');
-      }
+      return matchKeyword && matchStatus;
+    });
 
-      async function loadData() {
-        document.getElementById('tableContainer').innerHTML =
-          '<div class="loading">Memuat data penyewaan...</div>';
+    if (!filtered.length) {
+      document.getElementById('tableContainer').innerHTML =
+        '<div class="empty">Tidak ada data yang cocok dengan pencarian.</div>';
+      return;
+    }
 
-        try {
-          const data = await apiGet('publicData');
-          allData = Array.isArray(data) ? data : [];
-          updateStats(allData);
-          renderTable();
-        } catch (err) {
-          console.error('Load dashboard error:', err);
-          document.getElementById('tableContainer').innerHTML =
-            '<div class="empty">Gagal memuat data.</div>';
-        }
-      }
-
-      function updateStats(data) {
-        const total = data.length;
-        const booking = data.filter(function(item) { return item.status === 'Booking'; }).length;
-        const disewa = data.filter(function(item) { return item.status === 'Sedang Disewa'; }).length;
-        const selesai = data.filter(function(item) { return item.status === 'Selesai'; }).length;
-
-        document.getElementById('statTotal').innerText = total;
-        document.getElementById('statBooking').innerText = booking;
-        document.getElementById('statDisewa').innerText = disewa;
-        document.getElementById('statSelesai').innerText = selesai;
-      }
-
-      function getStatusBadge(status) {
-        if (status === 'Booking') {
-          return '<span class="badge booking">Booking</span>';
-        }
-        if (status === 'Sedang Disewa') {
-          return '<span class="badge disewa">Sedang Disewa</span>';
-        }
-        if (status === 'Selesai') {
-          return '<span class="badge selesai">Selesai</span>';
-        }
-        return '<span class="badge">' + escapeHtml(status || '-') + '</span>';
-      }
-
-      function renderTable() {
-        const keyword = document.getElementById('searchInput').value.toLowerCase();
-        const statusFilter = document.getElementById('statusFilter').value;
-
-        const filtered = allData.filter(function(item) {
-          const matchKeyword =
-            (item.nama || '').toLowerCase().includes(keyword) ||
-            (item.tipeIphone || '').toLowerCase().includes(keyword);
-
-          const matchStatus = !statusFilter || item.status === statusFilter;
-
-          return matchKeyword && matchStatus;
-        });
-
-        if (!filtered.length) {
-          document.getElementById('tableContainer').innerHTML =
-            '<div class="empty">Tidak ada data yang cocok dengan pencarian.</div>';
-          return;
-        }
-
-        let html = `
-          <div class="table-shell">
-            <table>
-              <thead>
-                <tr>
-                  <th>Penyewa</th>
-                  <th>Perangkat</th>
-                  <th>Tanggal Sewa</th>
-                  <th>Tanggal Kembali</th>
-                  <th>Status</th>
-                  <th>Catatan</th>
-                </tr>
-              </thead>
-              <tbody>
-        `;
-
-        filtered.forEach(function(item) {
-          html += `
+    let html = `
+      <div class="table-shell">
+        <table>
+          <thead>
             <tr>
-              <td>
-                <div class="name-block">
-                  <div class="name-main">${escapeHtml(item.nama || '-')}</div>
-                  <div class="name-sub">ID: ${escapeHtml(item.id || '-')}</div>
-                </div>
-              </td>
-              <td>
-                <div class="name-block">
-                  <div class="name-main">${escapeHtml(item.tipeIphone || '-')}</div>
-                  <div class="name-sub">Unit rental</div>
-                </div>
-              </td>
-              <td>${escapeHtml(item.tanggalSewa || '-')}</td>
-              <td>${escapeHtml(item.tanggalKembali || '-')}</td>
-              <td>${getStatusBadge(item.status)}</td>
-              <td><div class="catatan-box">${escapeHtml(item.catatan || '-')}</div></td>
+              <th>Penyewa</th>
+              <th>Perangkat</th>
+              <th>Tanggal Sewa</th>
+              <th>Tanggal Kembali</th>
+              <th>Status</th>
+              <th>Catatan</th>
             </tr>
-          `;
-        });
+          </thead>
+          <tbody>
+    `;
 
-        html += `
-              </tbody>
-            </table>
-          </div>
-        `;
+    filtered.forEach(function(item) {
+      html += `
+        <tr>
+          <td>
+            <div class="name-block">
+              <div class="name-main">${escapeHtml(item.nama || '-')}</div>
+              <div class="name-sub">ID: ${escapeHtml(item.id || '-')}</div>
+            </div>
+          </td>
+          <td>
+            <div class="name-block">
+              <div class="name-main">${escapeHtml(item.tipeIphone || '-')}</div>
+              <div class="name-sub">Unit rental</div>
+            </div>
+          </td>
+          <td>${escapeHtml(item.tanggalSewa || '-')}</td>
+          <td>${escapeHtml(item.tanggalKembali || '-')}</td>
+          <td>${getStatusBadge(item.status)}</td>
+          <td><div class="catatan-box">${escapeHtml(item.catatan || '-')}</div></td>
+        </tr>
+      `;
+    });
 
-        document.getElementById('tableContainer').innerHTML = html;
-      }
+    html += `
+          </tbody>
+        </table>
+      </div>
+    `;
 
-      window.onload = loadData;
+    document.getElementById('tableContainer').innerHTML = html;
+  }
 
-    </script>
+  window.onload = loadData;
+</script>
   </body>
 </html>
