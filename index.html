@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard Penyewaan iPhone</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --bg-soft: #f8fafc;
+        --card: rgba(255,255,255,0.88);
+        --card-solid: #ffffff;
+        --text: #0f172a;
+        --muted: #64748b;
+        --line: #e2e8f0;
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --success: #16a34a;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --shadow: 0 10px 35px rgba(15, 23, 42, 0.08);
+        --radius: 20px;
+      }
+
+      * {
+        box-sizing: border-box;
+        font-family: Inter, Arial, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at top left, rgba(37,99,235,0.15), transparent 30%),
+          radial-gradient(circle at top right, rgba(14,165,233,0.12), transparent 25%),
+          linear-gradient(180deg, #eff6ff 0%, #f8fafc 45%, #f8fafc 100%);
+        color: var(--text);
+      }
+
+      .container {
+        max-width: 1280px;
+        margin: 0 auto;
+        padding: 28px 20px 40px;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #0f172a, #1e3a8a 65%, #2563eb);
+        color: white;
+        border-radius: 28px;
+        padding: 28px;
+        box-shadow: 0 24px 60px rgba(30, 58, 138, 0.28);
+        margin-bottom: 24px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        top: -60px;
+        right: -60px;
+      }
+
+      .hero-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-size: 32px;
+        line-height: 1.2;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+
+      .hero p {
+        margin: 10px 0 0;
+        color: rgba(255,255,255,0.82);
+        max-width: 680px;
+        font-size: 15px;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        border: none;
+        cursor: pointer;
+        padding: 12px 16px;
+        border-radius: 14px;
+        font-weight: 700;
+        font-size: 14px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn-light {
+        background: rgba(255,255,255,0.14);
+        color: white;
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255,255,255,0.15);
+      }
+
+      .btn-white {
+        background: white;
+        color: var(--primary-dark);
+      }
+
+      .stats-grid {
+        margin-top: 22px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .stat-card {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.12);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 18px;
+      }
+
+      .stat-label {
+        color: rgba(255,255,255,0.72);
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+
+      .stat-value {
+        font-size: 28px;
+        font-weight: 800;
+      }
+
+      .content-card {
+        background: var(--card);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(255,255,255,0.55);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        padding: 20px;
+      }
+
+      .toolbar {
+        display: grid;
+        grid-template-columns: 1.4fr 220px 160px;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .input-wrap,
+      .select-wrap {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 0 14px;
+        display: flex;
+        align-items: center;
+        min-height: 52px;
+      }
+
+      .input-wrap input,
+      .select-wrap select {
+        width: 100%;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        background: transparent;
+        color: var(--text);
+      }
+
+      .btn-refresh {
+        background: var(--text);
+        color: white;
+        border-radius: 16px;
+        min-height: 52px;
+        border: none;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+      }
+
+      .table-shell {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: white;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 900px;
+      }
+
+      thead th {
+        background: #f8fafc;
+        color: #334155;
+        text-align: left;
+        font-size: 13px;
+        font-weight: 800;
+        padding: 16px 18px;
+        border-bottom: 1px solid var(--line);
+        white-space: nowrap;
+      }
+
+      tbody td {
+        padding: 18px;
+        font-size: 14px;
+        color: #334155;
+        border-bottom: 1px solid #eef2f7;
+        vertical-align: middle;
+      }
+
+      tbody tr:hover {
+        background: #f8fbff;
+      }
+
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+
+      .name-block {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .name-main {
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      .name-sub {
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0.85;
+      }
+
+      .booking {
+        background: rgba(245, 158, 11, 0.12);
+        color: #b45309;
+      }
+
+      .disewa {
+        background: rgba(37, 99, 235, 0.12);
+        color: #1d4ed8;
+      }
+
+      .selesai {
+        background: rgba(22, 163, 74, 0.12);
+        color: #15803d;
+      }
+
+      .catatan-box {
+        max-width: 240px;
+        color: var(--muted);
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .loading,
+      .empty {
+        text-align: center;
+        padding: 30px 16px;
+        color: var(--muted);
+        background: white;
+        border-radius: 18px;
+      }
+
+      .footer-note {
+        margin-top: 14px;
+        text-align: right;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      @media (max-width: 1024px) {
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .toolbar {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .btn-refresh {
+          grid-column: span 2;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .hero h1 {
+          font-size: 26px;
+        }
+
+        .stats-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .toolbar {
+          grid-template-columns: 1fr;
+        }
+
+        .btn-refresh {
+          grid-column: auto;
+        }
+
+        .container {
+          padding: 18px 14px 30px;
+        }
+
+        .hero,
+        .content-card {
+          border-radius: 22px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <section class="hero">
+        <div class="hero-top">
+          <div>
+            <h1>Dashboard Rental iPhone</h1>
+            <p>
+              Berikut status penyewaan iPhone di PinjemGeh by PT RZKYPay Solusi Digital
+            </p>
+          </div>
+
+          <div class="hero-actions">
+            <a class="btn btn-light" href="./syarat.html">Syarat & Ketentuan</a>
+            <button class="btn btn-light" onclick="loadData()">Refresh Data</button>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">Total Data</div>
+            <div class="stat-value" id="statTotal">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Booking</div>
+            <div class="stat-value" id="statBooking">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Sedang Disewa</div>
+            <div class="stat-value" id="statDisewa">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Selesai</div>
+            <div class="stat-value" id="statSelesai">0</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-card">
+        <div class="toolbar">
+          <div class="input-wrap">
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="Cari nama penyewa atau tipe iPhone..."
+              onkeyup="renderTable()"
+            />
+          </div>
+
+          <div class="select-wrap">
+            <select id="statusFilter" onchange="renderTable()">
+              <option value="">Semua Status</option>
+              <option value="Booking">Booking</option>
+              <option value="Sedang Disewa">Sedang Disewa</option>
+              <option value="Selesai">Selesai</option>
+            </select>
+          </div>
+
+          <button class="btn-refresh" onclick="loadData()">Muat Ulang</button>
+        </div>
+
+        <div id="tableContainer">
+          <div class="loading">Memuat data penyewaan...</div>
+        </div>
+
+        <div class="footer-note">
+          Dashboard dibuat untuk monitoring data rental iPhone secara real-time.
+          Dibuat oleh Muhammad Rizky Ramadhan
+        </div>
+      </section>
+    </div>
+
+    <script>
+
+      let allData = [];
+
+      function getApiBaseUrl() {
+        const configUrl = (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) || '';
+        return configUrl.replace(/\/+$/, '');
+      }
+
+      async function apiGet(action, params) {
+        const url = new URL(getApiBaseUrl() + '/api');
+        url.searchParams.set('action', action);
+
+        Object.entries(params || {}).forEach(function(entry) {
+          const key = entry[0];
+          const value = entry[1];
+
+          if (value !== undefined && value !== null && value !== '') {
+            url.searchParams.set(key, value);
+          }
+        });
+
+        const response = await fetch(url.toString(), {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        const data = await response.json().catch(function() {
+          throw new Error('Respons API tidak valid.');
+        });
+
+        if (!response.ok || (data && data.success === false)) {
+          throw new Error((data && (data.message || data.error)) || 'Permintaan gagal.');
+        }
+
+        return data;
+      }
+
+      function escapeHtml(text) {
+        if (text === null || text === undefined) return '';
+        return String(text)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      async function loadData() {
+        document.getElementById('tableContainer').innerHTML =
+          '<div class="loading">Memuat data penyewaan...</div>';
+
+        try {
+          const data = await apiGet('publicData');
+          allData = Array.isArray(data) ? data : [];
+          updateStats(allData);
+          renderTable();
+        } catch (err) {
+          console.error('Load dashboard error:', err);
+          document.getElementById('tableContainer').innerHTML =
+            '<div class="empty">Gagal memuat data.</div>';
+        }
+      }
+
+      function updateStats(data) {
+        const total = data.length;
+        const booking = data.filter(function(item) { return item.status === 'Booking'; }).length;
+        const disewa = data.filter(function(item) { return item.status === 'Sedang Disewa'; }).length;
+        const selesai = data.filter(function(item) { return item.status === 'Selesai'; }).length;
+
+        document.getElementById('statTotal').innerText = total;
+        document.getElementById('statBooking').innerText = booking;
+        document.getElementById('statDisewa').innerText = disewa;
+        document.getElementById('statSelesai').innerText = selesai;
+      }
+
+      function getStatusBadge(status) {
+        if (status === 'Booking') {
+          return '<span class="badge booking">Booking</span>';
+        }
+        if (status === 'Sedang Disewa') {
+          return '<span class="badge disewa">Sedang Disewa</span>';
+        }
+        if (status === 'Selesai') {
+          return '<span class="badge selesai">Selesai</span>';
+        }
+        return '<span class="badge">' + escapeHtml(status || '-') + '</span>';
+      }
+
+      function renderTable() {
+        const keyword = document.getElementById('searchInput').value.toLowerCase();
+        const statusFilter = document.getElementById('statusFilter').value;
+
+        const filtered = allData.filter(function(item) {
+          const matchKeyword =
+            (item.nama || '').toLowerCase().includes(keyword) ||
+            (item.tipeIphone || '').toLowerCase().includes(keyword);
+
+          const matchStatus = !statusFilter || item.status === statusFilter;
+
+          return matchKeyword && matchStatus;
+        });
+
+        if (!filtered.length) {
+          document.getElementById('tableContainer').innerHTML =
+            '<div class="empty">Tidak ada data yang cocok dengan pencarian.</div>';
+          return;
+        }
+
+        let html = `
+          <div class="table-shell">
+            <table>
+              <thead>
+                <tr>
+                  <th>Penyewa</th>
+                  <th>Perangkat</th>
+                  <th>Tanggal Sewa</th>
+                  <th>Tanggal Kembali</th>
+                  <th>Status</th>
+                  <th>Catatan</th>
+                </tr>
+              </thead>
+              <tbody>
+        `;
+
+        filtered.forEach(function(item) {
+          html += `
+            <tr>
+              <td>
+                <div class="name-block">
+                  <div class="name-main">${escapeHtml(item.nama || '-')}</div>
+                  <div class="name-sub">ID: ${escapeHtml(item.id || '-')}</div>
+                </div>
+              </td>
+              <td>
+                <div class="name-block">
+                  <div class="name-main">${escapeHtml(item.tipeIphone || '-')}</div>
+                  <div class="name-sub">Unit rental</div>
+                </div>
+              </td>
+              <td>${escapeHtml(item.tanggalSewa || '-')}</td>
+              <td>${escapeHtml(item.tanggalKembali || '-')}</td>
+              <td>${getStatusBadge(item.status)}</td>
+              <td><div class="catatan-box">${escapeHtml(item.catatan || '-')}</div></td>
+            </tr>
+          `;
+        });
+
+        html += `
+              </tbody>
+            </table>
+          </div>
+        `;
+
+        document.getElementById('tableContainer').innerHTML = html;
+      }
+
+      window.onload = loadData;
+
+    </script>
+  </body>
+</html>

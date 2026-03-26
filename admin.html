@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html>
+  <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Penyewaan iPhone</title>
+    <style>
+      :root {
+        --bg: #f8fafc;
+        --text: #0f172a;
+        --muted: #64748b;
+        --line: #e2e8f0;
+        --card: #ffffff;
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --danger: #dc2626;
+        --success: #16a34a;
+        --warning: #f59e0b;
+        --shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+        font-family: Inter, Arial, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at top left, rgba(37,99,235,0.08), transparent 25%),
+          linear-gradient(180deg, #eff6ff 0%, #f8fafc 50%, #f8fafc 100%);
+        color: var(--text);
+      }
+
+      .container {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 28px 20px 40px;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #0f172a, #1e3a8a 70%, #2563eb);
+        color: white;
+        border-radius: 28px;
+        padding: 28px;
+        margin-bottom: 24px;
+        box-shadow: 0 24px 60px rgba(30, 58, 138, 0.26);
+      }
+
+      .hero-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 16px;
+        flex-wrap: wrap;
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-size: 30px;
+        font-weight: 800;
+      }
+
+      .hero p {
+        margin: 10px 0 0;
+        color: rgba(255,255,255,0.82);
+        max-width: 700px;
+        font-size: 15px;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 14px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .hero a,
+      .hero button,
+      .status-chip {
+        appearance: none;
+        -webkit-appearance: none;
+        box-sizing: border-box;
+        min-height: 56px;
+        padding: 0 22px;
+        border-radius: 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        line-height: 1;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .hero a,
+      .hero button {
+        background: white;
+        color: var(--primary-dark);
+        text-decoration: none;
+        border: none;
+        outline: none;
+        cursor: pointer;
+      }
+
+      .hero a:hover,
+      .hero button:hover {
+        transform: translateY(-1px);
+        transition: 0.2s ease;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 380px 1fr;
+        gap: 20px;
+      }
+
+      .left-stack {
+        display: grid;
+        gap: 20px;
+      }
+
+      .card {
+        background: rgba(255,255,255,0.92);
+        border: 1px solid rgba(255,255,255,0.65);
+        backdrop-filter: blur(12px);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        padding: 22px;
+      }
+
+      .card h2 {
+        margin: 0 0 6px;
+        font-size: 22px;
+      }
+
+      .section-desc {
+        color: var(--muted);
+        font-size: 14px;
+        margin-bottom: 18px;
+      }
+
+      .form-group {
+        margin-bottom: 14px;
+      }
+
+      label {
+        display: block;
+        font-weight: 700;
+        font-size: 14px;
+        margin-bottom: 8px;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        min-height: 50px;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        outline: none;
+        font-size: 14px;
+        background: white;
+        color: var(--text);
+      }
+
+      textarea {
+        min-height: 96px;
+        resize: vertical;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+        border: none;
+        min-height: 52px;
+        border-radius: 16px;
+        font-size: 15px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        color: white;
+        box-shadow: 0 14px 26px rgba(37, 99, 235, 0.25);
+      }
+
+      .btn-secondary {
+        background: #0f172a;
+        color: white;
+      }
+
+      .message {
+        display: none;
+        margin-top: 14px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+
+      .success {
+        display: block;
+        background: rgba(22, 163, 74, 0.1);
+        color: #166534;
+        border: 1px solid rgba(22, 163, 74, 0.15);
+      }
+
+      .error {
+        display: block;
+        background: rgba(220, 38, 38, 0.1);
+        color: #991b1b;
+        border: 1px solid rgba(220, 38, 38, 0.15);
+      }
+
+      .top-tools {
+        display: flex;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+        margin-bottom: 18px;
+      }
+
+      .search-box {
+        flex: 1;
+        min-width: 240px;
+      }
+
+      .search-box input {
+        min-height: 50px;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: white;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 980px;
+      }
+
+      th {
+        background: #f8fafc;
+        color: #334155;
+        text-align: left;
+        padding: 16px;
+        font-size: 13px;
+        font-weight: 800;
+        border-bottom: 1px solid var(--line);
+      }
+
+      td {
+        padding: 16px;
+        border-bottom: 1px solid #eef2f7;
+        font-size: 14px;
+        color: #334155;
+        vertical-align: middle;
+      }
+
+      tr:hover td {
+        background: #fbfdff;
+      }
+
+      .name-cell {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .name-cell strong {
+        color: #0f172a;
+      }
+
+      .sub {
+        color: var(--muted);
+        font-size: 12px;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+
+      .status-select {
+        min-height: 42px;
+        border-radius: 12px;
+        padding: 8px 10px;
+      }
+
+      .action-group {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .btn-small {
+        border: none;
+        border-radius: 12px;
+        padding: 10px 12px;
+        font-size: 12px;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .btn-save {
+        background: rgba(37, 99, 235, 0.12);
+        color: var(--primary-dark);
+      }
+
+      .btn-delete {
+        background: rgba(220, 38, 38, 0.12);
+        color: var(--danger);
+      }
+
+      .empty {
+        text-align: center;
+        padding: 28px 16px;
+        color: var(--muted);
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      .login-wrap {
+        max-width: 460px;
+        margin: 0 auto;
+      }
+
+      .status-chip {
+        background: rgba(255,255,255,0.12);
+        color: white;
+        border: 1px solid rgba(255,255,255,0.08);
+      }
+
+      @media (max-width: 1080px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .container {
+          padding: 18px 14px 30px;
+        }
+
+        .hero,
+        .card {
+          border-radius: 22px;
+        }
+
+        .hero h1 {
+          font-size: 25px;
+        }
+
+        .hero-actions {
+          width: 100%;
+        }
+
+        .hero a,
+        .hero button,
+        .status-chip {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <section class="hero">
+        <div class="hero-top">
+          <div>
+            <h1>Admin Panel Rental iPhone</h1>
+            <p>Supported by PT RZKYPay Solusi Digital</p>
+          </div>
+
+          <div class="hero-actions">
+            <span class="status-chip" id="sessionStatus">Belum login</span>
+            <a href="./index.html">Kembali ke Dashboard</a>
+            <button id="logoutBtn" class="hidden" onclick="logout()">Logout</button>
+          </div>
+        </div>
+      </section>
+
+      <div id="loginSection" class="login-wrap">
+        <section class="card">
+          <h2>Login Admin</h2>
+          <div class="section-desc">
+            Masukkan password admin untuk membuka panel pengelolaan rental.
+          </div>
+
+          <div class="form-group">
+            <label for="adminPassword">Password Admin</label>
+            <input
+              type="password"
+              id="adminPassword"
+              placeholder="Masukkan password admin"
+              onkeydown="if(event.key === 'Enter') login()"
+            />
+          </div>
+
+          <button class="btn-primary" onclick="login()">Masuk ke Admin Panel</button>
+          <div id="loginMessage" class="message"></div>
+        </section>
+      </div>
+
+      <div id="adminSection" class="hidden">
+        <div class="layout">
+          <div class="left-stack">
+            <section class="card">
+              <h2>Tambah Data Rental</h2>
+              <div class="section-desc">
+                Masukkan data penyewa dan informasi perangkat yang akan disewakan.
+              </div>
+
+              <div class="form-group">
+                <label for="nama">Nama Penyewa</label>
+                <input type="text" id="nama" placeholder="Contoh: Budi Santoso" maxlength="100" />
+              </div>
+
+              <div class="form-group">
+                <label for="tipeIphone">Tipe iPhone</label>
+                <input type="text" id="tipeIphone" placeholder="Contoh: iPhone 13 Pro Max" maxlength="100" />
+              </div>
+
+              <div class="form-group">
+                <label for="tanggalSewa">Tanggal Sewa</label>
+                <input type="date" id="tanggalSewa" />
+              </div>
+
+              <div class="form-group">
+                <label for="tanggalKembali">Tanggal Kembali</label>
+                <input type="date" id="tanggalKembali" />
+              </div>
+
+              <div class="form-group">
+                <label for="status">Status Sewa</label>
+                <select id="status">
+                  <option value="Booking">Booking</option>
+                  <option value="Sedang Disewa">Sedang Disewa</option>
+                  <option value="Selesai">Selesai</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="catatan">Catatan</label>
+                <textarea id="catatan" placeholder="Contoh: DP sudah masuk, unit warna graphite" maxlength="500"></textarea>
+              </div>
+
+              <button class="btn-primary" onclick="submitData()">Simpan Data Rental</button>
+              <div id="messageBox" class="message"></div>
+            </section>
+
+            <section class="card">
+              <h2>Ganti Password Admin</h2>
+              <div class="section-desc">
+                Setelah password diubah, semua sesi admin akan logout dan perlu login ulang.
+              </div>
+
+              <div class="form-group">
+                <label for="oldPassword">Password Lama</label>
+                <input type="password" id="oldPassword" placeholder="Masukkan password lama" />
+              </div>
+
+              <div class="form-group">
+                <label for="newPassword">Password Baru</label>
+                <input type="password" id="newPassword" placeholder="Minimal 12 karakter" />
+              </div>
+
+              <button class="btn-secondary" onclick="changePassword()">Ubah Password</button>
+              <div id="passwordMessage" class="message"></div>
+            </section>
+          </div>
+
+          <section class="card">
+            <h2>Kelola Data Penyewaan</h2>
+            <div class="section-desc">
+              Update status transaksi atau hapus data yang sudah tidak diperlukan.
+            </div>
+
+            <div class="top-tools">
+              <div class="search-box">
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder="Cari nama penyewa atau tipe iPhone..."
+                  onkeyup="renderTable()"
+                />
+              </div>
+            </div>
+
+            <div id="tableContainer">
+              <div class="empty">Memuat data...</div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <script>
+
+      let allData = [];
+      const TOKEN_KEY = 'iphone_rental_admin_token_v2';
+      const IDLE_LIMIT_MS = 15 * 60 * 1000;
+      let idleTimer = null;
+      const idleEvents = ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'];
+
+      function getApiBaseUrl() {
+        const configUrl = (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) || '';
+        return configUrl.replace(/\/+$/, '');
+      }
+
+      async function apiGet(action, params) {
+        const url = new URL(getApiBaseUrl() + '/api');
+        url.searchParams.set('action', action);
+
+        Object.entries(params || {}).forEach(function(entry) {
+          const key = entry[0];
+          const value = entry[1];
+
+          if (value !== undefined && value !== null && value !== '') {
+            url.searchParams.set(key, value);
+          }
+        });
+
+        const response = await fetch(url.toString(), {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        const data = await response.json().catch(function() {
+          throw new Error('Respons API tidak valid.');
+        });
+
+        if (!response.ok || (data && data.success === false)) {
+          throw new Error((data && (data.message || data.error)) || 'Permintaan gagal.');
+        }
+
+        return data;
+      }
+
+      async function apiPost(action, payload) {
+        const response = await fetch(getApiBaseUrl() + '/api', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain;charset=UTF-8',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(Object.assign({ action: action }, payload || {}))
+        });
+
+        const data = await response.json().catch(function() {
+          throw new Error('Respons API tidak valid.');
+        });
+
+        if (!response.ok || (data && data.success === false)) {
+          throw new Error((data && (data.message || data.error)) || 'Permintaan gagal.');
+        }
+
+        return data;
+      }
+
+      function getBrowserFingerprint() {
+        return [
+          navigator.userAgent || '',
+          navigator.language || '',
+          navigator.platform || '',
+          screen.width || '',
+          screen.height || '',
+          Intl.DateTimeFormat().resolvedOptions().timeZone || ''
+        ].join('|');
+      }
+
+      function getToken() {
+        return sessionStorage.getItem(TOKEN_KEY) || '';
+      }
+
+      function setToken(token) {
+        sessionStorage.setItem(TOKEN_KEY, token);
+      }
+
+      function clearToken() {
+        sessionStorage.removeItem(TOKEN_KEY);
+      }
+
+      function showBox(id, text, type) {
+        const box = document.getElementById(id);
+        box.className = 'message ' + type;
+        box.innerText = text;
+      }
+
+      function clearBox(id) {
+        const box = document.getElementById(id);
+        box.className = 'message';
+        box.innerText = '';
+      }
+
+      function showLoginMessage(text, type) {
+        showBox('loginMessage', text, type);
+      }
+
+      function showMessage(text, type) {
+        showBox('messageBox', text, type);
+      }
+
+      function showPasswordMessage(text, type) {
+        showBox('passwordMessage', text, type);
+      }
+
+      function setLoggedInUi(isLoggedIn) {
+        document.getElementById('loginSection').classList.toggle('hidden', isLoggedIn);
+        document.getElementById('adminSection').classList.toggle('hidden', !isLoggedIn);
+        document.getElementById('logoutBtn').classList.toggle('hidden', !isLoggedIn);
+        document.getElementById('sessionStatus').innerText = isLoggedIn ? 'Admin Aktif' : 'Belum login';
+      }
+
+      function forceLogout(message) {
+        clearToken();
+        stopIdleWatcher();
+        setLoggedInUi(false);
+        allData = [];
+        if (message) {
+          showLoginMessage(message, 'error');
+        }
+      }
+
+      function resetIdleTimer() {
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(function() {
+          logoutDueToIdle();
+        }, IDLE_LIMIT_MS);
+      }
+
+      function startIdleWatcher() {
+        stopIdleWatcher();
+        idleEvents.forEach(function(eventName) {
+          window.addEventListener(eventName, resetIdleTimer, { passive: true });
+        });
+        resetIdleTimer();
+      }
+
+      function stopIdleWatcher() {
+        clearTimeout(idleTimer);
+        idleEvents.forEach(function(eventName) {
+          window.removeEventListener(eventName, resetIdleTimer);
+        });
+      }
+
+      async function logoutDueToIdle() {
+        const token = getToken();
+        if (!token) {
+          forceLogout('Session berakhir.');
+          return;
+        }
+
+        try {
+          await apiPost('logout', { token: token });
+        } catch (err) {
+          // abaikan, paksa logout di client
+        }
+
+        forceLogout('Session berakhir karena tidak ada aktivitas selama 15 menit.');
+      }
+
+      async function login() {
+        clearBox('loginMessage');
+
+        const password = document.getElementById('adminPassword').value;
+        const fingerprint = getBrowserFingerprint();
+
+        if (!password) {
+          showLoginMessage('Password wajib diisi.', 'error');
+          return;
+        }
+
+        try {
+          const res = await apiPost('login', {
+            password: password,
+            fingerprint: fingerprint
+          });
+
+          setToken(res.token || '');
+          document.getElementById('adminPassword').value = '';
+          showLoginMessage('Login berhasil.', 'success');
+          setLoggedInUi(true);
+          startIdleWatcher();
+          await loadData();
+        } catch (err) {
+          showLoginMessage(err && err.message ? err.message : 'Login gagal.', 'error');
+        }
+      }
+
+      async function verifyExistingSession() {
+        const token = getToken();
+        const fingerprint = getBrowserFingerprint();
+
+        if (!token) {
+          setLoggedInUi(false);
+          return;
+        }
+
+        try {
+          const res = await apiPost('verify', {
+            token: token,
+            fingerprint: fingerprint
+          });
+
+          if (res && res.valid) {
+            setLoggedInUi(true);
+            startIdleWatcher();
+            await loadData();
+          } else {
+            forceLogout('Sesi login sudah habis atau browser berubah. Silakan login ulang.');
+          }
+        } catch (err) {
+          forceLogout('Sesi login tidak valid. Silakan login ulang.');
+        }
+      }
+
+      async function logout() {
+        const token = getToken();
+
+        try {
+          await apiPost('logout', { token: token });
+        } catch (err) {
+          // abaikan, tetap logout di client
+        }
+
+        clearToken();
+        stopIdleWatcher();
+        setLoggedInUi(false);
+        showLoginMessage('Berhasil logout.', 'success');
+      }
+
+      function clearForm() {
+        document.getElementById('nama').value = '';
+        document.getElementById('tipeIphone').value = '';
+        document.getElementById('tanggalSewa').value = '';
+        document.getElementById('tanggalKembali').value = '';
+        document.getElementById('status').value = 'Booking';
+        document.getElementById('catatan').value = '';
+      }
+
+      function clearPasswordForm() {
+        document.getElementById('oldPassword').value = '';
+        document.getElementById('newPassword').value = '';
+      }
+
+      function handleSessionError(err) {
+        const msg = ((err && err.message) || '').toLowerCase();
+        if (
+          msg.includes('sesi admin') ||
+          msg.includes('session') ||
+          msg.includes('fingerprint') ||
+          msg.includes('expired') ||
+          msg.includes('login ulang')
+        ) {
+          forceLogout('Sesi admin tidak valid atau sudah berakhir. Silakan login ulang.');
+          return true;
+        }
+        return false;
+      }
+
+      async function submitData() {
+        clearBox('messageBox');
+
+        const token = getToken();
+        const fingerprint = getBrowserFingerprint();
+
+        const data = {
+          nama: document.getElementById('nama').value.trim(),
+          tipeIphone: document.getElementById('tipeIphone').value.trim(),
+          tanggalSewa: document.getElementById('tanggalSewa').value,
+          tanggalKembali: document.getElementById('tanggalKembali').value,
+          status: document.getElementById('status').value,
+          catatan: document.getElementById('catatan').value.trim()
+        };
+
+        try {
+          const res = await apiPost('addRental', {
+            data: data,
+            token: token,
+            fingerprint: fingerprint
+          });
+
+          resetIdleTimer();
+          showMessage(res.message || 'Data berhasil ditambahkan.', 'success');
+          clearForm();
+          await loadData();
+        } catch (err) {
+          if (handleSessionError(err)) return;
+          showMessage(err && err.message ? err.message : 'Gagal menyimpan data.', 'error');
+        }
+      }
+
+      async function changePassword() {
+        clearBox('passwordMessage');
+
+        const token = getToken();
+        const fingerprint = getBrowserFingerprint();
+        const oldPassword = document.getElementById('oldPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+
+        if (!oldPassword || !newPassword) {
+          showPasswordMessage('Password lama dan password baru wajib diisi.', 'error');
+          return;
+        }
+
+        try {
+          const res = await apiPost('changePassword', {
+            oldPassword: oldPassword,
+            newPassword: newPassword,
+            token: token,
+            fingerprint: fingerprint
+          });
+
+          clearPasswordForm();
+          clearToken();
+          stopIdleWatcher();
+          setLoggedInUi(false);
+          showLoginMessage((res && res.message) || 'Password berhasil diubah. Silakan login ulang.', 'success');
+        } catch (err) {
+          if (handleSessionError(err)) return;
+          showPasswordMessage(err && err.message ? err.message : 'Gagal mengubah password.', 'error');
+        }
+      }
+
+      async function loadData() {
+        const container = document.getElementById('tableContainer');
+        container.innerHTML = '<div class="empty">Memuat data penyewaan...</div>';
+
+        const token = getToken();
+        const fingerprint = getBrowserFingerprint();
+
+        try {
+          const data = await apiPost('getAdminData', {
+            token: token,
+            fingerprint: fingerprint
+          });
+
+          allData = Array.isArray(data) ? data : [];
+          renderTable();
+        } catch (err) {
+          if (handleSessionError(err)) return;
+
+          container.innerHTML = '';
+          const empty = document.createElement('div');
+          empty.className = 'empty';
+          empty.innerText = 'Gagal memuat data.';
+          container.appendChild(empty);
+        }
+      }
+
+      function renderTable() {
+        const container = document.getElementById('tableContainer');
+        container.innerHTML = '';
+
+        const keyword = (document.getElementById('searchInput')?.value || '').toLowerCase();
+
+        const filtered = allData.filter(function(item) {
+          return (item.nama || '').toLowerCase().includes(keyword) ||
+                 (item.tipeIphone || '').toLowerCase().includes(keyword);
+        });
+
+        if (!filtered.length) {
+          const empty = document.createElement('div');
+          empty.className = 'empty';
+          empty.innerText = 'Belum ada data yang cocok.';
+          container.appendChild(empty);
+          return;
+        }
+
+        const tableWrap = document.createElement('div');
+        tableWrap.className = 'table-wrap';
+
+        const table = document.createElement('table');
+        const thead = document.createElement('thead');
+        const tbody = document.createElement('tbody');
+
+        const headerRow = document.createElement('tr');
+        ['Penyewa', 'Perangkat', 'Tgl Sewa', 'Tgl Kembali', 'Status', 'Aksi'].forEach(function(title) {
+          const th = document.createElement('th');
+          th.textContent = title;
+          headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+
+        filtered.forEach(function(item) {
+          const tr = document.createElement('tr');
+
+          const tdPenyewa = document.createElement('td');
+          const nameCell1 = document.createElement('div');
+          nameCell1.className = 'name-cell';
+
+          const strongNama = document.createElement('strong');
+          strongNama.textContent = item.nama || '-';
+
+          const subId = document.createElement('div');
+          subId.className = 'sub';
+          subId.textContent = 'ID: ' + (item.id || '-');
+
+          nameCell1.appendChild(strongNama);
+          nameCell1.appendChild(subId);
+          tdPenyewa.appendChild(nameCell1);
+
+          const tdPerangkat = document.createElement('td');
+          const nameCell2 = document.createElement('div');
+          nameCell2.className = 'name-cell';
+
+          const strongDevice = document.createElement('strong');
+          strongDevice.textContent = item.tipeIphone || '-';
+
+          const subCatatan = document.createElement('div');
+          subCatatan.className = 'sub';
+          subCatatan.textContent = item.catatan || 'Tanpa catatan';
+
+          nameCell2.appendChild(strongDevice);
+          nameCell2.appendChild(subCatatan);
+          tdPerangkat.appendChild(nameCell2);
+
+          const tdTglSewa = document.createElement('td');
+          tdTglSewa.textContent = item.tanggalSewa || '-';
+
+          const tdTglKembali = document.createElement('td');
+          tdTglKembali.textContent = item.tanggalKembali || '-';
+
+          const tdStatus = document.createElement('td');
+          const select = document.createElement('select');
+          select.className = 'status-select';
+
+          ['Booking', 'Sedang Disewa', 'Selesai'].forEach(function(status) {
+            const option = document.createElement('option');
+            option.value = status;
+            option.textContent = status;
+            if (item.status === status) option.selected = true;
+            select.appendChild(option);
+          });
+          tdStatus.appendChild(select);
+
+          const tdAksi = document.createElement('td');
+          const actionGroup = document.createElement('div');
+          actionGroup.className = 'action-group';
+
+          const btnSave = document.createElement('button');
+          btnSave.className = 'btn-small btn-save';
+          btnSave.textContent = 'Update';
+          btnSave.onclick = function() {
+            saveStatus(item.id, select.value);
+          };
+
+          const btnDelete = document.createElement('button');
+          btnDelete.className = 'btn-small btn-delete';
+          btnDelete.textContent = 'Hapus';
+          btnDelete.onclick = function() {
+            deleteData(item.id);
+          };
+
+          actionGroup.appendChild(btnSave);
+          actionGroup.appendChild(btnDelete);
+          tdAksi.appendChild(actionGroup);
+
+          tr.appendChild(tdPenyewa);
+          tr.appendChild(tdPerangkat);
+          tr.appendChild(tdTglSewa);
+          tr.appendChild(tdTglKembali);
+          tr.appendChild(tdStatus);
+          tr.appendChild(tdAksi);
+
+          tbody.appendChild(tr);
+        });
+
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        tableWrap.appendChild(table);
+        container.appendChild(tableWrap);
+      }
+
+      async function saveStatus(id, statusBaru) {
+        const token = getToken();
+        const fingerprint = getBrowserFingerprint();
+
+        try {
+          const res = await apiPost('updateStatus', {
+            id: id,
+            statusBaru: statusBaru,
+            token: token,
+            fingerprint: fingerprint
+          });
+
+          resetIdleTimer();
+          showMessage((res && res.message) || 'Status berhasil diperbarui.', 'success');
+          await loadData();
+        } catch (err) {
+          if (handleSessionError(err)) return;
+          showMessage(err && err.message ? err.message : 'Gagal update status.', 'error');
+        }
+      }
+
+      async function deleteData(id) {
+        const token = getToken();
+        const fingerprint = getBrowserFingerprint();
+        const confirmDelete = confirm('Yakin ingin menghapus data ini?');
+
+        if (!confirmDelete) return;
+
+        try {
+          const res = await apiPost('deleteRental', {
+            id: id,
+            token: token,
+            fingerprint: fingerprint
+          });
+
+          resetIdleTimer();
+          showMessage((res && res.message) || 'Data berhasil dihapus.', 'success');
+          await loadData();
+        } catch (err) {
+          if (handleSessionError(err)) return;
+          showMessage(err && err.message ? err.message : 'Gagal hapus data.', 'error');
+        }
+      }
+
+      window.onload = function() {
+        setLoggedInUi(false);
+        verifyExistingSession();
+      };
+
+    </script>
+  </body>
+</html>
