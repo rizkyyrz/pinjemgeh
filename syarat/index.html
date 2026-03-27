@@ -161,14 +161,31 @@
         border-radius: 24px;
         box-shadow: var(--shadow);
         padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
       }
 
       .section {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        flex: 0 0 auto;
+        height: auto;
+        min-height: 0;
         background: white;
         border: 1px solid var(--line);
         border-radius: 20px;
         padding: 22px;
-        margin-bottom: 18px;
+        margin: 0;
+      }
+
+      .section > * {
+        width: 100%;
+      }
+
+      .section > .section-number {
+        width: 34px;
       }
 
       .section:last-child {
