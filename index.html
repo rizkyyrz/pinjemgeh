@@ -347,6 +347,52 @@
         font-size: 12px;
       }
 
+      .pagination {
+        margin-top: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .page-btn {
+        min-width: 40px;
+        height: 40px;
+        padding: 0 12px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: white;
+        color: var(--text);
+        cursor: pointer;
+        font-weight: 700;
+        transition: 0.2s ease;
+      }
+
+      .page-btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+        border-color: #cbd5e1;
+      }
+
+      .page-btn.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      .page-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .page-info {
+        width: 100%;
+        text-align: center;
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+
       @media (max-width: 1024px) {
         .stats-grid {
           grid-template-columns: repeat(2, 1fr);
@@ -463,12 +509,12 @@
               type="text"
               id="searchInput"
               placeholder="Cari nama penyewa atau tipe iPhone..."
-              onkeyup="renderTable()"
+              onkeyup="handleFilterChange()"
             />
           </div>
 
           <div class="select-wrap">
-            <select id="statusFilter" onchange="renderTable()">
+            <select id="statusFilter" onchange="handleFilterChange()">
               <option value="">Semua Status</option>
               <option value="Booking">Booking</option>
               <option value="Sedang Disewa">Sedang Disewa</option>
@@ -489,9 +535,12 @@
         </div>
       </section>
     </div>
+
     <script src="config.js"></script>
     <script>
       let allData = [];
+      let currentPage = 1;
+      const rowsPerPage = 10;
       const API_URL = window.APP_CONFIG.API_BASE_URL;
 
       function escapeHtml(text) {
@@ -502,6 +551,43 @@
           .replace(/>/g, '&gt;')
           .replace(/"/g, '&quot;')
           .replace(/'/g, '&#39;');
+      }
+
+      function parseDateValue(value) {
+        if (!value) return 0;
+
+        const directDate = new Date(value);
+        if (!isNaN(directDate.getTime())) {
+          return directDate.getTime();
+        }
+
+        const str = String(value).trim();
+
+        const ddmmyyyy = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+        if (ddmmyyyy) {
+          const day = parseInt(ddmmyyyy[1], 10);
+          const month = parseInt(ddmmyyyy[2], 10) - 1;
+          const year = parseInt(ddmmyyyy[3], 10);
+          return new Date(year, month, day).getTime();
+        }
+
+        const yyyymmdd = str.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/);
+        if (yyyymmdd) {
+          const year = parseInt(yyyymmdd[1], 10);
+          const month = parseInt(yyyymmdd[2], 10) - 1;
+          const day = parseInt(yyyymmdd[3], 10);
+          return new Date(year, month, day).getTime();
+        }
+
+        return 0;
+      }
+
+      function sortNewestFirst(data) {
+        return data.sort(function(a, b) {
+          const dateA = parseDateValue(a.tanggalSewa);
+          const dateB = parseDateValue(b.tanggalSewa);
+          return dateB - dateA;
+        });
       }
 
       async function loadData() {
@@ -520,11 +606,15 @@
           }
 
           allData = Array.isArray(result.data) ? result.data : [];
+          sortNewestFirst(allData);
+
+          currentPage = 1;
           updateStats(allData);
           renderTable();
         } catch (err) {
           console.error('Load dashboard error:', err);
           allData = [];
+          currentPage = 1;
           updateStats(allData);
           document.getElementById('tableContainer').innerHTML =
             '<div class="empty">Gagal memuat data.</div>';
@@ -556,8 +646,56 @@
         return '<span class="badge">' + escapeHtml(status || '-') + '</span>';
       }
 
+      function handleFilterChange() {
+        currentPage = 1;
+        renderTable();
+      }
+
+      function changePage(page) {
+        currentPage = page;
+        renderTable();
+      }
+
+      function renderPagination(totalItems, totalPages) {
+        if (totalPages <= 1) return '';
+
+        let html = '<div class="pagination">';
+
+        html += `
+          <button class="page-btn" onclick="changePage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>
+            Prev
+          </button>
+        `;
+
+        for (let i = 1; i <= totalPages; i++) {
+          html += `
+            <button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="changePage(${i})">
+              ${i}
+            </button>
+          `;
+        }
+
+        html += `
+          <button class="page-btn" onclick="changePage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>
+            Next
+          </button>
+        `;
+
+        const startItem = totalItems === 0 ? 0 : (currentPage - 1) * rowsPerPage + 1;
+        const endItem = Math.min(currentPage * rowsPerPage, totalItems);
+
+        html += `
+          <div class="page-info">
+            Menampilkan ${startItem}-${endItem} dari ${totalItems} data
+          </div>
+        `;
+
+        html += '</div>';
+        return html;
+      }
+
       function renderTable() {
-        const keyword = document.getElementById('searchInput').value.toLowerCase();
+        const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
         const statusFilter = document.getElementById('statusFilter').value;
 
         const filtered = allData.filter(function(item) {
@@ -576,6 +714,16 @@
           return;
         }
 
+        const totalPages = Math.ceil(filtered.length / rowsPerPage);
+
+        if (currentPage > totalPages) {
+          currentPage = totalPages;
+        }
+
+        const startIndex = (currentPage - 1) * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
+        const paginatedData = filtered.slice(startIndex, endIndex);
+
         let html = `
           <div class="table-shell">
             <table>
@@ -592,7 +740,7 @@
               <tbody>
         `;
 
-        filtered.forEach(function(item) {
+        paginatedData.forEach(function(item) {
           html += `
             <tr>
               <td>
@@ -619,6 +767,7 @@
               </tbody>
             </table>
           </div>
+          ${renderPagination(filtered.length, totalPages)}
         `;
 
         document.getElementById('tableContainer').innerHTML = html;
