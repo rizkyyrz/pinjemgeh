@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Admin Penyewaan iPhone</title>
     <style>
       :root {
@@ -335,6 +335,52 @@
         border: 1px solid rgba(255,255,255,0.08);
       }
 
+      .pagination {
+        margin-top: 18px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .page-btn {
+        min-width: 40px;
+        height: 40px;
+        padding: 0 12px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: white;
+        color: var(--text);
+        cursor: pointer;
+        font-weight: 700;
+        transition: 0.2s ease;
+      }
+
+      .page-btn:hover:not(:disabled) {
+        transform: translateY(-1px);
+        border-color: #cbd5e1;
+      }
+
+      .page-btn.active {
+        background: var(--primary);
+        color: white;
+        border-color: var(--primary);
+      }
+
+      .page-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .page-info {
+        width: 100%;
+        text-align: center;
+        font-size: 13px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+
       @media (max-width: 1080px) {
         .layout {
           grid-template-columns: 1fr;
@@ -377,7 +423,7 @@
           </div>
 
           <div class="hero-actions">
-            <span class="status-chip" id="sessionStatus">Belum login</span>
+            <span class="status-chip" id="sessionStatus">Belum Login</span>
             <a href="/">Kembali ke Dashboard</a>
             <button id="logoutBtn" class="hidden" onclick="logout()">Logout</button>
           </div>
@@ -486,7 +532,7 @@
                   type="text"
                   id="searchInput"
                   placeholder="Cari nama penyewa atau tipe iPhone..."
-                  onkeyup="renderTable()"
+                  onkeyup="handleFilterChange()"
                 />
               </div>
             </div>
@@ -498,534 +544,649 @@
         </div>
       </div>
     </div>
+
     <script src="/config.js"></script>
-<script>
-  let allData = [];
-  const TOKEN_KEY = 'iphone_rental_admin_token_v2';
-  const IDLE_LIMIT_MS = 15 * 60 * 1000;
-  let idleTimer = null;
-  const idleEvents = ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'];
+    <script>
+      let allData = [];
+      let currentPage = 1;
+      const rowsPerPage = 10;
 
-  function getApiBaseUrl() {
-    const configUrl = (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) || '';
-    return configUrl.replace(/\/+$/, '');
-  }
+      const TOKEN_KEY = 'iphone_rental_admin_token_v2';
+      const IDLE_LIMIT_MS = 15 * 60 * 1000;
+      let idleTimer = null;
+      const idleEvents = ['click', 'mousemove', 'keydown', 'scroll', 'touchstart'];
 
-  async function apiGet(action, params) {
-    const url = new URL(getApiBaseUrl());
-    url.searchParams.set('action', action);
-
-    Object.entries(params || {}).forEach(function(entry) {
-      const key = entry[0];
-      const value = entry[1];
-
-      if (value !== undefined && value !== null && value !== '') {
-        url.searchParams.set(key, value);
+      function getApiBaseUrl() {
+        const configUrl = (window.APP_CONFIG && window.APP_CONFIG.API_BASE_URL) || '';
+        return configUrl.replace(/\/+$/, '');
       }
-    });
 
-    const response = await fetch(url.toString(), {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json'
+      async function apiGet(action, params) {
+        const url = new URL(getApiBaseUrl());
+        url.searchParams.set('action', action);
+
+        Object.entries(params || {}).forEach(function(entry) {
+          const key = entry[0];
+          const value = entry[1];
+
+          if (value !== undefined && value !== null && value !== '') {
+            url.searchParams.set(key, value);
+          }
+        });
+
+        const response = await fetch(url.toString(), {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        const data = await response.json().catch(function() {
+          throw new Error('Respons API tidak valid.');
+        });
+
+        if (!response.ok || (data && data.success === false)) {
+          throw new Error((data && (data.message || data.error)) || 'Permintaan gagal.');
+        }
+
+        return data;
       }
-    });
 
-    const data = await response.json().catch(function() {
-      throw new Error('Respons API tidak valid.');
-    });
+      async function apiPost(action, payload) {
+        const response = await fetch(getApiBaseUrl(), {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'text/plain;charset=UTF-8',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(Object.assign({ action: action }, payload || {}))
+        });
 
-    if (!response.ok || (data && data.success === false)) {
-      throw new Error((data && (data.message || data.error)) || 'Permintaan gagal.');
-    }
+        const data = await response.json().catch(function() {
+          throw new Error('Respons API tidak valid.');
+        });
 
-    return data;
-  }
+        if (!response.ok || (data && data.success === false)) {
+          throw new Error((data && (data.message || data.error)) || 'Permintaan gagal.');
+        }
 
-  async function apiPost(action, payload) {
-    const response = await fetch(getApiBaseUrl(), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'text/plain;charset=UTF-8',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify(Object.assign({ action: action }, payload || {}))
-    });
-
-    const data = await response.json().catch(function() {
-      throw new Error('Respons API tidak valid.');
-    });
-
-    if (!response.ok || (data && data.success === false)) {
-      throw new Error((data && (data.message || data.error)) || 'Permintaan gagal.');
-    }
-
-    return data;
-  }
-
-  function getBrowserFingerprint() {
-    return [
-      navigator.userAgent || '',
-      navigator.language || '',
-      navigator.platform || '',
-      screen.width || '',
-      screen.height || '',
-      Intl.DateTimeFormat().resolvedOptions().timeZone || ''
-    ].join('|');
-  }
-
-  function getToken() {
-    return sessionStorage.getItem(TOKEN_KEY) || '';
-  }
-
-  function setToken(token) {
-    sessionStorage.setItem(TOKEN_KEY, token);
-  }
-
-  function clearToken() {
-    sessionStorage.removeItem(TOKEN_KEY);
-  }
-
-  function showBox(id, text, type) {
-    const box = document.getElementById(id);
-    box.className = 'message ' + type;
-    box.innerText = text;
-  }
-
-  function clearBox(id) {
-    const box = document.getElementById(id);
-    box.className = 'message';
-    box.innerText = '';
-  }
-
-  function showLoginMessage(text, type) {
-    showBox('loginMessage', text, type);
-  }
-
-  function showMessage(text, type) {
-    showBox('messageBox', text, type);
-  }
-
-  function showPasswordMessage(text, type) {
-    showBox('passwordMessage', text, type);
-  }
-
-  function setLoggedInUi(isLoggedIn) {
-    document.getElementById('loginSection').classList.toggle('hidden', isLoggedIn);
-    document.getElementById('adminSection').classList.toggle('hidden', !isLoggedIn);
-    document.getElementById('logoutBtn').classList.toggle('hidden', !isLoggedIn);
-    document.getElementById('sessionStatus').innerText = isLoggedIn ? 'Admin Aktif' : 'Belum login';
-  }
-
-  function forceLogout(message) {
-    clearToken();
-    stopIdleWatcher();
-    setLoggedInUi(false);
-    allData = [];
-    if (message) {
-      showLoginMessage(message, 'error');
-    }
-  }
-
-  function resetIdleTimer() {
-    clearTimeout(idleTimer);
-    idleTimer = setTimeout(function() {
-      logoutDueToIdle();
-    }, IDLE_LIMIT_MS);
-  }
-
-  function startIdleWatcher() {
-    stopIdleWatcher();
-    idleEvents.forEach(function(eventName) {
-      window.addEventListener(eventName, resetIdleTimer, { passive: true });
-    });
-    resetIdleTimer();
-  }
-
-  function stopIdleWatcher() {
-    clearTimeout(idleTimer);
-    idleEvents.forEach(function(eventName) {
-      window.removeEventListener(eventName, resetIdleTimer);
-    });
-  }
-
-  async function logoutDueToIdle() {
-    const token = getToken();
-    if (!token) {
-      forceLogout('Session berakhir.');
-      return;
-    }
-
-    try {
-      await apiPost('logout', { token: token });
-    } catch (err) {
-      // abaikan
-    }
-
-    forceLogout('Session berakhir karena tidak ada aktivitas selama 15 menit.');
-  }
-
-  async function login() {
-    clearBox('loginMessage');
-
-    const password = document.getElementById('adminPassword').value;
-    const fingerprint = getBrowserFingerprint();
-
-    if (!password) {
-      showLoginMessage('Password wajib diisi.', 'error');
-      return;
-    }
-
-    try {
-      const res = await apiPost('login', {
-        password: password,
-        fingerprint: fingerprint
-      });
-
-      setToken(res.token || '');
-      document.getElementById('adminPassword').value = '';
-      showLoginMessage('Login berhasil.', 'success');
-      setLoggedInUi(true);
-      startIdleWatcher();
-      await loadData();
-    } catch (err) {
-      showLoginMessage(err && err.message ? err.message : 'Login gagal.', 'error');
-    }
-  }
-
-  async function verifyExistingSession() {
-    const token = getToken();
-    const fingerprint = getBrowserFingerprint();
-
-    if (!token) {
-      setLoggedInUi(false);
-      return;
-    }
-
-    try {
-      const res = await apiPost('verify', {
-        token: token,
-        fingerprint: fingerprint
-      });
-
-      if (res && res.valid) {
-        setLoggedInUi(true);
-        startIdleWatcher();
-        await loadData();
-      } else {
-        forceLogout('Sesi login sudah habis atau browser berubah. Silakan login ulang.');
+        return data;
       }
-    } catch (err) {
-      forceLogout('Sesi login tidak valid. Silakan login ulang.');
-    }
-  }
 
-  async function logout() {
-    const token = getToken();
+      function getBrowserFingerprint() {
+        return [
+          navigator.userAgent || '',
+          navigator.language || '',
+          navigator.platform || '',
+          screen.width || '',
+          screen.height || '',
+          Intl.DateTimeFormat().resolvedOptions().timeZone || ''
+        ].join('|');
+      }
 
-    try {
-      await apiPost('logout', { token: token });
-    } catch (err) {
-      // abaikan
-    }
+      function getToken() {
+        return sessionStorage.getItem(TOKEN_KEY) || '';
+      }
 
-    clearToken();
-    stopIdleWatcher();
-    setLoggedInUi(false);
-    showLoginMessage('Berhasil logout.', 'success');
-  }
+      function setToken(token) {
+        sessionStorage.setItem(TOKEN_KEY, token);
+      }
 
-  function clearForm() {
-    document.getElementById('nama').value = '';
-    document.getElementById('tipeIphone').value = '';
-    document.getElementById('tanggalSewa').value = '';
-    document.getElementById('tanggalKembali').value = '';
-    document.getElementById('status').value = 'Booking';
-    document.getElementById('catatan').value = '';
-  }
+      function clearToken() {
+        sessionStorage.removeItem(TOKEN_KEY);
+      }
 
-  function clearPasswordForm() {
-    document.getElementById('oldPassword').value = '';
-    document.getElementById('newPassword').value = '';
-  }
+      function showBox(id, text, type) {
+        const box = document.getElementById(id);
+        box.className = 'message ' + type;
+        box.innerText = text;
+      }
 
-  function handleSessionError(err) {
-    const msg = ((err && err.message) || '').toLowerCase();
-    if (
-      msg.includes('sesi admin') ||
-      msg.includes('session') ||
-      msg.includes('fingerprint') ||
-      msg.includes('expired') ||
-      msg.includes('login ulang')
-    ) {
-      forceLogout('Sesi admin tidak valid atau sudah berakhir. Silakan login ulang.');
-      return true;
-    }
-    return false;
-  }
+      function clearBox(id) {
+        const box = document.getElementById(id);
+        box.className = 'message';
+        box.innerText = '';
+      }
 
-  async function submitData() {
-    clearBox('messageBox');
+      function showLoginMessage(text, type) {
+        showBox('loginMessage', text, type);
+      }
 
-    const token = getToken();
-    const fingerprint = getBrowserFingerprint();
+      function showMessage(text, type) {
+        showBox('messageBox', text, type);
+      }
 
-    const data = {
-      nama: document.getElementById('nama').value.trim(),
-      tipeIphone: document.getElementById('tipeIphone').value.trim(),
-      tanggalSewa: document.getElementById('tanggalSewa').value,
-      tanggalKembali: document.getElementById('tanggalKembali').value,
-      status: document.getElementById('status').value,
-      catatan: document.getElementById('catatan').value.trim()
-    };
+      function showPasswordMessage(text, type) {
+        showBox('passwordMessage', text, type);
+      }
 
-    try {
-      const res = await apiPost('addRental', {
-        data: data,
-        token: token,
-        fingerprint: fingerprint
-      });
+      function setLoggedInUi(isLoggedIn) {
+        document.getElementById('loginSection').classList.toggle('hidden', isLoggedIn);
+        document.getElementById('adminSection').classList.toggle('hidden', !isLoggedIn);
+        document.getElementById('logoutBtn').classList.toggle('hidden', !isLoggedIn);
+        document.getElementById('sessionStatus').innerText = isLoggedIn ? 'Admin Aktif' : 'Belum login';
+      }
 
-      resetIdleTimer();
-      showMessage(res.message || 'Data berhasil ditambahkan.', 'success');
-      clearForm();
-      await loadData();
-    } catch (err) {
-      if (handleSessionError(err)) return;
-      showMessage(err && err.message ? err.message : 'Gagal menyimpan data.', 'error');
-    }
-  }
+      function forceLogout(message) {
+        clearToken();
+        stopIdleWatcher();
+        setLoggedInUi(false);
+        allData = [];
+        currentPage = 1;
+        if (message) {
+          showLoginMessage(message, 'error');
+        }
+      }
 
-  async function changePassword() {
-    clearBox('passwordMessage');
+      function resetIdleTimer() {
+        clearTimeout(idleTimer);
+        idleTimer = setTimeout(function() {
+          logoutDueToIdle();
+        }, IDLE_LIMIT_MS);
+      }
 
-    const token = getToken();
-    const fingerprint = getBrowserFingerprint();
-    const oldPassword = document.getElementById('oldPassword').value;
-    const newPassword = document.getElementById('newPassword').value;
+      function startIdleWatcher() {
+        stopIdleWatcher();
+        idleEvents.forEach(function(eventName) {
+          window.addEventListener(eventName, resetIdleTimer, { passive: true });
+        });
+        resetIdleTimer();
+      }
 
-    if (!oldPassword || !newPassword) {
-      showPasswordMessage('Password lama dan password baru wajib diisi.', 'error');
-      return;
-    }
+      function stopIdleWatcher() {
+        clearTimeout(idleTimer);
+        idleEvents.forEach(function(eventName) {
+          window.removeEventListener(eventName, resetIdleTimer);
+        });
+      }
 
-    try {
-      const res = await apiPost('changePassword', {
-        oldPassword: oldPassword,
-        newPassword: newPassword,
-        token: token,
-        fingerprint: fingerprint
-      });
+      async function logoutDueToIdle() {
+        const token = getToken();
+        if (!token) {
+          forceLogout('Session berakhir.');
+          return;
+        }
 
-      clearPasswordForm();
-      clearToken();
-      stopIdleWatcher();
-      setLoggedInUi(false);
-      showLoginMessage((res && res.message) || 'Password berhasil diubah. Silakan login ulang.', 'success');
-    } catch (err) {
-      if (handleSessionError(err)) return;
-      showPasswordMessage(err && err.message ? err.message : 'Gagal mengubah password.', 'error');
-    }
-  }
+        try {
+          await apiPost('logout', { token: token });
+        } catch (err) {
+        }
 
-  async function loadData() {
-    const container = document.getElementById('tableContainer');
-    container.innerHTML = '<div class="empty">Memuat data penyewaan...</div>';
+        forceLogout('Session berakhir karena tidak ada aktivitas selama 15 menit.');
+      }
 
-    const token = getToken();
-    const fingerprint = getBrowserFingerprint();
+      async function login() {
+        clearBox('loginMessage');
 
-    try {
-      const result = await apiPost('getAdminData', {
-        token: token,
-        fingerprint: fingerprint
-      });
+        const password = document.getElementById('adminPassword').value;
+        const fingerprint = getBrowserFingerprint();
 
-      allData = Array.isArray(result.data) ? result.data : [];
-      renderTable();
-    } catch (err) {
-      if (handleSessionError(err)) return;
+        if (!password) {
+          showLoginMessage('Password wajib diisi.', 'error');
+          return;
+        }
 
-      container.innerHTML = '';
-      const empty = document.createElement('div');
-      empty.className = 'empty';
-      empty.innerText = 'Gagal memuat data.';
-      container.appendChild(empty);
-    }
-  }
+        try {
+          const res = await apiPost('login', {
+            password: password,
+            fingerprint: fingerprint
+          });
 
-  function renderTable() {
-    const container = document.getElementById('tableContainer');
-    container.innerHTML = '';
+          setToken(res.token || '');
+          document.getElementById('adminPassword').value = '';
+          showLoginMessage('Login berhasil.', 'success');
+          setLoggedInUi(true);
+          startIdleWatcher();
+          await loadData();
+        } catch (err) {
+          showLoginMessage(err && err.message ? err.message : 'Login gagal.', 'error');
+        }
+      }
 
-    const keyword = (document.getElementById('searchInput')?.value || '').toLowerCase();
+      async function verifyExistingSession() {
+        const token = getToken();
+        const fingerprint = getBrowserFingerprint();
 
-    const filtered = allData.filter(function(item) {
-      return (item.nama || '').toLowerCase().includes(keyword) ||
-             (item.tipeIphone || '').toLowerCase().includes(keyword);
-    });
+        if (!token) {
+          setLoggedInUi(false);
+          return;
+        }
 
-    if (!filtered.length) {
-      const empty = document.createElement('div');
-      empty.className = 'empty';
-      empty.innerText = 'Belum ada data yang cocok.';
-      container.appendChild(empty);
-      return;
-    }
+        try {
+          const res = await apiPost('verify', {
+            token: token,
+            fingerprint: fingerprint
+          });
 
-    const tableWrap = document.createElement('div');
-    tableWrap.className = 'table-wrap';
+          if (res && res.valid) {
+            setLoggedInUi(true);
+            startIdleWatcher();
+            await loadData();
+          } else {
+            forceLogout('Sesi login sudah habis atau browser berubah. Silakan login ulang.');
+          }
+        } catch (err) {
+          forceLogout('Sesi login tidak valid. Silakan login ulang.');
+        }
+      }
 
-    const table = document.createElement('table');
-    const thead = document.createElement('thead');
-    const tbody = document.createElement('tbody');
+      async function logout() {
+        const token = getToken();
 
-    const headerRow = document.createElement('tr');
-    ['Penyewa', 'Perangkat', 'Tgl Sewa', 'Tgl Kembali', 'Status', 'Aksi'].forEach(function(title) {
-      const th = document.createElement('th');
-      th.textContent = title;
-      headerRow.appendChild(th);
-    });
-    thead.appendChild(headerRow);
+        try {
+          await apiPost('logout', { token: token });
+        } catch (err) {
+        }
 
-    filtered.forEach(function(item) {
-      const tr = document.createElement('tr');
+        clearToken();
+        stopIdleWatcher();
+        setLoggedInUi(false);
+        currentPage = 1;
+        showLoginMessage('Berhasil logout.', 'success');
+      }
 
-      const tdPenyewa = document.createElement('td');
-      const nameCell1 = document.createElement('div');
-      nameCell1.className = 'name-cell';
+      function clearForm() {
+        document.getElementById('nama').value = '';
+        document.getElementById('tipeIphone').value = '';
+        document.getElementById('tanggalSewa').value = '';
+        document.getElementById('tanggalKembali').value = '';
+        document.getElementById('status').value = 'Booking';
+        document.getElementById('catatan').value = '';
+      }
 
-      const strongNama = document.createElement('strong');
-      strongNama.textContent = item.nama || '-';
+      function clearPasswordForm() {
+        document.getElementById('oldPassword').value = '';
+        document.getElementById('newPassword').value = '';
+      }
 
-      const subId = document.createElement('div');
-      subId.className = 'sub';
-      subId.textContent = 'ID: ' + (item.id || '-');
+      function handleSessionError(err) {
+        const msg = ((err && err.message) || '').toLowerCase();
+        if (
+          msg.includes('sesi admin') ||
+          msg.includes('session') ||
+          msg.includes('fingerprint') ||
+          msg.includes('expired') ||
+          msg.includes('login ulang')
+        ) {
+          forceLogout('Sesi admin tidak valid atau sudah berakhir. Silakan login ulang.');
+          return true;
+        }
+        return false;
+      }
 
-      nameCell1.appendChild(strongNama);
-      nameCell1.appendChild(subId);
-      tdPenyewa.appendChild(nameCell1);
+      function parseDateValue(value) {
+        if (!value) return 0;
 
-      const tdPerangkat = document.createElement('td');
-      const nameCell2 = document.createElement('div');
-      nameCell2.className = 'name-cell';
+        const directDate = new Date(value);
+        if (!isNaN(directDate.getTime())) {
+          return directDate.getTime();
+        }
 
-      const strongDevice = document.createElement('strong');
-      strongDevice.textContent = item.tipeIphone || '-';
+        const str = String(value).trim();
 
-      const subCatatan = document.createElement('div');
-      subCatatan.className = 'sub';
-      subCatatan.textContent = item.catatan || 'Tanpa catatan';
+        const ddmmyyyy = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+        if (ddmmyyyy) {
+          const day = parseInt(ddmmyyyy[1], 10);
+          const month = parseInt(ddmmyyyy[2], 10) - 1;
+          const year = parseInt(ddmmyyyy[3], 10);
+          return new Date(year, month, day).getTime();
+        }
 
-      nameCell2.appendChild(strongDevice);
-      nameCell2.appendChild(subCatatan);
-      tdPerangkat.appendChild(nameCell2);
+        const yyyymmdd = str.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})$/);
+        if (yyyymmdd) {
+          const year = parseInt(yyyymmdd[1], 10);
+          const month = parseInt(yyyymmdd[2], 10) - 1;
+          const day = parseInt(yyyymmdd[3], 10);
+          return new Date(year, month, day).getTime();
+        }
 
-      const tdTglSewa = document.createElement('td');
-      tdTglSewa.textContent = item.tanggalSewa || '-';
+        return 0;
+      }
 
-      const tdTglKembali = document.createElement('td');
-      tdTglKembali.textContent = item.tanggalKembali || '-';
+      function sortNewestFirst(data) {
+        return data.sort(function(a, b) {
+          const dateA = parseDateValue(a.tanggalSewa);
+          const dateB = parseDateValue(b.tanggalSewa);
+          return dateB - dateA;
+        });
+      }
 
-      const tdStatus = document.createElement('td');
-      const select = document.createElement('select');
-      select.className = 'status-select';
+      function handleFilterChange() {
+        currentPage = 1;
+        renderTable();
+      }
 
-      ['Booking', 'Sedang Disewa', 'Selesai'].forEach(function(status) {
-        const option = document.createElement('option');
-        option.value = status;
-        option.textContent = status;
-        if (item.status === status) option.selected = true;
-        select.appendChild(option);
-      });
-      tdStatus.appendChild(select);
+      async function submitData() {
+        clearBox('messageBox');
 
-      const tdAksi = document.createElement('td');
-      const actionGroup = document.createElement('div');
-      actionGroup.className = 'action-group';
+        const token = getToken();
+        const fingerprint = getBrowserFingerprint();
 
-      const btnSave = document.createElement('button');
-      btnSave.className = 'btn-small btn-save';
-      btnSave.textContent = 'Update';
-      btnSave.onclick = function() {
-        saveStatus(item.id, select.value);
+        const data = {
+          nama: document.getElementById('nama').value.trim(),
+          tipeIphone: document.getElementById('tipeIphone').value.trim(),
+          tanggalSewa: document.getElementById('tanggalSewa').value,
+          tanggalKembali: document.getElementById('tanggalKembali').value,
+          status: document.getElementById('status').value,
+          catatan: document.getElementById('catatan').value.trim()
+        };
+
+        try {
+          const res = await apiPost('addRental', {
+            data: data,
+            token: token,
+            fingerprint: fingerprint
+          });
+
+          resetIdleTimer();
+          showMessage(res.message || 'Data berhasil ditambahkan.', 'success');
+          clearForm();
+          await loadData();
+        } catch (err) {
+          if (handleSessionError(err)) return;
+          showMessage(err && err.message ? err.message : 'Gagal menyimpan data.', 'error');
+        }
+      }
+
+      async function changePassword() {
+        clearBox('passwordMessage');
+
+        const token = getToken();
+        const fingerprint = getBrowserFingerprint();
+        const oldPassword = document.getElementById('oldPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+
+        if (!oldPassword || !newPassword) {
+          showPasswordMessage('Password lama dan password baru wajib diisi.', 'error');
+          return;
+        }
+
+        try {
+          const res = await apiPost('changePassword', {
+            oldPassword: oldPassword,
+            newPassword: newPassword,
+            token: token,
+            fingerprint: fingerprint
+          });
+
+          clearPasswordForm();
+          clearToken();
+          stopIdleWatcher();
+          setLoggedInUi(false);
+          currentPage = 1;
+          showLoginMessage((res && res.message) || 'Password berhasil diubah. Silakan login ulang.', 'success');
+        } catch (err) {
+          if (handleSessionError(err)) return;
+          showPasswordMessage(err && err.message ? err.message : 'Gagal mengubah password.', 'error');
+        }
+      }
+
+      async function loadData() {
+        const container = document.getElementById('tableContainer');
+        container.innerHTML = '<div class="empty">Memuat data penyewaan...</div>';
+
+        const token = getToken();
+        const fingerprint = getBrowserFingerprint();
+
+        try {
+          const result = await apiPost('getAdminData', {
+            token: token,
+            fingerprint: fingerprint
+          });
+
+          allData = Array.isArray(result.data) ? result.data : [];
+          sortNewestFirst(allData);
+          currentPage = 1;
+          renderTable();
+        } catch (err) {
+          if (handleSessionError(err)) return;
+
+          container.innerHTML = '';
+          const empty = document.createElement('div');
+          empty.className = 'empty';
+          empty.innerText = 'Gagal memuat data.';
+          container.appendChild(empty);
+        }
+      }
+
+      function changePage(page) {
+        currentPage = page;
+        renderTable();
+      }
+
+      function renderPagination(totalItems, totalPages) {
+        if (totalPages <= 1) return null;
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'pagination';
+
+        const prevBtn = document.createElement('button');
+        prevBtn.className = 'page-btn';
+        prevBtn.textContent = 'Prev';
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.onclick = function() {
+          changePage(currentPage - 1);
+        };
+        wrapper.appendChild(prevBtn);
+
+        for (let i = 1; i <= totalPages; i++) {
+          const pageBtn = document.createElement('button');
+          pageBtn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+          pageBtn.textContent = i;
+          pageBtn.onclick = function() {
+            changePage(i);
+          };
+          wrapper.appendChild(pageBtn);
+        }
+
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'page-btn';
+        nextBtn.textContent = 'Next';
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.onclick = function() {
+          changePage(currentPage + 1);
+        };
+        wrapper.appendChild(nextBtn);
+
+        const info = document.createElement('div');
+        info.className = 'page-info';
+
+        const startItem = totalItems === 0 ? 0 : (currentPage - 1) * rowsPerPage + 1;
+        const endItem = Math.min(currentPage * rowsPerPage, totalItems);
+
+        info.textContent = 'Menampilkan ' + startItem + '-' + endItem + ' dari ' + totalItems + ' data';
+        wrapper.appendChild(info);
+
+        return wrapper;
+      }
+
+      function renderTable() {
+        const container = document.getElementById('tableContainer');
+        container.innerHTML = '';
+
+        const keyword = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+
+        const filtered = allData.filter(function(item) {
+          return (item.nama || '').toLowerCase().includes(keyword) ||
+                 (item.tipeIphone || '').toLowerCase().includes(keyword);
+        });
+
+        if (!filtered.length) {
+          const empty = document.createElement('div');
+          empty.className = 'empty';
+          empty.innerText = 'Belum ada data yang cocok.';
+          container.appendChild(empty);
+          return;
+        }
+
+        const totalPages = Math.ceil(filtered.length / rowsPerPage);
+
+        if (currentPage > totalPages) {
+          currentPage = totalPages;
+        }
+
+        const startIndex = (currentPage - 1) * rowsPerPage;
+        const endIndex = startIndex + rowsPerPage;
+        const paginatedData = filtered.slice(startIndex, endIndex);
+
+        const tableWrap = document.createElement('div');
+        tableWrap.className = 'table-wrap';
+
+        const table = document.createElement('table');
+        const thead = document.createElement('thead');
+        const tbody = document.createElement('tbody');
+
+        const headerRow = document.createElement('tr');
+        ['Penyewa', 'Perangkat', 'Tgl Sewa', 'Tgl Kembali', 'Status', 'Aksi'].forEach(function(title) {
+          const th = document.createElement('th');
+          th.textContent = title;
+          headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+
+        paginatedData.forEach(function(item) {
+          const tr = document.createElement('tr');
+
+          const tdPenyewa = document.createElement('td');
+          const nameCell1 = document.createElement('div');
+          nameCell1.className = 'name-cell';
+
+          const strongNama = document.createElement('strong');
+          strongNama.textContent = item.nama || '-';
+
+          const subId = document.createElement('div');
+          subId.className = 'sub';
+          subId.textContent = 'ID: ' + (item.id || '-');
+
+          nameCell1.appendChild(strongNama);
+          nameCell1.appendChild(subId);
+          tdPenyewa.appendChild(nameCell1);
+
+          const tdPerangkat = document.createElement('td');
+          const nameCell2 = document.createElement('div');
+          nameCell2.className = 'name-cell';
+
+          const strongDevice = document.createElement('strong');
+          strongDevice.textContent = item.tipeIphone || '-';
+
+          const subCatatan = document.createElement('div');
+          subCatatan.className = 'sub';
+          subCatatan.textContent = item.catatan || 'Tanpa catatan';
+
+          nameCell2.appendChild(strongDevice);
+          nameCell2.appendChild(subCatatan);
+          tdPerangkat.appendChild(nameCell2);
+
+          const tdTglSewa = document.createElement('td');
+          tdTglSewa.textContent = item.tanggalSewa || '-';
+
+          const tdTglKembali = document.createElement('td');
+          tdTglKembali.textContent = item.tanggalKembali || '-';
+
+          const tdStatus = document.createElement('td');
+          const select = document.createElement('select');
+          select.className = 'status-select';
+
+          ['Booking', 'Sedang Disewa', 'Selesai'].forEach(function(status) {
+            const option = document.createElement('option');
+            option.value = status;
+            option.textContent = status;
+            if (item.status === status) option.selected = true;
+            select.appendChild(option);
+          });
+          tdStatus.appendChild(select);
+
+          const tdAksi = document.createElement('td');
+          const actionGroup = document.createElement('div');
+          actionGroup.className = 'action-group';
+
+          const btnSave = document.createElement('button');
+          btnSave.className = 'btn-small btn-save';
+          btnSave.textContent = 'Update';
+          btnSave.onclick = function() {
+            saveStatus(item.id, select.value);
+          };
+
+          const btnDelete = document.createElement('button');
+          btnDelete.className = 'btn-small btn-delete';
+          btnDelete.textContent = 'Hapus';
+          btnDelete.onclick = function() {
+            deleteData(item.id);
+          };
+
+          actionGroup.appendChild(btnSave);
+          actionGroup.appendChild(btnDelete);
+          tdAksi.appendChild(actionGroup);
+
+          tr.appendChild(tdPenyewa);
+          tr.appendChild(tdPerangkat);
+          tr.appendChild(tdTglSewa);
+          tr.appendChild(tdTglKembali);
+          tr.appendChild(tdStatus);
+          tr.appendChild(tdAksi);
+
+          tbody.appendChild(tr);
+        });
+
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        tableWrap.appendChild(table);
+        container.appendChild(tableWrap);
+
+        const pagination = renderPagination(filtered.length, totalPages);
+        if (pagination) {
+          container.appendChild(pagination);
+        }
+      }
+
+      async function saveStatus(id, statusBaru) {
+        const token = getToken();
+        const fingerprint = getBrowserFingerprint();
+
+        try {
+          const res = await apiPost('updateStatus', {
+            id: id,
+            statusBaru: statusBaru,
+            token: token,
+            fingerprint: fingerprint
+          });
+
+          resetIdleTimer();
+          showMessage((res && res.message) || 'Status berhasil diperbarui.', 'success');
+          await loadData();
+        } catch (err) {
+          if (handleSessionError(err)) return;
+          showMessage(err && err.message ? err.message : 'Gagal update status.', 'error');
+        }
+      }
+
+      async function deleteData(id) {
+        const token = getToken();
+        const fingerprint = getBrowserFingerprint();
+        const confirmDelete = confirm('Yakin ingin menghapus data ini?');
+
+        if (!confirmDelete) return;
+
+        try {
+          const res = await apiPost('deleteRental', {
+            id: id,
+            token: token,
+            fingerprint: fingerprint
+          });
+
+          resetIdleTimer();
+          showMessage((res && res.message) || 'Data berhasil dihapus.', 'success');
+          await loadData();
+        } catch (err) {
+          if (handleSessionError(err)) return;
+          showMessage(err && err.message ? err.message : 'Gagal hapus data.', 'error');
+        }
+      }
+
+      window.onload = function() {
+        setLoggedInUi(false);
+        verifyExistingSession();
       };
-
-      const btnDelete = document.createElement('button');
-      btnDelete.className = 'btn-small btn-delete';
-      btnDelete.textContent = 'Hapus';
-      btnDelete.onclick = function() {
-        deleteData(item.id);
-      };
-
-      actionGroup.appendChild(btnSave);
-      actionGroup.appendChild(btnDelete);
-      tdAksi.appendChild(actionGroup);
-
-      tr.appendChild(tdPenyewa);
-      tr.appendChild(tdPerangkat);
-      tr.appendChild(tdTglSewa);
-      tr.appendChild(tdTglKembali);
-      tr.appendChild(tdStatus);
-      tr.appendChild(tdAksi);
-
-      tbody.appendChild(tr);
-    });
-
-    table.appendChild(thead);
-    table.appendChild(tbody);
-    tableWrap.appendChild(table);
-    container.appendChild(tableWrap);
-  }
-
-  async function saveStatus(id, statusBaru) {
-    const token = getToken();
-    const fingerprint = getBrowserFingerprint();
-
-    try {
-      const res = await apiPost('updateStatus', {
-        id: id,
-        statusBaru: statusBaru,
-        token: token,
-        fingerprint: fingerprint
-      });
-
-      resetIdleTimer();
-      showMessage((res && res.message) || 'Status berhasil diperbarui.', 'success');
-      await loadData();
-    } catch (err) {
-      if (handleSessionError(err)) return;
-      showMessage(err && err.message ? err.message : 'Gagal update status.', 'error');
-    }
-  }
-
-  async function deleteData(id) {
-    const token = getToken();
-    const fingerprint = getBrowserFingerprint();
-    const confirmDelete = confirm('Yakin ingin menghapus data ini?');
-
-    if (!confirmDelete) return;
-
-    try {
-      const res = await apiPost('deleteRental', {
-        id: id,
-        token: token,
-        fingerprint: fingerprint
-      });
-
-      resetIdleTimer();
-      showMessage((res && res.message) || 'Data berhasil dihapus.', 'success');
-      await loadData();
-    } catch (err) {
-      if (handleSessionError(err)) return;
-      showMessage(err && err.message ? err.message : 'Gagal hapus data.', 'error');
-    }
-  }
-
-  window.onload = function() {
-    setLoggedInUi(false);
-    verifyExistingSession();
-  };
-</script>
+    </script>
   </body>
 </html>
