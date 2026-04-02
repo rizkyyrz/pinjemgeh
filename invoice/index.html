@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Invoice Booking Sewa iPhone</title>
+    <style>
+      :root {
+        --bg: #0f172a;
+        --bg-soft: #f8fafc;
+        --card: rgba(255,255,255,0.88);
+        --card-solid: #ffffff;
+        --text: #0f172a;
+        --muted: #64748b;
+        --line: #e2e8f0;
+        --primary: #2563eb;
+        --primary-dark: #1d4ed8;
+        --success: #16a34a;
+        --warning: #f59e0b;
+        --danger: #ef4444;
+        --shadow: 0 10px 35px rgba(15, 23, 42, 0.08);
+        --radius: 20px;
+      }
+
+      * {
+        box-sizing: border-box;
+        font-family: Inter, Arial, sans-serif;
+      }
+
+      body {
+        margin: 0;
+        background:
+          radial-gradient(circle at top left, rgba(37,99,235,0.15), transparent 30%),
+          radial-gradient(circle at top right, rgba(14,165,233,0.12), transparent 25%),
+          linear-gradient(180deg, #eff6ff 0%, #f8fafc 45%, #f8fafc 100%);
+        color: var(--text);
+      }
+
+      .container {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 28px 20px 40px;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #0f172a, #1e3a8a 65%, #2563eb);
+        color: white;
+        border-radius: 28px;
+        padding: 28px;
+        box-shadow: 0 24px 60px rgba(30, 58, 138, 0.28);
+        margin-bottom: 24px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        top: -60px;
+        right: -60px;
+      }
+
+      .hero-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-size: 32px;
+        line-height: 1.2;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+
+      .hero p {
+        margin: 10px 0 0;
+        color: rgba(255,255,255,0.82);
+        max-width: 720px;
+        font-size: 15px;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        border: none;
+        cursor: pointer;
+        padding: 12px 16px;
+        border-radius: 14px;
+        font-weight: 700;
+        font-size: 14px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn-light {
+        background: rgba(255,255,255,0.14);
+        color: white;
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255,255,255,0.15);
+      }
+
+      .btn-white {
+        background: white;
+        color: var(--primary-dark);
+      }
+
+      .content-card {
+        background: var(--card);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(255,255,255,0.55);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        padding: 20px;
+      }
+
+      .toolbar {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+
+      .toolbar-actions {
+        margin-top: 12px;
+      }
+
+      .input-wrap,
+      .select-wrap {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 0 14px;
+        display: flex;
+        align-items: center;
+        min-height: 52px;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      }
+
+      .input-wrap:focus-within,
+      .select-wrap:focus-within {
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+      }
+
+      .input-wrap input,
+      .select-wrap select {
+        width: 100%;
+        border: none;
+        outline: none;
+        font-size: 14px;
+        background: transparent;
+        color: var(--text);
+      }
+
+      .input-readonly {
+        background: #f8fafc;
+        color: #475569;
+        font-weight: 700;
+      }
+
+      .btn-refresh {
+        width: 100%;
+        background: linear-gradient(135deg, #0f172a, #0b2a6f);
+        color: white;
+        border-radius: 16px;
+        min-height: 54px;
+        border: none;
+        font-weight: 700;
+        cursor: pointer;
+        box-shadow: 0 10px 24px rgba(15, 23, 42, 0.18);
+      }
+
+      .invoice-shell {
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 30px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .invoice-top,
+      .info-grid,
+      .info-card,
+      .invoice-table,
+      .invoice-table thead,
+      .invoice-table tbody,
+      .invoice-table tr,
+      .summary-wrap,
+      .summary-box,
+      .invoice-note,
+      .invoice-terms {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .invoice-table thead {
+        display: table-header-group;
+      }
+
+      .invoice-top {
+        display: grid;
+        grid-template-columns: minmax(0, 1.22fr) minmax(250px, 0.72fr);
+        gap: 34px;
+        align-items: start;
+        padding-bottom: 24px;
+        border-bottom: 1px dashed #cbd5e1;
+      }
+
+      .invoice-brand h2 {
+        margin: 0 0 8px;
+        font-size: 28px;
+        font-weight: 800;
+        color: #0f172a;
+      }
+
+      .invoice-brand p,
+      .invoice-meta p {
+        margin: 6px 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.65;
+      }
+
+      .invoice-meta .meta-row {
+        margin: 0 0 14px auto;
+        width: 100%;
+        max-width: 300px;
+        text-align: right;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .invoice-meta .meta-row:last-child {
+        margin-bottom: 0;
+      }
+
+      .invoice-meta .meta-label-line {
+        display: block;
+        margin-bottom: 4px;
+        color: #64748b;
+        font-weight: 600;
+      }
+
+      .invoice-meta .meta-value-line {
+        display: block;
+        color: #334155;
+        font-weight: 700;
+        word-break: normal;
+        overflow-wrap: anywhere;
+      }
+
+      .brand-description {
+        margin-top: 14px;
+        width: 100%;
+        max-width: 100%;
+        min-height: 88px;
+        padding: 16px 18px;
+        background: linear-gradient(180deg, #f8fbff 0%, #eff6ff 100%);
+        border: 1px solid #dbeafe;
+        border-left: 4px solid var(--primary);
+        border-radius: 14px;
+        color: #334155;
+        font-size: 13px;
+        line-height: 1.75;
+        display: flex;
+        align-items: center;
+      }
+
+      .invoice-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 800;
+        background: rgba(37, 99, 235, 0.12);
+        color: #1d4ed8;
+        margin-bottom: 12px;
+      }
+
+      .invoice-meta {
+        text-align: right;
+        align-self: start;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        min-height: auto;
+        padding-top: 54px;
+      }
+
+      .invoice-meta h3 {
+        margin: 0 0 18px;
+        font-size: 38px;
+        color: #0f172a;
+        letter-spacing: 0.02em;
+        line-height: 1;
+      }
+
+      .invoice-brand {
+        min-width: 0;
+      }
+
+      .info-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        margin-top: 24px;
+      }
+
+      .info-card {
+        background: #f8fafc;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px;
+      }
+
+      .info-card h4 {
+        margin: 0 0 10px;
+        font-size: 14px;
+        font-weight: 800;
+        color: #334155;
+      }
+
+      .info-card p {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.7;
+        color: #0f172a;
+      }
+
+      .invoice-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 24px;
+      }
+
+      .invoice-table th,
+      .invoice-table td {
+        padding: 14px 12px;
+        border-bottom: 1px solid var(--line);
+        text-align: right;
+        font-size: 14px;
+        vertical-align: top;
+      }
+
+      .invoice-table th {
+        background: #f8fafc;
+        color: #334155;
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .summary-wrap {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 24px;
+      }
+
+      .summary-box {
+        width: min(340px, 100%);
+        background: #f8fafc;
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px;
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 9px 0;
+        font-size: 14px;
+      }
+
+      .summary-row.total {
+        border-top: 1px dashed #cbd5e1;
+        margin-top: 6px;
+        padding-top: 14px;
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .invoice-note {
+        margin-top: 24px;
+        padding: 16px 18px;
+        border-radius: 16px;
+        background: #eff6ff;
+        color: #1e3a8a;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 42px 20px;
+        color: var(--muted);
+        background: white;
+        border-radius: 20px;
+        border: 1px dashed var(--line);
+      }
+
+      .print-root {
+        position: fixed;
+        left: -99999px;
+        top: 0;
+        width: 210mm;
+        background: #fff;
+        z-index: -1;
+      }
+
+      .footer-note {
+        margin-top: 14px;
+        text-align: right;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .pdf-export.invoice-shell {
+        padding: 24px;
+      }
+
+      .pdf-export .invoice-brand h2 {
+        font-size: 24px;
+      }
+
+      .pdf-export .invoice-top {
+        grid-template-columns: minmax(0, 1.18fr) minmax(240px, 0.72fr);
+        gap: 28px;
+        padding-bottom: 18px;
+      }
+
+      .pdf-export .brand-description {
+        min-height: 78px;
+        padding: 14px 16px;
+      }
+
+      .pdf-export .invoice-meta {
+        min-height: auto;
+        padding-top: 42px;
+        text-align: right;
+      }
+
+      .pdf-export .invoice-meta h3 {
+        font-size: 36px;
+        margin-bottom: 16px;
+      }
+
+      .pdf-export .invoice-meta .meta-row {
+        margin-bottom: 10px;
+      }
+
+      .pdf-export .info-grid,
+      .pdf-export .invoice-table,
+      .pdf-export .summary-wrap,
+      .pdf-export .invoice-note,
+      .pdf-export .invoice-terms {
+        margin-top: 18px;
+      }
+
+      .pdf-export .invoice-table th,
+      .pdf-export .invoice-table td {
+        padding: 12px 10px;
+      }
+
+      .pdf-export .summary-box,
+      .pdf-export .info-card,
+      .pdf-export .invoice-note,
+      .pdf-export .invoice-terms {
+        padding: 14px 16px;
+      }
+
+      @media print {
+        body {
+          background: #fff;
+        }
+
+        .hero,
+        .content-card > :not(.invoice-shell),
+        .footer-note {
+          display: none !important;
+        }
+
+        .content-card,
+        .invoice-shell {
+          box-shadow: none;
+          border: none;
+          background: #fff;
+          padding: 0;
+        }
+
+        .container {
+          max-width: 100%;
+          padding: 0;
+        }
+      }
+
+      @media (max-width: 860px) {
+        .toolbar {
+          grid-template-columns: 1fr;
+        }
+
+        .invoice-top {
+          grid-template-columns: 1fr;
+          gap: 18px;
+        }
+
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .invoice-meta {
+          text-align: right;
+          min-height: auto;
+          display: block;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .container {
+          padding: 18px 14px 30px;
+        }
+
+        .hero h1 {
+          font-size: 26px;
+        }
+
+        .hero,
+        .content-card,
+        .invoice-shell {
+          border-radius: 22px;
+        }
+
+        .invoice-shell {
+          padding: 20px;
+        }
+      }
+    
+      .invoice-terms {
+        margin-top: 20px;
+        padding: 16px 18px;
+        border-radius: 16px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+      }
+
+      .invoice-terms h4 {
+        margin: 0 0 10px;
+        font-size: 14px;
+        font-weight: 800;
+        color: #334155;
+      }
+
+      .invoice-terms ul {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 13px;
+        color: #475569;
+        line-height: 1.7;
+      }
+
+      .invoice-terms li {
+        margin-bottom: 6px;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <section class="hero">
+        <div class="hero-top">
+          <div>
+            <h1>Invoice Booking Sewa iPhone</h1>
+            <p>
+            Kelola dan unduh invoice booking rental iPhone secara cepat dan praktis.
+            </p>
+          </div>
+
+          <div class="hero-actions">
+            <button class="btn btn-light" onclick="fillDemo()">Isi Contoh</button>
+            <button class="btn btn-white" onclick="downloadPdf()">Download PDF</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-card">
+        <div class="toolbar">
+          <div class="input-wrap">
+            <input type="text" id="bookingId" class="input-readonly" placeholder="ID Booking otomatis" readonly />
+          </div>
+
+          <div class="input-wrap">
+            <input type="text" id="customerName" placeholder="Nama penyewa" oninput="renderInvoice()" />
+          </div>
+          <div class="input-wrap">
+            <input type="text" id="iphoneType" placeholder="Tipe iPhone" oninput="renderInvoice()" />
+          </div>
+          <div class="select-wrap">
+            <select id="bookingStatus" onchange="renderInvoice()">
+              <option value="Booking">Booking</option>
+              <option value="Sedang Disewa">Sedang Disewa</option>
+              <option value="Selesai">Selesai</option>
+            </select>
+          </div>
+
+          <div class="input-wrap">
+            <input type="date" id="rentalDate" oninput="renderInvoice()" />
+          </div>
+          <div class="input-wrap">
+            <input type="date" id="returnDate" oninput="renderInvoice()" />
+          </div>
+          <div class="input-wrap">
+            <input type="number" id="totalAmount" placeholder="Total harga" oninput="renderInvoice()" />
+          </div>
+
+          <div class="input-wrap" style="grid-column: 1 / -1;">
+            <input type="text" id="notes" placeholder="Catatan tambahan" oninput="renderInvoice()" />
+          </div>
+                </div>
+
+        <div class="toolbar-actions">
+          <button class="btn-refresh" onclick="openPreview()">Preview Invoice</button>
+        </div>
+
+        <div id="invoiceContainer"></div>
+
+        <div class="footer-note">
+          Invoice dibuat untuk kebutuhan booking rental iPhone secara cepat dan siap unduh.
+        </div>
+      </section>
+    </div>
+
+    <div class="print-root" id="printRoot"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+      function escapeHtml(text) {
+        if (text === null || text === undefined) return '';
+        return String(text)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function formatCurrency(value) {
+        const number = Number(value || 0);
+        if (!number) return 'Menyesuaikan';
+        return new Intl.NumberFormat('id-ID', {
+          style: 'currency',
+          currency: 'IDR',
+          maximumFractionDigits: 0
+        }).format(number);
+      }
+
+      function formatDateDisplay(value) {
+        if (!value) return '-';
+        const date = new Date(value);
+        if (isNaN(date.getTime())) return escapeHtml(value);
+        return new Intl.DateTimeFormat('id-ID', {
+          weekday: 'long',
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric'
+        }).format(date);
+      }
+
+      function normalizeId(value) {
+        return String(value || '')
+          .trim()
+          .toUpperCase()
+          .replace(/\s+/g, '');
+      }
+
+      function generateBookingId() {
+        const now = new Date();
+        const pad = function(num) { return String(num).padStart(2, '0'); };
+        const random = Math.floor(1000 + Math.random() * 9000);
+        return 'BOOK-' + now.getFullYear() + pad(now.getMonth() + 1) + pad(now.getDate()) + '-' + random;
+      }
+
+      function ensureBookingId() {
+        const bookingInput = document.getElementById('bookingId');
+        if (!bookingInput.value.trim()) {
+          bookingInput.value = generateBookingId();
+        }
+      }
+
+      function getInvoiceNumber() {
+        ensureBookingId();
+        const bookingId = normalizeId(document.getElementById('bookingId').value) || '0000';
+        const now = new Date();
+        const pad = function(num) { return String(num).padStart(2, '0'); };
+        return 'INV-' + now.getFullYear() + pad(now.getMonth() + 1) + pad(now.getDate()) + '-' + bookingId;
+      }
+
+      function getFormData() {
+        ensureBookingId();
+        return {
+          bookingId: document.getElementById('bookingId').value.trim(),
+          customerName: document.getElementById('customerName').value.trim(),
+          iphoneType: document.getElementById('iphoneType').value.trim(),
+          rentalDate: document.getElementById('rentalDate').value,
+          returnDate: document.getElementById('returnDate').value,
+          bookingStatus: document.getElementById('bookingStatus').value,
+          totalAmount: document.getElementById('totalAmount').value,
+          notes: document.getElementById('notes').value.trim()
+        };
+      }
+
+      function buildInvoiceHtml(data) {
+        const issueDate = new Intl.DateTimeFormat('id-ID', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric'
+        }).format(new Date());
+
+        return `
+          <div class="invoice-shell" id="invoiceContent">
+            <div class="invoice-top">
+              <div class="invoice-brand">
+                <div class="invoice-badge">Invoice Booking Sewa</div>
+                <h2>PinjemGeh</h2>
+                <p>Supported by PT RZKYPay Solusi Digital</p>
+                <div class="brand-description">
+                  E-invoice ini berfungsi sebagai bukti pembayaran yang sah atas transaksi booking sewa iPhone di PinjemGeh.
+                </div>
+              </div>
+
+              <div class="invoice-meta">
+                <h3>INVOICE</h3>
+                <div class="meta-row">
+                  <span class="meta-label-line">No. Invoice</span>
+                  <strong class="meta-value-line">${escapeHtml(getInvoiceNumber())}</strong>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-label-line">Tanggal Terbit</span>
+                  <strong class="meta-value-line">${escapeHtml(issueDate)}</strong>
+                </div>
+                <div class="meta-row">
+                  <span class="meta-label-line">Status</span>
+                  <strong class="meta-value-line">${escapeHtml(data.bookingStatus || '-')}</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="info-grid">
+              <div class="info-card">
+                <h4>Data Penyewa</h4>
+                <p>
+                  Nama: <strong>${escapeHtml(data.customerName || '-')}</strong><br>
+                  ID Booking: <strong>${escapeHtml(data.bookingId || '-')}</strong>
+                </p>
+              </div>
+
+              <div class="info-card">
+                <h4>Informasi Sewa</h4>
+                <p>
+                  Tipe iPhone: <strong>${escapeHtml(data.iphoneType || '-')}</strong><br>
+                  Tanggal Sewa: <strong>${escapeHtml(formatDateDisplay(data.rentalDate))}</strong><br>
+                  Tanggal Kembali: <strong>${escapeHtml(formatDateDisplay(data.returnDate))}</strong>
+                </p>
+              </div>
+            </div>
+
+            <table class="invoice-table">
+              <thead>
+                <tr>
+                  <th>Deskripsi</th>
+                  <th>Status</th>
+                  <th>Catatan</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Booking rental ${escapeHtml(data.iphoneType || 'iPhone')}</td>
+                  <td>${escapeHtml(data.bookingStatus || '-')}</td>
+                  <td>${escapeHtml(data.notes || '-')}</td>
+                  <td>${escapeHtml(formatCurrency(data.totalAmount))}</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="summary-wrap">
+              <div class="summary-box">
+                <div class="summary-row">
+                  <span>Subtotal</span>
+                  <strong>${escapeHtml(formatCurrency(data.totalAmount))}</strong>
+                </div>
+                <div class="summary-row">
+                  <span>Status Booking</span>
+                  <strong>${escapeHtml(data.bookingStatus || '-')}</strong>
+                </div>
+                <div class="summary-row total">
+                  <span>Total Invoice</span>
+                  <strong>${escapeHtml(formatCurrency(data.totalAmount))}</strong>
+                </div>
+              </div>
+            </div>
+
+            <div class="invoice-note">
+              Catatan: Perangkat iPhone yang disewa dilarang untuk dijual, digadaikan, atau dipindahtangankan kepada pihak lain tanpa izin. Penyewa bertanggung jawab penuh atas kondisi unit selama masa sewa.
+            </div>
+
+            <div class="invoice-terms">
+              <h4>Syarat & Ketentuan</h4>
+              <ul>
+                <li>Perangkat iPhone tetap menjadi milik penyedia (PinjemGeh).</li>
+                <li>Dilarang menjual, menggadaikan, atau memindahtangankan unit kepada pihak lain.</li>
+                <li>Penyewa bertanggung jawab atas kerusakan atau kehilangan selama masa sewa.</li>
+                <li>Penggunaan unit harus sesuai dengan ketentuan yang berlaku.</li>
+              </ul>
+            </div>
+          </div>
+        `;
+
+      }
+
+      function renderInvoice() {
+        const data = getFormData();
+        const hasAnyValue = Object.values(data).some(function(value) { return String(value || '').trim() !== ''; });
+
+        if (!hasAnyValue) {
+          document.getElementById('invoiceContainer').innerHTML = `
+            <div class="empty-state">
+              Isi data booking di form atas untuk menampilkan invoice.
+            </div>
+          `;
+          return;
+        }
+
+        document.getElementById('invoiceContainer').innerHTML = buildInvoiceHtml(data);
+      }
+
+      function openPreview() {
+        const data = getFormData();
+        const hasAnyValue = Object.values(data).some(function(value) { return String(value || '').trim() !== ''; });
+
+        if (!hasAnyValue) {
+          alert('Isi data invoice terlebih dahulu.');
+          return;
+        }
+
+        const previewWindow = window.open('', '_blank');
+
+        if (!previewWindow) {
+          alert('Popup diblokir browser. Izinkan pop-up untuk membuka preview invoice.');
+          return;
+        }
+
+        const previewHtml = `
+          <!DOCTYPE html>
+          <html lang="id">
+            <head>
+              <meta charset="UTF-8" />
+              <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+              <title>Preview Invoice</title>
+              <style>
+                * {
+                  box-sizing: border-box;
+                  font-family: Inter, Arial, sans-serif;
+                }
+
+                body {
+                  margin: 0;
+                  background: #e2e8f0;
+                  color: #0f172a;
+                }
+
+                .preview-page {
+                  min-height: 100vh;
+                  padding: 24px;
+                }
+
+                .preview-toolbar {
+                  position: sticky;
+                  top: 16px;
+                  z-index: 10;
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                  gap: 12px;
+                  flex-wrap: wrap;
+                  margin: 0 auto 20px;
+                  max-width: 900px;
+                  padding: 14px 16px;
+                  background: rgba(15, 23, 42, 0.92);
+                  color: white;
+                  border-radius: 18px;
+                  box-shadow: 0 18px 35px rgba(15, 23, 42, 0.18);
+                }
+
+                .preview-toolbar h2 {
+                  margin: 0;
+                  font-size: 18px;
+                }
+
+                .preview-toolbar p {
+                  margin: 4px 0 0;
+                  font-size: 13px;
+                  color: rgba(255,255,255,0.78);
+                }
+
+                .preview-actions {
+                  display: flex;
+                  gap: 10px;
+                  flex-wrap: wrap;
+                }
+
+                .preview-btn {
+                  border: none;
+                  cursor: pointer;
+                  padding: 11px 16px;
+                  border-radius: 12px;
+                  font-size: 14px;
+                  font-weight: 700;
+                }
+
+                .preview-btn.primary {
+                  background: white;
+                  color: #1d4ed8;
+                }
+
+                .preview-btn.dark {
+                  background: rgba(255,255,255,0.12);
+                  color: white;
+                  border: 1px solid rgba(255,255,255,0.14);
+                }
+
+                .invoice-preview-shell {
+                  max-width: 900px;
+                  margin: 0 auto;
+                  background: white;
+                  border-radius: 24px;
+                  padding: 28px;
+                  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+                }
+
+                .invoice-shell {
+                  background: white;
+                  border: 1px solid #e2e8f0;
+                  border-radius: 24px;
+                  padding: 30px;
+                }
+
+                .invoice-top {
+                  display: grid;
+                  grid-template-columns: minmax(0, 1.22fr) minmax(250px, 0.72fr);
+                  gap: 34px;
+                  align-items: start;
+                  padding-bottom: 24px;
+                  border-bottom: 1px dashed #cbd5e1;
+                }
+
+                .invoice-brand {
+                  min-width: 0;
+                }
+
+                .invoice-brand h2 {
+                  margin: 0 0 8px;
+                  font-size: 28px;
+                  font-weight: 800;
+                  color: #0f172a;
+                }
+
+                .invoice-brand p,
+                .invoice-meta p {
+                  margin: 6px 0;
+                  color: #64748b;
+                  font-size: 14px;
+                  line-height: 1.65;
+                }
+
+                .brand-description {
+                  margin-top: 14px;
+                  width: 100%;
+                  max-width: 100%;
+                  min-height: 88px;
+                  padding: 16px 18px;
+                  background: linear-gradient(180deg, #f8fbff 0%, #eff6ff 100%);
+                  border: 1px solid #dbeafe;
+                  border-left: 4px solid #2563eb;
+                  border-radius: 14px;
+                  color: #334155;
+                  font-size: 13px;
+                  line-height: 1.75;
+                  display: flex;
+                  align-items: center;
+                }
+
+                .invoice-badge {
+                  display: inline-flex;
+                  align-items: center;
+                  gap: 8px;
+                  padding: 8px 12px;
+                  border-radius: 999px;
+                  font-size: 12px;
+                  font-weight: 800;
+                  background: rgba(37, 99, 235, 0.12);
+                  color: #1d4ed8;
+                  margin-bottom: 12px;
+                }
+
+                .invoice-meta {
+                  text-align: right;
+                  padding-top: 54px;
+                }
+
+                .invoice-meta h3 {
+                  margin: 0 0 18px;
+                  font-size: 38px;
+                  color: #0f172a;
+                  letter-spacing: 0.02em;
+                  line-height: 1;
+                }
+
+                .invoice-meta .meta-row {
+                  margin: 0 0 14px auto;
+                  width: 100%;
+                  max-width: 300px;
+                  text-align: right;
+                  font-size: 14px;
+                  line-height: 1.5;
+                }
+
+                .invoice-meta .meta-row:last-child {
+                  margin-bottom: 0;
+                }
+
+                .invoice-meta .meta-label-line {
+                  display: block;
+                  margin-bottom: 2px;
+                  color: #64748b;
+                  font-weight: 600;
+                  text-align: right;
+                }
+
+                .invoice-meta .meta-value-line {
+                  display: block;
+                  color: #0f172a;
+                  font-weight: 700;
+                  text-align: right;
+                  word-break: normal;
+                  overflow-wrap: anywhere;
+                }
+
+                .info-grid {
+                  display: grid;
+                  grid-template-columns: repeat(2, 1fr);
+                  gap: 16px;
+                  margin-top: 24px;
+                }
+
+                .info-card {
+                  background: #f8fafc;
+                  border: 1px solid #e2e8f0;
+                  border-radius: 18px;
+                  padding: 18px;
+                }
+
+                .info-card h4 {
+                  margin: 0 0 10px;
+                  font-size: 14px;
+                  font-weight: 800;
+                  color: #334155;
+                }
+
+                .info-card p {
+                  margin: 0;
+                  font-size: 14px;
+                  line-height: 1.7;
+                  color: #0f172a;
+                }
+
+                .invoice-table {
+                  width: 100%;
+                  border-collapse: collapse;
+                  margin-top: 24px;
+                }
+
+                .invoice-table th,
+                .invoice-table td {
+                  padding: 14px 12px;
+                  border-bottom: 1px solid #e2e8f0;
+                  text-align: right;
+                  font-size: 14px;
+                  vertical-align: top;
+                }
+
+                .invoice-table th {
+                  background: #f8fafc;
+                  color: #334155;
+                  font-size: 13px;
+                  font-weight: 800;
+                }
+
+                .summary-wrap {
+                  display: flex;
+                  justify-content: flex-end;
+                  margin-top: 24px;
+                }
+
+                .summary-box {
+                  width: min(340px, 100%);
+                  background: #f8fafc;
+                  border: 1px solid #e2e8f0;
+                  border-radius: 18px;
+                  padding: 18px;
+                }
+
+                .summary-row {
+                  display: flex;
+                  justify-content: space-between;
+                  gap: 16px;
+                  padding: 9px 0;
+                  font-size: 14px;
+                }
+
+                .summary-row.total {
+                  border-top: 1px dashed #cbd5e1;
+                  margin-top: 6px;
+                  padding-top: 14px;
+                  font-size: 16px;
+                  font-weight: 800;
+                }
+
+                .invoice-note {
+                  margin-top: 24px;
+                  padding: 16px 18px;
+                  border-radius: 16px;
+                  background: #eff6ff;
+                  color: #1e3a8a;
+                  font-size: 13px;
+                  line-height: 1.6;
+                }
+
+                @media print {
+                  body {
+                    background: white;
+                  }
+
+                  .preview-toolbar {
+                    display: none !important;
+                  }
+
+                  .preview-page {
+                    padding: 0;
+                  }
+
+                  .invoice-preview-shell,
+                  .invoice-shell {
+                    box-shadow: none;
+                    border: none;
+                    border-radius: 0;
+                    padding: 0;
+                    max-width: 100%;
+                  }
+                }
+
+                @media (max-width: 768px) {
+                  .preview-page {
+                    padding: 16px;
+                  }
+
+                  .invoice-preview-shell,
+                  .invoice-shell {
+                    padding: 20px;
+                  }
+
+                  .info-grid {
+                    grid-template-columns: 1fr;
+                  }
+
+                  .invoice-top {
+                    grid-template-columns: 1fr;
+                    gap: 18px;
+                  }
+
+                  .invoice-meta {
+                    text-align: right;
+                    padding-top: 0;
+                  }
+
+                  .invoice-meta .meta-row {
+                    margin-left: 0;
+                    max-width: none;
+                  }
+
+                  .invoice-meta h3 {
+                    font-size: 30px;
+                  }
+                }
+              
+      .invoice-terms {
+        margin-top: 20px;
+        padding: 16px 18px;
+        border-radius: 16px;
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+      }
+
+      .invoice-terms h4 {
+        margin: 0 0 10px;
+        font-size: 14px;
+        font-weight: 800;
+        color: #334155;
+      }
+
+      .invoice-terms ul {
+        margin: 0;
+        padding-left: 18px;
+        font-size: 13px;
+        color: #475569;
+        line-height: 1.7;
+      }
+
+      .invoice-terms li {
+        margin-bottom: 6px;
+      }
+
+    </style>
+            </head>
+            <body>
+              <div class="preview-page">
+                <div class="preview-toolbar">
+                  <div>
+                    <h2>Preview Invoice</h2>
+                    <p>Tinjau tampilan invoice terlebih dahulu sebelum diunduh ke PDF.</p>
+                  </div>
+                  <div class="preview-actions">
+                    <button class="preview-btn dark" onclick="window.print()">Print</button>
+                    <button class="preview-btn primary" onclick="window.opener.downloadPdf()">Download PDF</button>
+                  </div>
+                </div>
+
+                <div class="invoice-preview-shell">
+                  ${buildInvoiceHtml(data)}
+                </div>
+              </div>
+            </body>
+          </html>
+        `;
+
+        previewWindow.document.open();
+        previewWindow.document.write(previewHtml);
+        previewWindow.document.close();
+      }
+
+      function fillDemo() {
+        document.getElementById('customerName').value = 'Muhammad Rizky Ramadhan';
+        document.getElementById('iphoneType').value = 'iPhone 13 Pro';
+        document.getElementById('rentalDate').value = '2026-04-01';
+        document.getElementById('returnDate').value = '2026-04-05';
+        document.getElementById('bookingStatus').value = 'Booking';
+        document.getElementById('totalAmount').value = '850000';
+        document.getElementById('notes').value = 'Unit fullset, booking untuk kebutuhan konten.';
+        ensureBookingId();
+        renderInvoice();
+      }
+
+      async function downloadPdf() {
+        const data = getFormData();
+        const hasAnyValue = Object.values(data).some(function(value) { return String(value || '').trim() !== ''; });
+
+        if (!hasAnyValue) {
+          alert('Isi data invoice terlebih dahulu.');
+          return;
+        }
+
+        const root = document.getElementById('printRoot');
+        root.innerHTML = buildInvoiceHtml(data);
+
+        const target = root.firstElementChild;
+        target.classList.add('pdf-export');
+        const filename = getInvoiceNumber() + '.pdf';
+
+        const opt = {
+          margin: [0.2, 0.2, 0.2, 0.2],
+          filename: filename,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, scrollY: 0 },
+          jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' },
+          pagebreak: { mode: ['css'] }
+        };
+
+        try {
+          await html2pdf().set(opt).from(target).save();
+        } catch (error) {
+          console.error('PDF generation failed:', error);
+          alert('Gagal membuat PDF. Pastikan koneksi internet aktif untuk memuat library PDF.');
+        }
+      }
+
+      renderInvoice();
+    </script>
+  </body>
+</html>
