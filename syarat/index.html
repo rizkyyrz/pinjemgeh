@@ -1,9 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Syarat & Ketentuan - PinjemGeh</title>
-
     <style>
       :root {
         --bg: #0f172a;
@@ -15,8 +14,11 @@
         --line: #e2e8f0;
         --primary: #2563eb;
         --primary-dark: #1d4ed8;
+        --success: #16a34a;
         --warning: #f59e0b;
+        --danger: #ef4444;
         --shadow: 0 10px 35px rgba(15, 23, 42, 0.08);
+        --radius: 20px;
       }
 
       * {
@@ -26,134 +28,621 @@
 
       body {
         margin: 0;
-        background: #f8fafc;
+        background:
+          radial-gradient(circle at top left, rgba(37,99,235,0.15), transparent 30%),
+          radial-gradient(circle at top right, rgba(14,165,233,0.12), transparent 25%),
+          linear-gradient(180deg, #eff6ff 0%, #f8fafc 45%, #f8fafc 100%);
         color: var(--text);
       }
 
       .container {
-        max-width: 1100px;
-        margin: auto;
-        padding: 20px;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 28px 20px 40px;
+      }
+
+      .hero {
+        background: linear-gradient(135deg, #0f172a, #1e3a8a 65%, #2563eb);
+        color: white;
+        border-radius: 28px;
+        padding: 28px;
+        box-shadow: 0 24px 60px rgba(30, 58, 138, 0.28);
+        margin-bottom: 24px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::after {
+        content: "";
+        position: absolute;
+        width: 240px;
+        height: 240px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.08);
+        top: -60px;
+        right: -60px;
+      }
+
+      .hero-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-size: 32px;
+        line-height: 1.2;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+
+      .hero p {
+        margin: 10px 0 0;
+        color: rgba(255,255,255,0.82);
+        max-width: 760px;
+        font-size: 15px;
+        line-height: 1.7;
+      }
+
+      .hero-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        border: none;
+        cursor: pointer;
+        padding: 12px 16px;
+        border-radius: 14px;
+        font-weight: 700;
+        font-size: 14px;
+        transition: 0.2s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .btn:hover {
+        transform: translateY(-1px);
+      }
+
+      .btn-light {
+        background: rgba(255,255,255,0.14);
+        color: white;
+        backdrop-filter: blur(8px);
+        border: 1px solid rgba(255,255,255,0.15);
+      }
+
+      .btn-white {
+        background: white;
+        color: var(--primary-dark);
+      }
+
+      .info-grid {
+        margin-top: 22px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+        position: relative;
+        z-index: 1;
+      }
+
+      .info-card {
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.12);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 18px;
+      }
+
+      .info-label {
+        color: rgba(255,255,255,0.72);
+        font-size: 13px;
+        margin-bottom: 8px;
+      }
+
+      .info-value {
+        font-size: 18px;
+        font-weight: 800;
+        line-height: 1.5;
+      }
+
+      .content-card {
+        background: var(--card);
+        backdrop-filter: blur(14px);
+        border: 1px solid rgba(255,255,255,0.55);
+        border-radius: 24px;
+        box-shadow: var(--shadow);
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
       }
 
       .section {
-        background: white;
-        border: 1px solid var(--line);
-        border-radius: 16px;
-        padding: 22px;
-        margin-bottom: 18px;
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        align-items: flex-start;
+        flex: 0 0 auto;
+        height: auto;
+        min-height: 0;
+        background: white;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 22px;
+        margin: 0;
+      }
+
+      .section > * {
+        width: 100%;
+      }
+
+      .section > .section-number {
+        width: 34px;
+      }
+
+      .section:last-child {
+        margin-bottom: 0;
+      }
+
+      .section-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: rgba(37, 99, 235, 0.1);
+        color: var(--primary-dark);
+        font-size: 14px;
+        font-weight: 800;
+        margin-bottom: 14px;
       }
 
       .section h2 {
-        margin: 0;
-        font-size: 20px;
+        margin: 0 0 10px;
+        font-size: 22px;
+        line-height: 1.3;
+        color: #0f172a;
       }
 
       .section p {
         margin: 0 0 12px;
-        line-height: 1.7;
+        color: #334155;
+        line-height: 1.8;
+        font-size: 15px;
+      }
+
+      .section p:last-child {
+        margin-bottom: 0;
       }
 
       .list {
+        margin: 12px 0 0;
         padding-left: 20px;
+        color: #334155;
+      }
+
+      .list li {
+        margin-bottom: 10px;
+        line-height: 1.8;
+      }
+
+      .list li:last-child {
+        margin-bottom: 0;
       }
 
       .highlight-box {
-        margin-top: 18px;
-        margin-bottom: 18px;
+        margin-top: 14px;
+        background: #f8fbff;
+        border: 1px solid #dbeafe;
+        border-radius: 16px;
+        padding: 16px 18px;
+      }
+
+      .highlight-box.warning {
         background: #fffaf0;
-        border: 1px solid #fde68a;
-        border-radius: 12px;
-        padding: 16px;
+        border-color: #fde68a;
+      }
+
+      .highlight-box.danger {
+        background: #fef2f2;
+        border-color: #fecaca;
       }
 
       .highlight-title {
-        font-weight: bold;
+        font-size: 13px;
+        font-weight: 800;
+        color: #1d4ed8;
         margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .highlight-box.warning .highlight-title {
         color: #b45309;
       }
 
-      .after-highlight {
-        margin-top: 10px;
+      .highlight-box.danger .highlight-title {
+        color: #b91c1c;
       }
 
-      /* TTD SECTION */
-      .signature {
-        margin-top: 40px;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 40px;
+      .footer-note {
+        margin-top: 14px;
+        text-align: right;
+        color: var(--muted);
+        font-size: 12px;
       }
 
-      .signature-box {
-        text-align: center;
+      @media (max-width: 1024px) {
+        .info-grid {
+          grid-template-columns: 1fr;
+        }
       }
 
-      .signature-line {
-        margin-top: 60px;
-        border-top: 1px solid #000;
-        padding-top: 6px;
-        font-weight: 600;
+      @media (max-width: 640px) {
+        .hero h1 {
+          font-size: 26px;
+        }
+
+        .container {
+          padding: 18px 14px 30px;
+        }
+
+        .hero,
+        .content-card,
+        .section {
+          border-radius: 22px;
+        }
+
+        .hero-actions {
+          width: 100%;
+        }
+
+        .hero-actions .btn {
+          width: 100%;
+        }
       }
 
       @media print {
-        .signature {
+        body {
+          background: #ffffff !important;
+        }
+
+        .container {
+          max-width: 100%;
+          padding: 0;
+        }
+
+        .hero {
+          box-shadow: none;
+          border-radius: 0;
+          margin-bottom: 16px;
           page-break-inside: avoid;
+        }
+
+        .hero::after {
+          display: none;
+        }
+
+        .hero-actions {
+          display: none !important;
+        }
+
+        .content-card {
+          background: #ffffff;
+          border: none;
+          box-shadow: none;
+          border-radius: 0;
+          padding: 0;
+        }
+
+        .section {
+          break-inside: avoid;
+          page-break-inside: avoid;
+          box-shadow: none;
+        }
+
+        .footer-note {
+          margin-top: 20px;
         }
       }
     </style>
   </head>
-
   <body>
     <div class="container">
+      <section class="hero">
+        <div class="hero-top">
+          <div>
+            <h1>Syarat & Ketentuan Penyewaan iPhone</h1>
+            <p>
+              PinjemGeh.id by PT RZKYPay Solusi Digital. Mohon baca seluruh ketentuan
+              dengan saksama sebelum melakukan booking, pembayaran, atau menggunakan unit
+              yang disewa.
+            </p>
+          </div>
 
-      <div class="section">
-        <h2>Booking & Down Payment (DP)</h2>
-        <p>
-          Down Payment (DP) tidak bersifat wajib, namun penyewa dapat melakukan DP minimal 50% dari harga sewa.
-        </p>
+          <div class="hero-actions">
+            <a class="btn btn-light" href="/">Kembali ke Dashboard</a>
+            <button class="btn btn-white" onclick="window.print()">Cetak / Simpan PDF</button>
+          </div>
+        </div>
 
-        <div class="highlight-box">
-          <div class="highlight-title">CATATAN PENTING</div>
+        <div class="info-grid">
+          <div class="info-card">
+            <div class="info-label">Durasi Paket</div>
+            <div class="info-value">12 Jam & 24 Jam</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Denda Keterlambatan</div>
+            <div class="info-value">Rp10.000 / 10 Menit</div>
+          </div>
+          <div class="info-card">
+            <div class="info-label">Wilayah Gratis Pengantaran/Pengembalian</div>
+            <div class="info-value">Ciruas</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="content-card">
+        <div class="section">
+          <div class="section-number">1</div>
+          <h2>Informasi Umum</h2>
           <p>
-            Harga berlaku khusus wilayah Banten. Di luar wilayah dikenakan biaya tambahan.
+            Informasi lebih lanjut mengenai penyewaan akan disampaikan secara langsung saat
+            pertemuan. Dengan melakukan booking, pembayaran, atau menggunakan unit yang
+            disewa, penyewa dianggap telah membaca, memahami, dan menyetujui seluruh syarat
+            dan ketentuan yang berlaku.
           </p>
         </div>
 
-        <div class="after-highlight">
+        <div class="section">
+          <div class="section-number">2</div>
+          <h2>Booking & Down Payment (DP)</h2>
+          <p>
+            Down Payment (DP) tidak bersifat wajib, namun penyewa dapat melakukan DP minimal
+            50% dari harga sewa untuk mengamankan unit dan tanggal penyewaan.
+          </p>
+
+          <div class="highlight-box">
+            <div class="highlight-title">Price List & Minimal DP</div>
+            <ul class="list">
+              <li>Paket 24 jam Rp120.000 → DP minimal Rp60.000</li>
+              <li>Paket 12 jam Rp60.000 → DP minimal Rp30.000</li>
+            </ul>
+          </div>
+          
+          <div class="highlight-box warning">
+            <div class="highlight-title">Catatan Penting</div>
+              <p>
+              Harga di atas berlaku khusus untuk wilayah Banten dan belum termasuk biaya apabila unit dibawa keluar wilayah Banten. 
+              Untuk penggunaan di luar Banten, akan dikenakan biaya tambahan sesuai ketentuan yang berlaku.
+              </p>
+          </div>
+
           <p>
             Apabila penyewa tidak melakukan DP, maka ketersediaan unit tidak dapat dijamin.
+            Unit akan diprioritaskan kepada penyewa yang lebih dahulu melakukan booking atau
+            pembayaran.
           </p>
-
           <p>
-            DP berfungsi untuk mengamankan unit dan tidak dapat dikembalikan (non-refundable).
+            DP berfungsi untuk mengamankan unit dan menghindari pembatalan sepihak. Apabila
+            terjadi pembatalan oleh penyewa atau penyewa tidak memenuhi syarat penyewaan,
+            maka DP yang telah dibayarkan tidak dapat dikembalikan (non-refundable).
           </p>
         </div>
-      </div>
 
-      <!-- TANDA TANGAN -->
-      <div class="section">
-        <h2>Persetujuan</h2>
-        <p>
-          Dengan ini kedua belah pihak menyetujui seluruh syarat dan ketentuan yang berlaku.
-        </p>
+        <div class="section">
+          <div class="section-number">3</div>
+          <h2>Metode Pembayaran</h2>
+          <ul class="list">
+            <li>Bank BCA — 2451343191 — a/n Muhammad Rizky Ramadhan</li>
+            <li>GoPay — 0851-5532-2281 — a/n Muhammad Rizky Ramadhan</li>
+            <li>QRIS — a/n PT RZKYPay Solusi Digital</li>
+          </ul>
+        </div>
 
-        <div class="signature">
-          <div class="signature-box">
-            <div>Penyewa</div>
-            <div class="signature-line">(__________________)</div>
-          </div>
+        <div class="section">
+          <div class="section-number">4</div>
+          <h2>Bukti Pembayaran</h2>
+          <p>
+            Setelah pembayaran diterima, penyewa akan mendapatkan invoice atau bukti
+            pembayaran sebagai bukti resmi transaksi penyewaan.
+          </p>
+        </div>
 
-          <div class="signature-box">
-            <div>PinjemGeh</div>
-            <div class="signature-line">(__________________)</div>
+        <div class="section">
+          <div class="section-number">5</div>
+          <h2>Kondisi Unit</h2>
+          <p>
+            Unit iPhone diserahkan dalam kondisi baik, normal, dan berfungsi dengan
+            semestinya. Penyewa dianggap telah memeriksa dan menyetujui kondisi unit pada
+            saat serah terima.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="section-number">6</div>
+          <h2>Durasi Sewa</h2>
+          <p>
+            Durasi sewa dihitung sejak waktu serah terima unit kepada penyewa hingga waktu
+            pengembalian yang telah disepakati.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="section-number">7</div>
+          <h2>Keterlambatan Pengembalian</h2>
+          <p>
+            Keterlambatan pengembalian unit akan dikenakan denda sebesar Rp10.000 setiap
+            10 menit.
+          </p>
+          <div class="highlight-box warning">
+            <div class="highlight-title">Catatan Penting</div>
+            <p>
+              Apabila keterlambatan melebihi batas waktu yang wajar tanpa konfirmasi dari
+              penyewa, pemilik berhak mengambil tindakan lebih lanjut.
+            </p>
           </div>
         </div>
-      </div>
 
+        <div class="section">
+          <div class="section-number">8</div>
+          <h2>Perpanjangan Masa Sewa</h2>
+          <p>
+            Apabila penyewa ingin memperpanjang masa sewa, penyewa wajib menginformasikan
+            minimal 20 menit sebelum waktu sewa berakhir dan melakukan pembayaran tambahan
+            sesuai tarif yang berlaku.
+          </p>
+          <p>
+            Perpanjangan hanya dapat dilakukan apabila unit tidak sedang dibooking oleh
+            penyewa lain.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="section-number">9</div>
+          <h2>Identitas & Jaminan Penyewa</h2>
+          <p>
+            Penyewa wajib menyerahkan 2 (dua) identitas diri sebagai jaminan selama masa
+            sewa.
+          </p>
+          <ul class="list">
+            <li>KTP</li>
+            <li>SIM</li>
+            <li>STNK</li>
+            <li>Kartu Keluarga (KK)</li>
+            <li>BPKB</li>
+            <li>Paspor</li>
+            <li>Kartu Pelajar</li>
+          </ul>
+
+          <div class="highlight-box warning">
+            <div class="highlight-title">Catatan</div>
+            <p>
+              Kombinasi KTP dan Kartu Pelajar/Kartu Keluarga tidak dapat diterima karena jaminan dinilai
+              kurang kuat.
+            </p>
+            <p>
+              Selain daftar di atas, penyewa juga dapat menyerahkan dokumen lain yang
+              dinilai memiliki nilai kuat dan dapat dipertanggungjawabkan sebagai jaminan,
+              sepanjang disetujui oleh pihak pemilik.
+            </p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-number">10</div>
+          <h2>Tanggung Jawab Kerusakan</h2>
+          <p>
+            Segala bentuk kerusakan pada unit selama masa sewa menjadi tanggung jawab
+            penyewa, baik kerusakan ringan maupun berat, termasuk biaya perbaikan yang
+            timbul.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="section-number">11</div>
+          <h2>Kehilangan Unit</h2>
+          <p>
+            Apabila unit iPhone hilang, tidak dapat dikembalikan, atau berada di luar
+            kendali pemilik akibat kelalaian penyewa, maka penyewa wajib mengganti unit
+            sesuai harga pasar iPhone yang disewa atau sesuai kesepakatan dengan pemilik.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="section-number">12</div>
+          <h2>Sistem Keamanan & Pelacakan</h2>
+          <p>
+            Unit iPhone dilengkapi dengan sistem keamanan dan pelacakan (tracking). Pemilik
+            berhak melakukan pelacakan perangkat apabila terjadi pelanggaran, keterlambatan
+            pengembalian, atau indikasi kehilangan unit.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="section-number">13</div>
+          <h2>Larangan Penggunaan</h2>
+          <p>Penyewa dilarang melakukan hal-hal berikut:</p>
+          <ul class="list">
+            <li>Melakukan reset perangkat</li>
+            <li>Mengeluarkan perangkat dari sistem pelacakan</li>
+            <li>Mengubah nama iCloud</li>
+            <li>Login menggunakan akun iCloud pribadi</li>
+            <li>Mengubah pengaturan keamanan perangkat</li>
+            <li>
+              Menggadaikan, menjual, atau memindahtangankan unit kepada pihak lain tanpa
+              izin pemilik
+            </li>
+          </ul>
+
+          <div class="highlight-box danger">
+            <div class="highlight-title">Sanksi Pelanggaran</div>
+            <p>
+              Apabila penyewa melanggar ketentuan di atas, maka penyewa dikenakan denda
+              minimal Rp1.500.000 dan maksimal Rp50.000.000, serta tetap bertanggung jawab
+              atas seluruh kerugian yang timbul.
+            </p>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="section-number">14</div>
+          <h2>Penggunaan yang Melanggar Hukum</h2>
+          <p>
+            Unit iPhone tidak boleh digunakan untuk kegiatan yang melanggar hukum. Segala
+            bentuk penyalahgunaan perangkat sepenuhnya menjadi tanggung jawab penyewa dan
+            dapat diproses sesuai hukum yang berlaku.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="section-number">15</div>
+          <h2>Hak Pemilik</h2>
+          <p>
+            Pemilik berhak menolak, membatalkan, atau menghentikan penyewaan apabila
+            penyewa tidak memenuhi syarat atau melanggar ketentuan yang berlaku.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="section-number">16</div>
+          <h2>Biaya Pengambilan & Pengembalian</h2>
+          <p>
+            Pengambilan dan pengembalian unit gratis apabila dilakukan di wilayah Ciruas.
+          </p>
+          <p>
+            Apabila lokasi pertemuan berada di luar wilayah tersebut, maka akan dikenakan
+            biaya tambahan sebesar Rp15.000 setiap 10 km.
+          </p>
+          <p>
+            Biaya akan disesuaikan dengan jarak lokasi pertemuan yang disepakati.
+          </p>
+        </div>
+
+        <div class="section">
+          <div class="section-number">17</div>
+          <h2>Penyelesaian Sengketa</h2>
+          <p>
+            Apabila terjadi perselisihan antara pemilik dan penyewa, maka penyelesaian akan
+            diupayakan terlebih dahulu secara musyawarah. Apabila tidak tercapai
+            kesepakatan, maka penyelesaian dilakukan sesuai hukum yang berlaku di wilayah
+            domisili pemilik.
+          </p>
+        </div>
+
+        <div class="footer-note">
+          Syarat & ketentuan ini berlaku untuk layanan penyewaan iPhone PinjemGeh.id by PT RZKYPay Solusi Digital.
+        </div>
+      </section>
     </div>
   </body>
 </html>
