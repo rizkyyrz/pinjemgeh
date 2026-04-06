@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Syarat & Ketentuan - PinjemGeh</title>
+    <style>
+      :root {
+        --text: #0f172a;
+        --muted: #475569;
+        --line: #cbd5e1;
+        --soft: #f8fafc;
+        --blue: #1d4ed8;
+        --blue-soft: #eff6ff;
+        --warn: #9a3412;
+        --warn-soft: #fff7ed;
+        --warn-line: #fdba74;
+        --danger: #991b1b;
+        --danger-soft: #fef2f2;
+        --danger-line: #fca5a5;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, Arial, sans-serif;
+        color: var(--text);
+        background: #eef4ff;
+      }
+
+      .container {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 28px 18px 40px;
+      }
+
+      .sheet {
+        background: #ffffff;
+        border: 1px solid #dbe4f0;
+        border-radius: 24px;
+        padding: 28px;
+        box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+      }
+
+      .hero {
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        padding: 24px;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+        margin-bottom: 18px;
+      }
+
+      .hero h1 {
+        margin: 0 0 10px;
+        font-size: 34px;
+        line-height: 1.2;
+      }
+
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 16px;
+        line-height: 1.8;
+      }
+
+      .meta-grid {
+        margin-top: 18px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+
+      .meta-card {
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        padding: 14px;
+        background: #fff;
+      }
+
+      .meta-label {
+        font-size: 12px;
+        color: #64748b;
+        margin-bottom: 6px;
+      }
+
+      .meta-value {
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .section {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 20px;
+        background: #ffffff;
+        margin-bottom: 14px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .section:last-child {
+        margin-bottom: 0;
+      }
+
+      .number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 34px;
+        height: 34px;
+        border-radius: 999px;
+        background: var(--blue-soft);
+        color: var(--blue);
+        font-weight: 800;
+        font-size: 14px;
+        margin-bottom: 12px;
+      }
+
+      h2 {
+        margin: 0 0 10px;
+        font-size: 28px;
+        line-height: 1.25;
+      }
+
+      p {
+        margin: 0 0 12px;
+        color: #334155;
+        font-size: 16px;
+        line-height: 1.8;
+      }
+
+      p:last-child {
+        margin-bottom: 0;
+      }
+
+      ul {
+        margin: 10px 0 0;
+        padding-left: 22px;
+      }
+
+      li {
+        margin-bottom: 10px;
+        color: #334155;
+        font-size: 16px;
+        line-height: 1.8;
+      }
+
+      li:last-child {
+        margin-bottom: 0;
+      }
+
+      .note {
+        margin-top: 14px;
+        padding: 14px 16px;
+        border-radius: 14px;
+        border: 1px solid #bfdbfe;
+        background: #f8fbff;
+      }
+
+      .note.warning {
+        border-color: var(--warn-line);
+        background: var(--warn-soft);
+      }
+
+      .note.danger {
+        border-color: var(--danger-line);
+        background: var(--danger-soft);
+      }
+
+      .note-title {
+        margin-bottom: 6px;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--blue);
+      }
+
+      .note.warning .note-title {
+        color: var(--warn);
+      }
+
+      .note.danger .note-title {
+        color: var(--danger);
+      }
+
+      .signature-page {
+        page-break-before: always;
+        break-before: page;
+        margin-top: 0;
+      }
+
+      .signature-title {
+        margin: 0 0 8px;
+        font-size: 28px;
+      }
+
+      .signature-subtitle {
+        margin: 0 0 18px;
+        color: var(--muted);
+      }
+
+      .signature-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+
+      .signature-card {
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 18px;
+        min-height: 220px;
+      }
+
+      .signature-role {
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 20px;
+      }
+
+      .signature-field {
+        margin-bottom: 22px;
+        font-size: 15px;
+        color: #475569;
+      }
+
+      .signature-space {
+        height: 72px;
+      }
+
+      .signature-line {
+        border-top: 1px solid #0f172a;
+        margin-bottom: 10px;
+      }
+
+      .signature-name {
+        font-size: 14px;
+        color: #475569;
+      }
+
+      .footer-note {
+        margin-top: 18px;
+        padding-top: 12px;
+        border-top: 1px dashed var(--line);
+        font-size: 13px;
+        color: #64748b;
+        line-height: 1.7;
+      }
+
+      .print-actions {
+        margin-top: 18px;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .print-btn {
+        border: none;
+        background: #1d4ed8;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 700;
+        border-radius: 12px;
+        padding: 12px 18px;
+        cursor: pointer;
+      }
+
+      @page {
+        size: A4;
+        margin: 14mm;
+      }
+
+      @media (max-width: 760px) {
+        .meta-grid,
+        .signature-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero h1,
+        h2,
+        .signature-title {
+          font-size: 26px;
+        }
+      }
+
+      @media print {
+        body {
+          background: #fff;
+        }
+
+        .container {
+          max-width: 100%;
+          padding: 0;
+        }
+
+        .sheet {
+          border: none;
+          border-radius: 0;
+          box-shadow: none;
+          padding: 0;
+        }
+
+        .hero {
+          padding: 16px 18px;
+          margin-bottom: 10px;
+          border-radius: 14px;
+        }
+
+        .hero h1 {
+          font-size: 23px;
+          margin-bottom: 6px;
+        }
+
+        .hero p {
+          font-size: 12px;
+          line-height: 1.6;
+        }
+
+        .meta-grid {
+          margin-top: 12px;
+          gap: 8px;
+        }
+
+        .meta-card {
+          padding: 10px 12px;
+          border-radius: 12px;
+        }
+
+        .meta-label {
+          font-size: 10px;
+          margin-bottom: 4px;
+        }
+
+        .meta-value {
+          font-size: 11.5px;
+        }
+
+        .section {
+          padding: 14px 16px;
+          margin-bottom: 8px;
+          border-radius: 12px;
+        }
+
+        .number {
+          width: 24px;
+          height: 24px;
+          font-size: 10px;
+          margin-bottom: 8px;
+        }
+
+        h2 {
+          font-size: 18px;
+          margin-bottom: 6px;
+        }
+
+        p,
+        li {
+          font-size: 11.2px;
+          line-height: 1.55;
+          margin-bottom: 7px;
+        }
+
+        ul {
+          margin-top: 6px;
+          padding-left: 18px;
+        }
+
+        .note {
+          margin-top: 8px;
+          padding: 10px 12px;
+          border-radius: 10px;
+        }
+
+        .note-title {
+          font-size: 9.5px;
+          margin-bottom: 5px;
+        }
+
+        .signature-page {
+          page-break-before: always;
+          break-before: page;
+        }
+
+        .signature-title {
+          font-size: 18px;
+          margin-bottom: 6px;
+        }
+
+        .signature-subtitle {
+          font-size: 11px;
+          line-height: 1.5;
+          margin-bottom: 12px;
+        }
+
+        .signature-grid {
+          grid-template-columns: repeat(2, 1fr);
+          gap: 12px;
+        }
+
+        .signature-card {
+          min-height: 160px;
+          padding: 12px;
+          border-radius: 12px;
+        }
+
+        .signature-role {
+          font-size: 12px;
+          margin-bottom: 12px;
+        }
+
+        .signature-field,
+        .signature-name {
+          font-size: 10.5px;
+        }
+
+        .signature-field {
+          margin-bottom: 14px;
+        }
+
+        .signature-space {
+          height: 42px;
+        }
+
+        .signature-line {
+          margin-bottom: 6px;
+        }
+
+        .footer-note {
+          font-size: 9.5px;
+          margin-top: 10px;
+          padding-top: 8px;
+        }
+
+        .print-actions {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sheet">
+        <section class="hero">
+          <h1>Syarat & Ketentuan Penyewaan iPhone</h1>
+          <p>
+            PinjemGeh.id by PT RZKYPay Solusi Digital. Mohon baca seluruh ketentuan dengan saksama sebelum melakukan booking, pembayaran, atau menggunakan unit yang disewa.
+          </p>
+          <div class="meta-grid">
+            <div class="meta-card">
+              <div class="meta-label">Durasi Paket</div>
+              <div class="meta-value">12 Jam & 24 Jam</div>
+            </div>
+            <div class="meta-card">
+              <div class="meta-label">Denda Keterlambatan</div>
+              <div class="meta-value">Rp10.000 / 10 Menit</div>
+            </div>
+            <div class="meta-card">
+              <div class="meta-label">Wilayah Gratis Pengantaran/Pengembalian</div>
+              <div class="meta-value">Ciruas</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="number">1</div>
+          <h2>Informasi Umum</h2>
+          <p>Informasi lebih lanjut mengenai penyewaan akan disampaikan secara langsung saat pertemuan. Dengan melakukan booking, pembayaran, atau menggunakan unit yang disewa, penyewa dianggap telah membaca, memahami, dan menyetujui seluruh syarat dan ketentuan yang berlaku.</p>
+        </section>
+
+        <section class="section">
+          <div class="number">2</div>
+          <h2>Booking & Down Payment (DP)</h2>
+          <p>Down Payment (DP) tidak bersifat wajib, namun penyewa dapat melakukan DP minimal 50% dari harga sewa untuk mengamankan unit dan tanggal penyewaan.</p>
+          <div class="note">
+            <div class="note-title">Price List & Minimal DP</div>
+            <ul>
+              <li>Paket 24 jam Rp120.000 → DP minimal Rp60.000</li>
+              <li>Paket 12 jam Rp60.000 → DP minimal Rp30.000</li>
+            </ul>
+          </div>
+          <div class="note warning">
+            <div class="note-title">Catatan Penting</div>
+            <p>Harga di atas berlaku khusus untuk wilayah Banten dan belum termasuk biaya apabila unit dibawa ke luar wilayah Banten. Untuk penggunaan di luar Banten, akan dikenakan biaya tambahan sesuai ketentuan yang berlaku.</p>
+          </div>
+          <p>Apabila penyewa tidak melakukan DP, maka ketersediaan unit tidak dapat dijamin.</p>
+          <p>Unit akan diprioritaskan kepada penyewa yang lebih dahulu melakukan booking atau pembayaran.</p>
+          <p>DP berfungsi untuk mengamankan unit dan menghindari pembatalan sepihak. Apabila terjadi pembatalan oleh penyewa atau penyewa tidak memenuhi syarat penyewaan, maka DP yang telah dibayarkan tidak dapat dikembalikan (non-refundable).</p>
+        </section>
+
+        <section class="section">
+          <div class="number">3</div>
+          <h2>Metode Pembayaran</h2>
+          <ul>
+            <li>Bank BCA — 2451343191 — a/n Muhammad Rizky Ramadhan</li>
+            <li>GoPay — 0851-5532-2281 — a/n Muhammad Rizky Ramadhan</li>
+            <li>QRIS — a/n PT RZKYPay Solusi Digital</li>
+          </ul>
+        </section>
+
+        <section class="section">
+          <div class="number">4</div>
+          <h2>Bukti Pembayaran</h2>
+          <p>Setelah pembayaran diterima, penyewa akan mendapatkan invoice atau bukti pembayaran sebagai bukti resmi transaksi penyewaan.</p>
+        </section>
+
+        <section class="section">
+          <div class="number">5</div>
+          <h2>Kondisi Unit</h2>
+          <p>Unit iPhone diserahkan dalam kondisi baik, normal, dan berfungsi dengan semestinya. Penyewa dianggap telah memeriksa dan menyetujui kondisi unit pada saat serah terima.</p>
+        </section>
+
+        <section class="section">
+          <div class="number">6</div>
+          <h2>Durasi Sewa</h2>
+          <p>Durasi sewa dihitung sejak waktu serah terima unit kepada penyewa hingga waktu pengembalian yang telah disepakati.</p>
+        </section>
+
+        <section class="section">
+          <div class="number">7</div>
+          <h2>Keterlambatan Pengembalian</h2>
+          <p>Keterlambatan pengembalian unit akan dikenakan denda sebesar Rp10.000 setiap 10 menit.</p>
+          <div class="note warning">
+            <div class="note-title">Catatan Penting</div>
+            <p>Apabila keterlambatan melebihi batas waktu yang wajar tanpa konfirmasi dari penyewa, pemilik berhak mengambil tindakan lebih lanjut.</p>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="number">8</div>
+          <h2>Perpanjangan Masa Sewa</h2>
+          <p>Apabila penyewa ingin memperpanjang masa sewa, penyewa wajib menginformasikan minimal 20 menit sebelum waktu sewa berakhir dan melakukan pembayaran tambahan sesuai tarif yang berlaku.</p>
+          <p>Perpanjangan hanya dapat dilakukan apabila unit tidak sedang dibooking oleh penyewa lain.</p>
+        </section>
+
+        <section class="section">
+          <div class="number">9</div>
+          <h2>Identitas & Jaminan Penyewa</h2>
+          <p>Penyewa wajib menyerahkan 2 (dua) identitas diri sebagai jaminan selama masa sewa.</p>
+          <ul>
+            <li>KTP</li>
+            <li>SIM</li>
+            <li>STNK</li>
+            <li>Kartu Keluarga (KK)</li>
+            <li>BPKB</li>
+            <li>Paspor</li>
+            <li>Kartu Pelajar</li>
+          </ul>
+          <div class="note warning">
+            <div class="note-title">Catatan</div>
+            <p>Kombinasi KTP dan Kartu Pelajar/Kartu Keluarga tidak dapat diterima karena jaminan dinilai kurang kuat.</p>
+            <p>Selain daftar di atas, penyewa juga dapat menyerahkan dokumen lain yang dinilai memiliki nilai kuat dan dapat dipertanggungjawabkan sebagai jaminan, sepanjang disetujui oleh pihak pemilik.</p>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="number">10</div>
+          <h2>Tanggung Jawab Kerusakan</h2>
+          <p>Segala bentuk kerusakan pada unit selama masa sewa menjadi tanggung jawab penyewa, baik kerusakan ringan maupun berat, termasuk biaya perbaikan yang timbul.</p>
+        </section>
+
+        <section class="section">
+          <div class="number">11</div>
+          <h2>Kehilangan Unit</h2>
+          <p>Apabila unit iPhone hilang, tidak dapat dikembalikan, atau berada di luar kendali pemilik akibat kelalaian penyewa, maka penyewa wajib mengganti unit sesuai harga pasar iPhone yang disewa atau sesuai kesepakatan dengan pemilik.</p>
+        </section>
+
+        <section class="section">
+          <div class="number">12</div>
+          <h2>Sistem Keamanan & Pelacakan</h2>
+          <p>Unit iPhone dilengkapi dengan sistem keamanan dan pelacakan (tracking). Pemilik berhak melakukan pelacakan perangkat apabila terjadi pelanggaran, keterlambatan pengembalian, atau indikasi kehilangan unit.</p>
+        </section>
+
+        <section class="section">
+          <div class="number">13</div>
+          <h2>Larangan Penggunaan</h2>
+          <p>Penyewa dilarang melakukan hal-hal berikut:</p>
+          <ul>
+            <li>Melakukan reset perangkat</li>
+            <li>Mengeluarkan perangkat dari sistem pelacakan</li>
+            <li>Mengubah nama iCloud</li>
+            <li>Login menggunakan akun iCloud pribadi</li>
+            <li>Mengubah pengaturan keamanan perangkat</li>
+            <li>Menggadaikan, menjual, atau memindahtangankan unit kepada pihak lain tanpa izin pemilik</li>
+          </ul>
+          <div class="note danger">
+            <div class="note-title">Sanksi Pelanggaran</div>
+            <p>Apabila penyewa melanggar ketentuan di atas, maka penyewa dikenakan denda minimal Rp1.500.000 dan maksimal Rp50.000.000, serta tetap bertanggung jawab atas seluruh kerugian yang timbul.</p>
+          </div>
+        </section>
+
+        <section class="section">
+          <div class="number">14</div>
+          <h2>Penggunaan yang Melanggar Hukum</h2>
+          <p>Unit iPhone tidak boleh digunakan untuk kegiatan yang melanggar hukum. Segala bentuk penyalahgunaan perangkat sepenuhnya menjadi tanggung jawab penyewa dan dapat diproses sesuai hukum yang berlaku.</p>
+        </section>
+
+        <section class="section">
+          <div class="number">15</div>
+          <h2>Hak Pemilik</h2>
+          <p>Pemilik berhak menolak, membatalkan, atau menghentikan penyewaan apabila penyewa tidak memenuhi syarat atau melanggar ketentuan yang berlaku.</p>
+        </section>
+
+        <section class="section">
+          <div class="number">16</div>
+          <h2>Biaya Pengambilan & Pengembalian</h2>
+          <p>Pengambilan dan pengembalian unit gratis apabila dilakukan di wilayah Ciruas.</p>
+          <p>Apabila lokasi pertemuan berada di luar wilayah tersebut, maka akan dikenakan biaya tambahan sebesar Rp15.000 setiap 10 km.</p>
+          <p>Biaya akan disesuaikan dengan jarak lokasi pertemuan yang disepakati.</p>
+        </section>
+
+        <section class="section">
+          <div class="number">17</div>
+          <h2>Penyelesaian Sengketa</h2>
+          <p>Apabila terjadi perselisihan antara pemilik dan penyewa, maka penyelesaian akan diupayakan terlebih dahulu secara musyawarah. Apabila tidak tercapai kesepakatan, maka penyelesaian dilakukan sesuai hukum yang berlaku di wilayah domisili pemilik.</p>
+        </section>
+
+        <section class="section signature-page">
+          <h2 class="signature-title">Persetujuan & Tanda Tangan</h2>
+          <p class="signature-subtitle">Dokumen ini dibaca, dipahami, dan disetujui oleh kedua belah pihak sebagai dasar pelaksanaan penyewaan unit.</p>
+          <div class="signature-grid">
+            <div class="signature-card">
+              <div class="signature-role">Penyewa</div>
+              <div class="signature-field">Tempat, tanggal: ________________________</div>
+              <div class="signature-space"></div>
+              <div class="signature-line"></div>
+              <div class="signature-name">Nama jelas: ______________________________</div>
+            </div>
+            <div class="signature-card">
+              <div class="signature-role">Pemilik</div>
+              <div class="signature-field">Tempat, tanggal: ________________________</div>
+              <div class="signature-space"></div>
+              <div class="signature-line"></div>
+              <div class="signature-name">Nama jelas: ______________________________</div>
+            </div>
+          </div>
+          <div class="footer-note">Syarat & ketentuan ini berlaku untuk layanan penyewaan iPhone PinjemGeh.id by PT RZKYPay Solusi Digital.</div>
+        </section>
+      </div>
+
+      <div class="print-actions">
+        <button class="print-btn" onclick="window.print()">Cetak / Simpan PDF</button>
+      </div>
+    </div>
+  </body>
+</html>
