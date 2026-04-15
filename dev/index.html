@@ -751,50 +751,110 @@
       }
     }
 
-    @media (max-width: 760px) {
-      .shell {
-        padding: 16px;
-      }
+@media (max-width: 760px) {
+  .shell {
+    padding: 16px;
+  }
 
-      .topbar,
-      .section-header,
-      .table-footer {
-        align-items: flex-start;
-      }
+  .topbar {
+    position: static;
+    top: auto;
+    align-items: stretch;
+    flex-direction: column;
+    padding: 14px;
+    gap: 14px;
+  }
 
-      .topbar,
-      .section-header,
-      .table-footer,
-      .brand {
-        flex-direction: column;
-      }
+  .section-header,
+  .table-footer,
+  .brand {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 
-      .hero,
-      .chart-card,
-      .table-panel,
-      .panel,
-      .kpi-card {
-        border-radius: 20px;
-      }
+  .brand {
+    width: 100%;
+  }
 
-      .hero {
-        padding: 22px;
-      }
+  .brand-text h1 {
+    font-size: 15px;
+    line-height: 1.3;
+  }
 
-      .hero-kpis,
-      .mini-grid,
-      .filters {
-        grid-template-columns: 1fr;
-      }
+  .brand-text p {
+    font-size: 12px;
+    line-height: 1.5;
+  }
 
-      .top-actions {
-        width: 100%;
-      }
+  .top-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
 
-      .btn {
-        width: 100%;
-      }
-    }
+  .top-actions .btn,
+  .btn {
+    width: 100%;
+  }
+
+  .hero,
+  .chart-card,
+  .table-panel,
+  .panel,
+  .kpi-card {
+    border-radius: 20px;
+  }
+
+  .hero {
+    padding: 20px 16px;
+  }
+
+  .hero-copy h2 {
+    font-size: 28px;
+    line-height: 1.15;
+  }
+
+  .hero-copy p {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .hero-badges {
+    gap: 8px;
+  }
+
+  .pill {
+    width: 100%;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .hero-kpis,
+  .mini-grid,
+  .filters,
+  .chart-grid,
+  .hero-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-card {
+    min-height: auto;
+    padding: 16px;
+  }
+
+  .chart-wrap {
+    height: 220px;
+  }
+
+  .table-footer {
+    flex-direction: column;
+  }
+
+  .pagination {
+    width: 100%;
+  }
+}
   </style>
 </head>
 <body>
