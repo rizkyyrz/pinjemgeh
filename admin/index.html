@@ -1,21 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Admin Penyewaan iPhone</title>
     <style>
       :root {
-        --bg: #f8fafc;
-        --text: #0f172a;
-        --muted: #64748b;
-        --line: #e2e8f0;
-        --card: #ffffff;
-        --primary: #2563eb;
-        --primary-dark: #1d4ed8;
-        --danger: #dc2626;
-        --success: #16a34a;
+        --bg: #06111f;
+        --bg-2: #0b1728;
+        --panel: rgba(10, 18, 34, 0.72);
+        --panel-strong: rgba(12, 21, 39, 0.92);
+        --card: rgba(255,255,255,0.06);
+        --card-2: rgba(255,255,255,0.08);
+        --text: #e5eefc;
+        --muted: #95a4bf;
+        --line: rgba(148, 163, 184, 0.18);
+        --primary: #60a5fa;
+        --primary-dark: #3b82f6;
+        --danger: #ef4444;
+        --success: #22c55e;
         --warning: #f59e0b;
-        --shadow: 0 12px 35px rgba(15, 23, 42, 0.08);
+        --shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
+        --radius-xl: 28px;
+        --radius-lg: 22px;
+        --radius-md: 18px;
+        --radius-sm: 14px;
+        --glass: blur(18px);
       }
 
       * {
@@ -23,95 +32,275 @@
         font-family: Inter, Arial, sans-serif;
       }
 
+      html {
+        scroll-behavior: smooth;
+      }
+
       body {
         margin: 0;
+        min-height: 100vh;
         background:
-          radial-gradient(circle at top left, rgba(37,99,235,0.08), transparent 25%),
-          linear-gradient(180deg, #eff6ff 0%, #f8fafc 50%, #f8fafc 100%);
+          radial-gradient(circle at 10% 10%, rgba(59, 130, 246, 0.18), transparent 22%),
+          radial-gradient(circle at 85% 10%, rgba(34, 211, 238, 0.14), transparent 18%),
+          radial-gradient(circle at 50% 100%, rgba(168, 85, 247, 0.12), transparent 20%),
+          linear-gradient(180deg, #030712 0%, #07111f 30%, #091524 100%);
         color: var(--text);
       }
 
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
       .container {
-        max-width: 1320px;
+        max-width: 1440px;
         margin: 0 auto;
-        padding: 28px 20px 40px;
+        padding: 24px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        margin-bottom: 18px;
+        padding: 14px 18px;
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        background: rgba(7, 13, 24, 0.55);
+        backdrop-filter: var(--glass);
+        box-shadow: var(--shadow);
+        position: sticky;
+        top: 12px;
+        z-index: 50;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .brand-badge {
+        width: 44px;
+        height: 44px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, rgba(59,130,246,.28), rgba(34,211,238,.2));
+        border: 1px solid rgba(96, 165, 250, 0.24);
+        box-shadow: inset 0 1px 0 rgba(255,255,255,.08);
+        font-weight: 800;
+        letter-spacing: .04em;
+      }
+
+      .brand-text h1 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .brand-text p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .top-actions {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        flex-wrap: wrap;
       }
 
       .hero {
-        background: linear-gradient(135deg, #0f172a, #1e3a8a 70%, #2563eb);
-        color: white;
-        border-radius: 28px;
-        padding: 28px;
-        margin-bottom: 24px;
-        box-shadow: 0 24px 60px rgba(30, 58, 138, 0.26);
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--radius-xl);
+        padding: 30px;
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        background:
+          radial-gradient(circle at top right, rgba(96,165,250,.22), transparent 22%),
+          radial-gradient(circle at left center, rgba(34,211,238,.12), transparent 20%),
+          linear-gradient(135deg, rgba(9,16,31,.92), rgba(12,23,45,.94));
+        box-shadow: var(--shadow);
+        margin-bottom: 22px;
+      }
+
+      .hero::before,
+      .hero::after {
+        content: "";
+        position: absolute;
+        border-radius: 999px;
+        filter: blur(10px);
+        opacity: .7;
+        pointer-events: none;
+      }
+
+      .hero::before {
+        width: 260px;
+        height: 260px;
+        right: -80px;
+        top: -80px;
+        background: radial-gradient(circle, rgba(34,211,238,.22), transparent 68%);
+      }
+
+      .hero::after {
+        width: 320px;
+        height: 320px;
+        left: -120px;
+        bottom: -120px;
+        background: radial-gradient(circle, rgba(59,130,246,.18), transparent 72%);
       }
 
       .hero-top {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 16px;
-        flex-wrap: wrap;
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: 1.2fr .8fr;
+        gap: 22px;
+        align-items: stretch;
       }
 
-      .hero h1 {
+      .hero-copy h2 {
         margin: 0;
-        font-size: 30px;
-        font-weight: 800;
+        font-size: clamp(30px, 4vw, 44px);
+        line-height: 1.05;
+        letter-spacing: -0.04em;
       }
 
-      .hero p {
-        margin: 10px 0 0;
-        color: rgba(255,255,255,0.82);
-        max-width: 700px;
+      .hero-copy p {
+        margin: 14px 0 20px;
+        color: #b8c6db;
+        max-width: 760px;
+        line-height: 1.7;
         font-size: 15px;
       }
 
-      .hero-actions {
+      .hero-badges {
         display: flex;
-        gap: 14px;
         flex-wrap: wrap;
-        align-items: center;
+        gap: 10px;
+        margin-bottom: 18px;
       }
 
-      .hero a,
-      .hero button,
+      .pill,
       .status-chip {
-        appearance: none;
-        -webkit-appearance: none;
-        box-sizing: border-box;
-        min-height: 56px;
-        padding: 0 22px;
-        border-radius: 18px;
+        padding: 10px 14px;
+        border-radius: 999px;
+        background: rgba(255,255,255,.06);
+        border: 1px solid rgba(148, 163, 184, 0.16);
+        color: #d8e2f0;
+        font-size: 13px;
+        font-weight: 700;
+        backdrop-filter: var(--glass);
         display: inline-flex;
         align-items: center;
         justify-content: center;
-        font-size: 16px;
-        line-height: 1;
-        font-weight: 800;
-        white-space: nowrap;
       }
 
-		.hero a,
-		.hero button {
-		background: rgba(255, 255, 255, 0.14);
-		color: #ffffff;
-		text-decoration: none;
-		border: 1px solid rgba(255, 255, 255, 0.18);
-		outline: none;
-		cursor: pointer;
-		backdrop-filter: blur(8px);
-		-webkit-backdrop-filter: blur(8px);
-		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10);
-	  }
+      .hero-side {
+        display: grid;
+        gap: 14px;
+      }
 
-		.hero a:hover,
-		.hero button:hover {
-		transform: translateY(-1px);
-		transition: 0.2s ease;
-		background: rgba(255, 255, 255, 0.18);
-		border-color: rgba(255, 255, 255, 0.24);
-	  }
+      .hero-panel,
+      .card {
+        border: 1px solid var(--line);
+        background: var(--card);
+        backdrop-filter: var(--glass);
+        box-shadow: var(--shadow);
+      }
+
+      .hero-panel {
+        border-radius: 24px;
+        padding: 20px;
+      }
+
+      .hero-panel-title {
+        font-size: 13px;
+        color: var(--muted);
+        margin: 0 0 10px;
+        font-weight: 700;
+        letter-spacing: .02em;
+        text-transform: uppercase;
+      }
+
+      .hero-panel h3 {
+        margin: 0 0 12px;
+        font-size: 20px;
+        line-height: 1.35;
+      }
+
+      .hero-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .hero-item {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 12px 14px;
+        border-radius: 16px;
+        background: rgba(255,255,255,.04);
+        border: 1px solid rgba(148,163,184,.12);
+        line-height: 1.6;
+        color: #dbe7f8;
+        font-size: 14px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        margin-top: 6px;
+        flex: 0 0 auto;
+        background: var(--cyan);
+      }
+
+      .btn,
+      .btn-primary,
+      .btn-secondary {
+        border: 1px solid var(--line);
+        background: rgba(255,255,255,0.05);
+        color: var(--text);
+        min-height: 46px;
+        padding: 0 16px;
+        border-radius: 14px;
+        cursor: pointer;
+        font-weight: 800;
+        transition: transform .18s ease, background .18s ease, border-color .18s ease, box-shadow .18s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        backdrop-filter: var(--glass);
+        text-decoration: none;
+      }
+
+      .btn:hover,
+      .btn-primary:hover,
+      .btn-secondary:hover,
+      .btn-small:hover,
+      .page-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 30px rgba(0,0,0,.18);
+      }
+
+      .btn-primary {
+        width: 100%;
+        background: linear-gradient(135deg, var(--primary-dark), #22d3ee);
+        color: white;
+        border-color: transparent;
+      }
+
+      .btn-secondary {
+        width: 100%;
+        background: rgba(255,255,255,0.04);
+        color: var(--text);
+      }
+
       .layout {
         display: grid;
         grid-template-columns: 380px 1fr;
@@ -124,23 +313,22 @@
       }
 
       .card {
-        background: rgba(255,255,255,0.92);
-        border: 1px solid rgba(255,255,255,0.65);
-        backdrop-filter: blur(12px);
-        border-radius: 24px;
-        box-shadow: var(--shadow);
+        border-radius: 26px;
         padding: 22px;
+        background: rgba(255,255,255,0.05);
       }
 
       .card h2 {
         margin: 0 0 6px;
         font-size: 22px;
+        letter-spacing: -0.02em;
       }
 
       .section-desc {
         color: var(--muted);
         font-size: 14px;
         margin-bottom: 18px;
+        line-height: 1.6;
       }
 
       .form-group {
@@ -152,6 +340,7 @@
         font-weight: 700;
         font-size: 14px;
         margin-bottom: 8px;
+        color: #dfe9f8;
       }
 
       input,
@@ -164,35 +353,26 @@
         border-radius: 16px;
         outline: none;
         font-size: 14px;
-        background: white;
+        background: rgba(255,255,255,0.05);
         color: var(--text);
+        transition: border-color .18s ease, box-shadow .18s ease, background .18s ease;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: rgba(96, 165, 250, 0.55);
+        box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.12);
+      }
+
+      input::placeholder,
+      textarea::placeholder {
+        color: #93a3bf;
       }
 
       textarea {
         min-height: 96px;
         resize: vertical;
-      }
-
-      .btn-primary,
-      .btn-secondary {
-        width: 100%;
-        border: none;
-        min-height: 52px;
-        border-radius: 16px;
-        font-size: 15px;
-        font-weight: 800;
-        cursor: pointer;
-      }
-
-      .btn-primary {
-        background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-        color: white;
-        box-shadow: 0 14px 26px rgba(37, 99, 235, 0.25);
-      }
-
-      .btn-secondary {
-        background: #0f172a;
-        color: white;
       }
 
       .message {
@@ -206,16 +386,16 @@
 
       .success {
         display: block;
-        background: rgba(22, 163, 74, 0.1);
-        color: #166534;
-        border: 1px solid rgba(22, 163, 74, 0.15);
+        background: rgba(34, 197, 94, 0.12);
+        color: #86efac;
+        border: 1px solid rgba(34, 197, 94, 0.18);
       }
 
       .error {
         display: block;
-        background: rgba(220, 38, 38, 0.1);
-        color: #991b1b;
-        border: 1px solid rgba(220, 38, 38, 0.15);
+        background: rgba(239, 68, 68, 0.12);
+        color: #fca5a5;
+        border: 1px solid rgba(239, 68, 68, 0.18);
       }
 
       .top-tools {
@@ -232,14 +412,15 @@
       }
 
       .search-box input {
-        min-height: 50px;
+        min-height: 52px;
       }
 
       .table-wrap {
         overflow-x: auto;
-        border: 1px solid var(--line);
+        -webkit-overflow-scrolling: touch;
+        border: 1px solid rgba(148,163,184,.12);
         border-radius: 20px;
-        background: white;
+        background: rgba(2, 6, 23, 0.34);
       }
 
       table {
@@ -249,25 +430,27 @@
       }
 
       th {
-        background: #f8fafc;
-        color: #334155;
+        background: rgba(11, 23, 40, 0.96);
+        color: #c9d5e7;
         text-align: left;
         padding: 16px;
-        font-size: 13px;
+        font-size: 12px;
         font-weight: 800;
-        border-bottom: 1px solid var(--line);
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        border-bottom: 1px solid rgba(148,163,184,.16);
       }
 
       td {
         padding: 16px;
-        border-bottom: 1px solid #eef2f7;
+        border-bottom: 1px solid rgba(148,163,184,.10);
         font-size: 14px;
-        color: #334155;
+        color: #dbe7f8;
         vertical-align: middle;
       }
 
       tr:hover td {
-        background: #fbfdff;
+        background: rgba(255,255,255,0.04);
       }
 
       .name-cell {
@@ -277,7 +460,8 @@
       }
 
       .name-cell strong {
-        color: #0f172a;
+        color: #f1f7ff;
+        font-size: 15px;
       }
 
       .sub {
@@ -285,6 +469,7 @@
         font-size: 12px;
         white-space: pre-wrap;
         word-break: break-word;
+        line-height: 1.6;
       }
 
       .status-select {
@@ -306,22 +491,26 @@
         font-size: 12px;
         font-weight: 800;
         cursor: pointer;
+        transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
       }
 
       .btn-save {
-        background: rgba(37, 99, 235, 0.12);
-        color: var(--primary-dark);
+        background: rgba(59, 130, 246, 0.16);
+        color: #bfdbfe;
       }
 
       .btn-delete {
-        background: rgba(220, 38, 38, 0.12);
-        color: var(--danger);
+        background: rgba(239, 68, 68, 0.16);
+        color: #fca5a5;
       }
 
       .empty {
         text-align: center;
         padding: 28px 16px;
         color: var(--muted);
+        background: rgba(255,255,255,0.04);
+        border: 1px dashed rgba(148,163,184,.16);
+        border-radius: 18px;
       }
 
       .hidden {
@@ -329,18 +518,9 @@
       }
 
       .login-wrap {
-        max-width: 460px;
+        max-width: 480px;
         margin: 0 auto;
       }
-
-      .status-chip {
-		background: rgba(255,255,255,0.14);
-		color: white;
-		border: 1px solid rgba(255,255,255,0.18);
-		backdrop-filter: blur(8px);
-		-webkit-backdrop-filter: blur(8px);
-		box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
-	  }
 
       .pagination {
         margin-top: 18px;
@@ -357,22 +537,17 @@
         padding: 0 12px;
         border-radius: 12px;
         border: 1px solid var(--line);
-        background: white;
+        background: rgba(255,255,255,0.05);
         color: var(--text);
         cursor: pointer;
         font-weight: 700;
-        transition: 0.2s ease;
-      }
-
-      .page-btn:hover:not(:disabled) {
-        transform: translateY(-1px);
-        border-color: #cbd5e1;
+        transition: .2s ease;
       }
 
       .page-btn.active {
-        background: var(--primary);
+        background: linear-gradient(135deg, var(--primary-dark), #22d3ee);
         color: white;
-        border-color: var(--primary);
+        border-color: transparent;
       }
 
       .page-btn:disabled {
@@ -388,33 +563,53 @@
         margin-top: 6px;
       }
 
-      @media (max-width: 1080px) {
+      @media (max-width: 1180px) {
+        .hero-top,
         .layout {
           grid-template-columns: 1fr;
         }
       }
 
-      @media (max-width: 640px) {
+      @media (max-width: 760px) {
         .container {
-          padding: 18px 14px 30px;
+          padding: 16px;
+        }
+
+        .topbar {
+          position: static;
+          top: auto;
+          flex-direction: column;
+          align-items: stretch;
+          padding: 14px;
+        }
+
+        .brand,
+        .top-actions {
+          width: 100%;
+          flex-direction: column;
+          align-items: stretch;
         }
 
         .hero,
-        .card {
-          border-radius: 22px;
+        .card,
+        .hero-panel {
+          border-radius: 20px;
         }
 
-        .hero h1 {
-          font-size: 25px;
+        .hero {
+          padding: 22px 18px;
         }
 
-        .hero-actions {
-          width: 100%;
+        .hero-copy h2 {
+          font-size: 28px;
+          line-height: 1.12;
         }
 
-        .hero a,
-        .hero button,
-        .status-chip {
+        .pill,
+        .status-chip,
+        .btn,
+        .top-actions a,
+        .top-actions button {
           width: 100%;
         }
       }
@@ -422,17 +617,50 @@
   </head>
   <body>
     <div class="container">
-      <section class="hero">
+      <header class="topbar">
+        <div style="font-weight:700; font-size:18px;">Admin Rental iPhone</div>
+        <div class="brand">
+          <div class="brand-badge">PG</div>
+          <div class="brand-text">
+            <h1>PinjemGeh Admin Console</h1>
+            <p>Panel operasional rental iPhone dengan gaya premium 2026</p>
+          </div>
+        </div>
+
+        <div class="top-actions">
+          
+          <a class="btn" href="/">Kembali ke Dashboard</a>
+          <button id="logoutBtn" class="btn hidden" onclick="logout()">Logout</button>
+        </div>
+      </header>
+
+      
+
+      <section id="heroSection" class="hero hidden">
         <div class="hero-top">
-          <div>
-            <h1>Admin Panel Rental iPhone</h1>
-            <p>Supported by PT RZKYPay Solusi Digital</p>
+          <div class="hero-copy">
+            <div class="hero-badges">
+              <span class="pill">Secure Session</span>
+              <span class="pill">Rental Management</span>
+              <span class="pill">Realtime Control</span>
+            </div>
+            <h2>Admin Panel Rental iPhone yang lebih modern, rapi, dan nyaman dipakai.</h2>
+            <p>
+              Kelola penyewa, update status, tambah data rental baru, dan atur keamanan akses admin
+              tanpa mengubah struktur action backend.
+            </p>
           </div>
 
-          <div class="hero-actions">
-            <span class="status-chip" id="sessionStatus">Belum Login</span>
-            <a href="/">Kembali ke Dashboard</a>
-            <button id="logoutBtn" class="hidden" onclick="logout()">Logout</button>
+          <div class="hero-side">
+            <div class="hero-panel">
+              <p class="hero-panel-title">Quick Guide</p>
+              <h3>Alur tetap sama, hanya UI yang berubah.</h3>
+              <div class="hero-list">
+                <div class="hero-item"><span class="dot"></span><div>Login pakai session & fingerprint.</div></div>
+                <div class="hero-item"><span class="dot"></span><div>Tambah / update / hapus tetap action lama.</div></div>
+                <div class="hero-item"><span class="dot"></span><div>Password change tetap force logout.</div></div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -671,7 +899,14 @@
         document.getElementById('loginSection').classList.toggle('hidden', isLoggedIn);
         document.getElementById('adminSection').classList.toggle('hidden', !isLoggedIn);
         document.getElementById('logoutBtn').classList.toggle('hidden', !isLoggedIn);
-        document.getElementById('sessionStatus').innerText = isLoggedIn ? 'Admin Aktif' : 'Belum Login';
+
+        const hero = document.getElementById('heroSection');
+        if (hero) hero.classList.toggle('hidden', !isLoggedIn);
+
+         else {
+          statusEl.classList.add('hidden');
+          statusEl.innerText = '';
+        }
       }
 
       function forceLogout(message) {
