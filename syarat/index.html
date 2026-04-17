@@ -447,44 +447,50 @@
       }
     }
 
-    @media (max-width: 760px) {
-      .shell {
-        padding: 16px;
-      }
+@media (max-width: 760px) {
+  .shell {
+    padding: 16px;
+  }
 
-      .topbar,
-      .brand,
-      .top-actions {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+  .topbar {
+    position: static;
+    top: auto;
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-      .top-actions,
-      .btn {
-        width: 100%;
-      }
+  .brand,
+  .top-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
 
-      .hero,
-      .content-panel,
-      .section-card,
-      .quick-card,
-      .info-card {
-        border-radius: 20px;
-      }
+  .top-actions,
+  .btn {
+    width: 100%;
+  }
 
-      .hero {
-        padding: 22px;
-      }
+  .hero,
+  .content-panel,
+  .section-card,
+  .quick-card,
+  .info-card {
+    border-radius: 20px;
+  }
 
-      .section-head {
-        align-items: flex-start;
-      }
+  .hero {
+    padding: 22px;
+  }
 
-      .section-card h2 {
-        font-size: 20px;
-      }
-    }
+  .section-head {
+    align-items: flex-start;
+  }
 
+  .section-card h2 {
+    font-size: 20px;
+  }
+}
     @media print {
       body {
         background: #ffffff !important;
