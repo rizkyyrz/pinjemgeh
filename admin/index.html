@@ -770,6 +770,7 @@
                   onkeyup="handleFilterChange()"
                 />
               </div>
+              <button class="btn" onclick="exportSummaryPdf()">Download Laporan PDF</button>
             </div>
 
             <div id="tableContainer">
@@ -901,11 +902,8 @@
         document.getElementById('logoutBtn').classList.toggle('hidden', !isLoggedIn);
 
         const hero = document.getElementById('heroSection');
-        if (hero) hero.classList.toggle('hidden', !isLoggedIn);
-
-         else {
-          statusEl.classList.add('hidden');
-          statusEl.innerText = '';
+        if (hero) {
+          hero.classList.toggle('hidden', !isLoggedIn);
         }
       }
 
@@ -1246,12 +1244,7 @@
         const container = document.getElementById('tableContainer');
         container.innerHTML = '';
 
-        const keyword = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
-
-        const filtered = allData.filter(function(item) {
-          return (item.nama || '').toLowerCase().includes(keyword) ||
-                 (item.tipeIphone || '').toLowerCase().includes(keyword);
-        });
+        const filtered = getFilteredData();
 
         if (!filtered.length) {
           const empty = document.createElement('div');
@@ -1379,6 +1372,102 @@
         if (pagination) {
           container.appendChild(pagination);
         }
+      }
+
+      function getFilteredData() {
+        const keyword = (document.getElementById('searchInput')?.value || '').toLowerCase().trim();
+        return allData.filter(function(item) {
+          return (item.nama || '').toLowerCase().includes(keyword) ||
+                 (item.tipeIphone || '').toLowerCase().includes(keyword);
+        });
+      }
+
+      function escapeHtml(value) {
+        return String(value == null ? '' : value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function buildStatusSummary(data) {
+        return data.reduce(function(acc, item) {
+          const key = item.status || 'Tanpa Status';
+          acc[key] = (acc[key] || 0) + 1;
+          return acc;
+        }, {});
+      }
+
+      function exportSummaryPdf() {
+        const filtered = getFilteredData();
+
+        if (!filtered.length) {
+          showMessage('Tidak ada data untuk dibuat laporan PDF.', 'error');
+          return;
+        }
+
+        const summary = buildStatusSummary(filtered);
+        const printedAt = new Date();
+        const keyword = (document.getElementById('searchInput')?.value || '').trim();
+
+        const summaryCards = Object.keys(summary).map(function(status) {
+          return '<div class="stat-card">' +
+            '<div class="stat-label">' + escapeHtml(status) + '</div>' +
+            '<div class="stat-value">' + escapeHtml(summary[status]) + '</div>' +
+          '</div>';
+        }).join('');
+
+        const rows = filtered.map(function(item, index) {
+          return '<tr>' +
+            '<td>' + (index + 1) + '</td>' +
+            '<td>' + escapeHtml(item.nama || '-') + '</td>' +
+            '<td>' + escapeHtml(item.tipeIphone || '-') + '</td>' +
+            '<td>' + escapeHtml(item.tanggalSewa || '-') + '</td>' +
+            '<td>' + escapeHtml(item.tanggalKembali || '-') + '</td>' +
+            '<td>' + escapeHtml(item.status || '-') + '</td>' +
+            '<td>' + escapeHtml(item.catatan || '-') + '</td>' +
+          '</tr>';
+        }).join('');
+
+        const reportHtml = '<!DOCTYPE html>' +
+          '<html lang="id"><head><meta charset="UTF-8"><title>Laporan Penyewaan</title>' +
+          '<style>' +
+          'body{font-family:Arial,sans-serif;color:#0f172a;padding:32px;}' +
+          'h1{margin:0 0 8px;font-size:28px;} p{margin:4px 0;color:#475569;}' +
+          '.meta{margin:18px 0 24px;}' +
+          '.stats{display:flex;gap:12px;flex-wrap:wrap;margin:16px 0 24px;}' +
+          '.stat-card{border:1px solid #cbd5e1;border-radius:12px;padding:14px 16px;min-width:140px;}' +
+          '.stat-label{font-size:12px;color:#64748b;text-transform:uppercase;font-weight:700;letter-spacing:.04em;}' +
+          '.stat-value{font-size:28px;font-weight:700;margin-top:8px;}' +
+          'table{width:100%;border-collapse:collapse;font-size:12px;}' +
+          'th,td{border:1px solid #cbd5e1;padding:10px;text-align:left;vertical-align:top;}' +
+          'th{background:#e2e8f0;}' +
+          '@media print{body{padding:0;} .no-print{display:none;}}' +
+          '</style></head><body>' +
+          '<h1>Laporan Summary Penyewaan iPhone</h1>' +
+          '<p>PinjemGeh Admin Console</p>' +
+          '<div class="meta">' +
+            '<p><strong>Tanggal cetak:</strong> ' + escapeHtml(printedAt.toLocaleString('id-ID')) + '</p>' +
+            '<p><strong>Total data:</strong> ' + escapeHtml(filtered.length) + '</p>' +
+            '<p><strong>Filter pencarian:</strong> ' + escapeHtml(keyword || 'Semua data') + '</p>' +
+          '</div>' +
+          '<div class="stats">' + summaryCards + '</div>' +
+          '<table><thead><tr>' +
+            '<th>No</th><th>Nama Penyewa</th><th>Tipe iPhone</th><th>Tgl Sewa</th><th>Tgl Kembali</th><th>Status</th><th>Catatan</th>' +
+          '</tr></thead><tbody>' + rows + '</tbody></table>' +
+          '<script>window.onload=function(){window.print();};<\/script>' +
+          '</body></html>';
+
+        const reportWindow = window.open('', '_blank', 'width=1200,height=800');
+        if (!reportWindow) {
+          showMessage('Popup diblokir browser. Izinkan popup lalu coba lagi.', 'error');
+          return;
+        }
+
+        reportWindow.document.open();
+        reportWindow.document.write(reportHtml);
+        reportWindow.document.close();
       }
 
       async function saveStatus(id, statusBaru) {
