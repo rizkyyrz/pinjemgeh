@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dashboard Rental iPhone 2026</title>
+  <title>Dashboard Sewa iPhone PinjemGeh 2026</title>
   <style>
     :root {
       --bg: #06111f;
@@ -863,7 +863,7 @@
       <div class="brand">
         <div class="brand-badge">PG</div>
         <div class="brand-text">
-          <h1>PinjemGeh Rental Intelligence</h1>
+          <h1>PinjemGeh Sewa iPhone Transparan</h1>
           <p>Supported by PT RZKYPay Solusi Digital</p>
         </div>
       </div>
@@ -888,67 +888,67 @@
       <div class="hero-grid">
         <div class="hero-copy">
           <div class="hero-badges">
-            <span class="pill">Real-time Monitoring</span>
-            <span class="pill">AI Insight</span>
-            <span class="pill">Smart Analytics</span>
+            <span class="pill">Data Real-time</span>
+            <span class="pill">Aktivitas Penyewa</span>
+            <span class="pill">Transparan & Terpercaya</span>
           </div>
-          <h2>Dashboard Rental iPhone PinjemGeh</h2>
+          <h2>Sewa iPhone Mudah & Transparan</h2>
           <p>
-            Pantau booking, unit aktif, keterlambatan, dan tren penyewaan dalam satu layar.
+            Lihat aktivitas penyewaan secara real-time agar kamu makin yakin sebelum sewa.
           </p>
 
           <div class="hero-kpis">
             <div class="kpi-card">
               <div class="kpi-label">
-                <span>Total Data</span>
+                <span>Total Penyewaan</span>
                 <span class="canvas-badge">Live</span>
               </div>
               <div class="kpi-value" id="statTotal">0</div>
-              <div class="kpi-sub"><span class="trend trend-up">+12%</span> Dibanding penyewaan sebelumnya</div>
+              <div class="kpi-sub"><span class="trend trend-up" id="trendTotal">Live</span> Digunakan oleh banyak penyewa</div>
             </div>
 
             <div class="kpi-card">
-              <div class="kpi-label"><span>Booking</span><span>📦</span></div>
+              <div class="kpi-label"><span>Sedang Dipesan</span><span>📦</span></div>
               <div class="kpi-value" id="statBooking">0</div>
-              <div class="kpi-sub"><span class="trend trend-up">+8%</span> Permintaan baru masuk</div>
+              <div class="kpi-sub"><span class="trend trend-up" id="trendBooking">0%</span> Dari total penyewaan</div>
             </div>
 
             <div class="kpi-card">
-              <div class="kpi-label"><span>Sedang Disewa</span><span>📱</span></div>
+              <div class="kpi-label"><span>Unit Sedang Dipakai</span><span>📱</span></div>
               <div class="kpi-value" id="statDisewa">0</div>
-              <div class="kpi-sub"><span class="trend trend-down">-3%</span> Unit aktif saat ini</div>
+              <div class="kpi-sub"><span class="trend trend-up" id="trendDisewa">0%</span> Dari total penyewaan</div>
             </div>
 
             <div class="kpi-card">
-              <div class="kpi-label"><span>Selesai</span><span>✅</span></div>
+              <div class="kpi-label"><span>Sewa Berhasil</span><span>✅</span></div>
               <div class="kpi-value" id="statSelesai">0</div>
-              <div class="kpi-sub"><span class="trend trend-up">+16%</span> Order sudah ditutup</div>
+              <div class="kpi-sub"><span class="trend trend-up" id="trendSelesai">0%</span> Dari total penyewaan</div>
             </div>
           </div>
         </div>
 
         <div class="hero-side">
           <div class="panel">
-            <p class="panel-title">AI Insight</p>
-            <div class="ai-main" id="aiSummary">Menganalisis pola penyewaan terbaru...</div>
+            <p class="panel-title">Aktivitas Penyewa Saat Ini</p>
+            <div class="ai-main" id="aiSummary">Membaca aktivitas penyewa terbaru...</div>
             <div class="insight-list" id="aiInsightList">
               <div class="insight-item">
                 <span class="dot" style="background:#22d3ee"></span>
-                <div>Insight akan muncul setelah data termuat.</div>
+                <div>Aktivitas penyewa akan muncul setelah data termuat.</div>
               </div>
             </div>
           </div>
 
           <div class="mini-grid">
             <div class="mini-card panel">
-              <div class="mini-label">Unit Paling Diminati</div>
+              <div class="mini-label">Paling Banyak Disewa</div>
               <div class="mini-value" id="topDevice">-</div>
-              <div class="mini-note">Berdasarkan frekuensi pada data saat ini</div>
+              <div class="mini-note">Pilihan favorit penyewa saat ini</div>
             </div>
             <div class="mini-card panel">
-              <div class="mini-label">Pengembalian Terlambat</div>
+              <div class="mini-label">Lewat Jadwal Kembali</div>
               <div class="mini-value" id="lateCount">0</div>
-              <div class="mini-note">Status aktif melewati tanggal kembali</div>
+              <div class="mini-note">Penyewaan aktif yang melewati jadwal</div>
             </div>
           </div>
         </div>
@@ -958,8 +958,8 @@
     <section class="section">
       <div class="section-header">
         <div>
-          <h3>Ringkasan Visual</h3>
-          <p>Analitik cepat untuk membantu keputusan operasional lebih cepat</p>
+          <h3>Bukti Aktivitas Penyewaan</h3>
+          <p>Lihat tren dan status penyewaan agar lebih yakin sebelum memilih unit</p>
         </div>
       </div>
 
@@ -967,8 +967,8 @@
         <div class="chart-card">
           <div class="chart-head">
             <div>
-              <p class="chart-title">Tren Penyewaan per Tanggal</p>
-              <p class="chart-sub">Menggunakan tanggal sewa dari data yang tersedia</p>
+              <p class="chart-title">Tren Penyewaan</p>
+              <p class="chart-sub">Menunjukkan aktivitas penyewaan dari waktu ke waktu</p>
             </div>
             <span class="canvas-badge">Trend</span>
           </div>
@@ -980,8 +980,8 @@
         <div class="chart-card">
           <div class="chart-head">
             <div>
-              <p class="chart-title">Distribusi Status</p>
-              <p class="chart-sub">Komposisi order saat ini</p>
+              <p class="chart-title">Status Penyewaan Saat Ini</p>
+              <p class="chart-sub">Gambaran unit yang dipesan, dipakai, dan selesai disewa</p>
             </div>
             <span class="canvas-badge">Status</span>
           </div>
@@ -996,18 +996,19 @@
     <section class="section table-panel">
       <div class="section-header">
         <div>
-          <h3>Data Penyewaan</h3>
-          <p>Cari cepat, filter status, dan pantau data terbaru</p>
+          <h3>Riwayat Penyewaan</h3>
+          <p>Lihat data penyewaan secara transparan dan real-time</p>
         </div>
       </div>
 
       <div class="filters">
-        <input class="field" type="text" id="searchInput" placeholder="Cari nama penyewa atau tipe iPhone..." />
+        <input class="field" type="text" id="searchInput" placeholder="Cari tipe iPhone atau nama penyewa..." />
         <select class="field" id="statusFilter">
           <option value="">Semua Status</option>
-          <option value="Booking">Booking</option>
-          <option value="Sedang Disewa">Sedang Disewa</option>
-          <option value="Selesai">Selesai</option>
+          <option value="Booking">Sedang Dipesan</option>
+          <option value="Sedang Disewa">Unit Sedang Dipakai</option>
+          <option value="Selesai">Sewa Berhasil</option>
+          <option value="Terlambat">Terlambat</option>
         </select>
         <select class="field" id="sortFilter">
           <option value="newest">Urutkan: Terbaru</option>
@@ -1035,7 +1036,7 @@
       </div>
 
       <div class="table-footer">
-        <div class="footer-note">Dibuat untuk monitoring data rental iPhone secara real-time • Redesain 2026 by Muhammad Rizky Ramadhan</div>
+        <div class="footer-note">Data real-time untuk transparansi penyewaan • Redesain 2026 by Muhammad Rizky Ramadhan</div>
         <div class="pagination" id="pagination"></div>
       </div>
     </section>
@@ -1134,7 +1135,8 @@
           (item.tipeIphone || '').toLowerCase().includes(keyword) ||
           (item.catatan || '').toLowerCase().includes(keyword);
 
-        const matchStatus = !selectedStatus || normalizeStatus(item.status) === selectedStatus;
+        const matchStatus = !selectedStatus ||
+          (selectedStatus === 'Terlambat' ? isLateReturn(item) : normalizeStatus(item.status) === selectedStatus);
         return matchKeyword && matchStatus;
       });
 
@@ -1154,18 +1156,31 @@
       return filtered;
     }
 
+    function updateTrendBadge(id, value, useDownStyle) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = value;
+      el.classList.toggle('trend-down', Boolean(useDownStyle));
+      el.classList.toggle('trend-up', !useDownStyle);
+    }
+
     function updateStats(data) {
       const total = data.length;
       const booking = data.filter(item => normalizeStatus(item.status) === 'Booking').length;
       const disewa = data.filter(item => normalizeStatus(item.status) === 'Sedang Disewa').length;
       const selesai = data.filter(item => normalizeStatus(item.status) === 'Selesai').length;
       const lateCount = data.filter(isLateReturn).length;
+      const percent = count => total ? Math.round((count / total) * 100) + '%' : '0%';
 
       document.getElementById('statTotal').textContent = total;
       document.getElementById('statBooking').textContent = booking;
       document.getElementById('statDisewa').textContent = disewa;
       document.getElementById('statSelesai').textContent = selesai;
       document.getElementById('lateCount').textContent = lateCount;
+      updateTrendBadge('trendTotal', total ? 'Live' : 'Kosong', !total);
+      updateTrendBadge('trendBooking', percent(booking), false);
+      updateTrendBadge('trendDisewa', percent(disewa), false);
+      updateTrendBadge('trendSelesai', percent(selesai), false);
 
       const topDeviceMap = {};
       data.forEach(item => {
@@ -1199,23 +1214,23 @@
       const rankedDevices = Object.entries(topMap).sort((a, b) => b[1] - a[1]);
       const topDevice = rankedDevices[0]?.[0] || 'Belum ada data';
 
-      let summary = 'Belum ada data aktif untuk dianalisis.';
+      let summary = 'Belum ada aktivitas penyewaan yang bisa ditampilkan saat ini.';
       if (total > 0) {
         if (active >= booking && active >= completed) {
-          summary = 'Operasional sedang didominasi unit aktif. Fokus utama ada pada monitoring pengembalian dan kesiapan unit berikutnya.';
+          summary = 'Sebagian besar unit sedang digunakan, menunjukkan permintaan sewa yang tinggi saat ini.';
         } else if (completed >= active && completed >= booking) {
-          summary = 'Banyak order sudah selesai. Ini waktu yang tepat untuk evaluasi perputaran unit dan retensi pelanggan.';
+          summary = 'Banyak penyewaan sudah selesai, menunjukkan proses sewa berjalan aktif dan dipercaya.';
         } else {
-          summary = 'Permintaan baru sedang tinggi. Pastikan verifikasi booking dan kesiapan unit berjalan cepat.';
+          summary = 'Banyak pesanan baru masuk, menandakan minat penyewa sedang meningkat.';
         }
       }
 
       document.getElementById('aiSummary').textContent = summary;
 
       const insights = [
-        { color: '#22d3ee', text: total ? `${topDevice} menjadi perangkat paling sering muncul di data saat ini.` : 'Belum ada perangkat dominan.' },
-        { color: '#60a5fa', text: total ? `${active} unit sedang aktif disewa dan ${booking} order masih dalam fase booking.` : 'Menunggu data dari API untuk membaca status aktif.' },
-        { color: late > 0 ? '#ef4444' : '#22c55e', text: late > 0 ? `${late} data terdeteksi melewati tanggal kembali. Perlu follow-up operasional.` : 'Tidak ada keterlambatan aktif yang terdeteksi saat ini.' }
+        { color: '#22d3ee', text: total ? `${topDevice} menjadi iPhone yang paling sering disewa saat ini.` : 'Belum ada perangkat dominan.' },
+        { color: '#60a5fa', text: total ? `${active} unit sedang digunakan oleh penyewa lain, sementara ${booking} pesanan masih dalam tahap booking.` : 'Menunggu data terbaru untuk membaca aktivitas penyewa.' },
+        { color: late > 0 ? '#ef4444' : '#22c55e', text: late > 0 ? `${late} penyewaan melewati jadwal kembali.` : 'Tidak ada penyewaan aktif yang melewati jadwal saat ini.' }
       ];
 
       document.getElementById('aiInsightList').innerHTML = insights.map(item => `
@@ -1228,23 +1243,30 @@
 
     function getTrendData(data) {
       const counts = {};
+
       data.forEach(item => {
         const ts = parseDateValue(item.tanggalSewa);
-        const label = ts ? formatDate(ts) : 'Tidak valid';
-        counts[label] = (counts[label] || 0) + 1;
+        if (!ts) return;
+
+        const date = new Date(ts);
+        const dayKey = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+
+        if (!counts[dayKey]) {
+          counts[dayKey] = {
+            timestamp: new Date(date.getFullYear(), date.getMonth(), date.getDate()).getTime(),
+            label: formatDate(ts),
+            value: 0
+          };
+        }
+
+        counts[dayKey].value += 1;
       });
 
-      const entries = Object.entries(counts)
-        .filter(entry => entry[0] !== 'Tidak valid')
-        .sort((a, b) => {
-          const aTime = parseDateValue(a[0]);
-          const bTime = parseDateValue(b[0]);
-          return aTime - bTime;
-        });
+      const entries = Object.values(counts).sort((a, b) => a.timestamp - b.timestamp);
 
       return {
-        labels: entries.map(entry => entry[0]),
-        values: entries.map(entry => entry[1])
+        labels: entries.map(entry => entry.label),
+        values: entries.map(entry => entry.value)
       };
     }
 
@@ -1267,7 +1289,7 @@
         data: {
           labels: trend.labels.length ? trend.labels : ['Belum ada data'],
           datasets: [{
-            label: 'Jumlah penyewaan',
+            label: 'Aktivitas penyewaan',
             data: trend.values.length ? trend.values : [0],
             borderColor: '#60a5fa',
             backgroundColor: gradient,
@@ -1389,7 +1411,7 @@
       const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
 
       if (!filtered.length) {
-        container.innerHTML = '<div class="empty">Tidak ada data yang cocok dengan pencarian atau filter saat ini.</div>';
+        container.innerHTML = '<div class="empty">Belum ada data yang cocok dengan pencarian atau filter saat ini.</div>';
         renderPagination(0, 1);
         return;
       }
