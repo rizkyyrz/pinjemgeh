@@ -736,6 +736,132 @@
       font-weight: 800;
     }
 
+
+
+    /* ===== Promo & Testimoni Slider ===== */
+    .promo-slider {
+      position: relative;
+      width: 100%;
+      min-height: 520px;
+      height: 100%;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(96, 165, 250, 0.32);
+      background: rgba(255,255,255,.05);
+      box-shadow: var(--shadow), 0 0 42px rgba(59,130,246,.12);
+      isolation: isolate;
+    }
+
+    .promo-slider::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent 55%, rgba(2,6,23,.54));
+      z-index: 3;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.015);
+      transition: opacity .55s ease, transform .7s ease;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: scale(1);
+      z-index: 2;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .slide-caption {
+      position: absolute;
+      z-index: 4;
+      left: 22px;
+      right: 22px;
+      bottom: 54px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(3, 7, 18, 0.52);
+      border: 1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(14px);
+    }
+
+    .slide-caption strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .slide-caption span {
+      color: #cbd5e1;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .slide-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 6;
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(3,7,18,.58);
+      color: white;
+      font-size: 30px;
+      line-height: 1;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      transition: transform .18s ease, background .18s ease;
+    }
+
+    .slide-btn:hover {
+      transform: translateY(-50%) scale(1.06);
+      background: rgba(37,99,235,.7);
+    }
+
+    .slide-btn.prev { left: 14px; }
+    .slide-btn.next { right: 14px; }
+
+    .slide-dots {
+      position: absolute;
+      z-index: 6;
+      bottom: 18px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .slide-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.45);
+      cursor: pointer;
+      transition: width .2s ease, background .2s ease;
+    }
+
+    .slide-dot.active {
+      width: 26px;
+      background: #22d3ee;
+    }
+
+    .dashboard-hidden-stats {
+      display: none;
+    }
     @media (max-width: 1180px) {
       .hero-grid,
       .chart-grid {
@@ -863,7 +989,7 @@
       <div class="brand">
         <div class="brand-badge">PG</div>
         <div class="brand-text">
-          <h1>PinjemGeh Sewa iPhone Transparan</h1>
+          <h1>PinjemGeh Sewa iPhone</h1>
           <p>Supported by PT RZKYPay Solusi Digital</p>
         </div>
       </div>
@@ -892,7 +1018,7 @@
             <span class="pill">Aktivitas Penyewa</span>
             <span class="pill">Transparan & Terpercaya</span>
           </div>
-          <h2>Sewa iPhone Mudah & Transparan</h2>
+          <h2>Sewa iPhone Mudah & Murah</h2>
           <p>
             Lihat aktivitas penyewaan secara real-time agar kamu makin yakin sebelum sewa.
           </p>
@@ -928,28 +1054,50 @@
         </div>
 
         <div class="hero-side">
-          <div class="panel">
-            <p class="panel-title">Aktivitas Penyewa Saat Ini</p>
-            <div class="ai-main" id="aiSummary">Membaca aktivitas penyewa terbaru...</div>
-            <div class="insight-list" id="aiInsightList">
-              <div class="insight-item">
-                <span class="dot" style="background:#22d3ee"></span>
-                <div>Aktivitas penyewa akan muncul setelah data termuat.</div>
+          <div class="promo-slider" aria-label="Slide promo dan testimoni PinjemGeh">
+            <div class="slide active">
+              <img src="assets/promo-1.png" alt="Promo sewa iPhone PinjemGeh">
+              <div class="slide-caption">
+                <strong>Promo Sewa iPhone</strong>
+                <span>Harga terjangkau, unit original, proses cepat, dan aman.</span>
               </div>
             </div>
+
+            <div class="slide">
+              <img src="assets/promo-2.png" alt="Promo iPhone terbaru PinjemGeh">
+              <div class="slide-caption">
+                <strong>iPhone Terbaru Harga Bersahabat</strong>
+                <span>Cocok untuk liburan, konten, kerja, atau kebutuhan harian.</span>
+              </div>
+            </div>
+
+            <div class="slide">
+              <img src="assets/testimoni-1.png" alt="Testimoni penyewa PinjemGeh">
+              <div class="slide-caption">
+                <strong>Apa Kata Mereka?</strong>
+                <span>Customer puas karena unit mulus, pelayanan ramah, dan proses sewa mudah.</span>
+              </div>
+            </div>
+
+            <div class="slide">
+              <img src="assets/testimoni-2.png" alt="Bukti testimoni customer PinjemGeh">
+              <div class="slide-caption">
+                <strong>Dipercaya Banyak Penyewa</strong>
+                <span>Tampilkan screenshot testimoni real dari WhatsApp atau Instagram di sini.</span>
+              </div>
+            </div>
+
+            <button class="slide-btn prev" type="button" onclick="changePromoSlide(-1)" aria-label="Slide sebelumnya">‹</button>
+            <button class="slide-btn next" type="button" onclick="changePromoSlide(1)" aria-label="Slide berikutnya">›</button>
+            <div class="slide-dots" id="promoDots"></div>
           </div>
 
-          <div class="mini-grid">
-            <div class="mini-card panel">
-              <div class="mini-label">Paling Banyak Disewa</div>
-              <div class="mini-value" id="topDevice">-</div>
-              <div class="mini-note">Pilihan favorit penyewa saat ini</div>
-            </div>
-            <div class="mini-card panel">
-              <div class="mini-label">Lewat Jadwal Kembali</div>
-              <div class="mini-value" id="lateCount">0</div>
-              <div class="mini-note">Penyewaan aktif yang melewati jadwal</div>
-            </div>
+          <!-- ID ini tetap disediakan agar fungsi statistik lama tidak error -->
+          <div class="dashboard-hidden-stats">
+            <div id="aiSummary"></div>
+            <div id="aiInsightList"></div>
+            <div id="topDevice"></div>
+            <div id="lateCount">0</div>
           </div>
         </div>
       </div>
@@ -1527,6 +1675,53 @@
         renderPagination(0, 1);
       }
     }
+
+
+    /* ===== Promo & Testimoni Slider ===== */
+    let promoSlideIndex = 0;
+    let promoSlideTimer = null;
+
+    function renderPromoDots() {
+      const slides = document.querySelectorAll('.promo-slider .slide');
+      const dots = document.getElementById('promoDots');
+      if (!dots || !slides.length) return;
+
+      dots.innerHTML = Array.from(slides).map((_, index) => {
+        return `<span class="slide-dot ${index === promoSlideIndex ? 'active' : ''}" onclick="goToPromoSlide(${index})"></span>`;
+      }).join('');
+    }
+
+    function showPromoSlide(index) {
+      const slides = document.querySelectorAll('.promo-slider .slide');
+      if (!slides.length) return;
+
+      promoSlideIndex = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === promoSlideIndex);
+      });
+      renderPromoDots();
+    }
+
+    function changePromoSlide(direction) {
+      showPromoSlide(promoSlideIndex + direction);
+      restartPromoAutoSlide();
+    }
+
+    function goToPromoSlide(index) {
+      showPromoSlide(index);
+      restartPromoAutoSlide();
+    }
+
+    function restartPromoAutoSlide() {
+      if (promoSlideTimer) clearInterval(promoSlideTimer);
+      promoSlideTimer = setInterval(() => {
+        showPromoSlide(promoSlideIndex + 1);
+      }, 4500);
+    }
+
+    renderPromoDots();
+    restartPromoAutoSlide();
+
 
     bindFilters();
     rowsPerPage = Number(rowsPerPageSelect.value) || 10;
