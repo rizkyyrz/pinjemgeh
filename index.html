@@ -736,6 +736,272 @@
       font-weight: 800;
     }
 
+
+
+    /* ===== Compact Testimoni Slider - 2 testimoni per slide ===== */
+    .compact-testimoni {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 22px;
+      border: 1px solid rgba(96, 165, 250, 0.22);
+      background:
+        radial-gradient(circle at top left, rgba(34, 211, 238, 0.10), transparent 34%),
+        rgba(255, 255, 255, 0.045);
+      backdrop-filter: var(--glass);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.05);
+      overflow: hidden;
+    }
+
+    .compact-testimoni-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      color: #dbeafe;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .compact-testimoni-slider {
+      position: relative;
+      min-height: 122px;
+    }
+
+    .compact-testimoni-slide {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      opacity: 0;
+      transform: translateX(14px);
+      pointer-events: none;
+      transition: opacity .35s ease, transform .35s ease;
+    }
+
+    .compact-testimoni-slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    .compact-testimoni-item {
+      min-height: 108px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .compact-testimoni-item:hover {
+      transform: translateY(-2px);
+      border-color: rgba(96, 165, 250, 0.30);
+      background: rgba(255,255,255,.07);
+    }
+
+    .compact-testimoni-item b {
+      display: block;
+      margin-bottom: 9px;
+      color: #e5eefc;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .compact-testimoni-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .compact-stars {
+      color: #fbbf24;
+      font-size: 14px;
+      letter-spacing: 1px;
+      line-height: 1;
+    }
+
+    .compact-testimoni-dots {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .compact-testimoni-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.35);
+      cursor: pointer;
+      transition: width .18s ease, background .18s ease;
+    }
+
+    .compact-testimoni-dot.active {
+      width: 22px;
+      background: #22d3ee;
+    }
+
+    /* ===== Promo & Testimoni Slider - Blur Background 3:4 ===== */
+    .promo-slider {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      min-height: 520px;
+      max-height: 760px;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(96, 165, 250, 0.32);
+      background: #06111f;
+      box-shadow: var(--shadow), 0 0 42px rgba(59,130,246,.12);
+      isolation: isolate;
+    }
+
+    .promo-slider::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background: linear-gradient(180deg, transparent 50%, rgba(2,6,23,.58));
+      z-index: 3;
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transform: scale(1.015);
+      transition: opacity .55s ease, transform .7s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #06111f;
+    }
+
+    .slide::before {
+      content: "";
+      position: absolute;
+      inset: -28px;
+      background-image: var(--slide-bg);
+      background-size: cover;
+      background-position: center;
+      filter: blur(28px);
+      transform: scale(1.16);
+      opacity: .62;
+      z-index: 1;
+    }
+
+    .slide::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 28%, rgba(59,130,246,.18), transparent 42%),
+        linear-gradient(180deg, rgba(2,6,23,.08), rgba(2,6,23,.35));
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .slide.active {
+      opacity: 1;
+      transform: scale(1);
+      z-index: 2;
+    }
+
+    .slide img {
+      position: relative;
+      z-index: 3;
+      width: 88%;
+      height: 88%;
+      object-fit: contain;
+      display: block;
+      border-radius: 22px;
+      box-shadow: 0 22px 55px rgba(0,0,0,.35);
+    }
+
+    .slide-caption {
+      position: absolute;
+      z-index: 4;
+      left: 26px;
+      right: 26px;
+      bottom: 58px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: rgba(3, 7, 18, 0.56);
+      border: 1px solid rgba(255,255,255,.14);
+      backdrop-filter: blur(14px);
+    }
+
+    .slide-caption strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .slide-caption span {
+      color: #cbd5e1;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .slide-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 6;
+      width: 44px;
+      height: 44px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(3,7,18,.58);
+      color: white;
+      font-size: 30px;
+      line-height: 1;
+      cursor: pointer;
+      backdrop-filter: blur(12px);
+      transition: transform .18s ease, background .18s ease;
+    }
+
+    .slide-btn:hover {
+      transform: translateY(-50%) scale(1.06);
+      background: rgba(37,99,235,.7);
+    }
+
+    .slide-btn.prev { left: 14px; }
+    .slide-btn.next { right: 14px; }
+
+    .slide-dots {
+      position: absolute;
+      z-index: 6;
+      bottom: 18px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .slide-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.42);
+      cursor: pointer;
+      transition: width .18s ease, background .18s ease;
+    }
+
+    .slide-dot.active {
+      width: 28px;
+      background: #22d3ee;
+    }
+
+    .dashboard-hidden-stats {
+      display: none;
+    }
     @media (max-width: 1180px) {
       .hero-grid,
       .chart-grid {
@@ -838,6 +1104,15 @@
     grid-template-columns: 1fr;
   }
 
+  .compact-testimoni-list {
+    grid-template-columns: 1fr;
+  }
+
+  .compact-testimoni-title {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .chart-card {
     min-height: auto;
     padding: 16px;
@@ -853,6 +1128,14 @@
 
   .pagination {
     width: 100%;
+  }
+
+  .compact-testimoni-slider {
+    min-height: 240px;
+  }
+
+  .compact-testimoni-slide {
+    grid-template-columns: 1fr;
   }
 }
   </style>
@@ -889,7 +1172,7 @@
         <div class="hero-copy">
           <div class="hero-badges">
             <span class="pill">Data Real-time</span>
-            <span class="pill">Aktivitas Penyewa</span>
+            <span class="pill">Sewa iPhone Ter-Murah se Kota Serang</span>
             <span class="pill">Transparan & Terpercaya</span>
           </div>
           <h2>Sewa iPhone Mudah & Murah</h2>
@@ -925,31 +1208,83 @@
               <div class="kpi-sub"><span class="trend trend-up" id="trendSelesai">0%</span> Dari total penyewaan</div>
             </div>
           </div>
+
+          <div class="compact-testimoni">
+            <div class="compact-testimoni-title">
+              <span>💬 Testimoni Penyewa</span>
+            </div>
+
+            <div class="compact-testimoni-slider">
+              <div class="compact-testimoni-slide active">
+                <div class="compact-testimoni-item">
+                  <b>"iPhone mulus banget, admin ramah!"</b>
+                  <span>- Tasya, Ciruas</span>
+                  <div class="compact-stars">★★★★★</div>
+                </div>
+
+                <div class="compact-testimoni-item">
+                  <b>"Udah langganan beberapa kali, terbaik pokoknya!"</b>
+                  <span>- Dewi, Ciomas</span>
+                  <div class="compact-stars">★★★★★</div>
+                </div>
+              </div>
+
+              <div class="compact-testimoni-slide">
+                <div class="compact-testimoni-item">
+                  <b>"Udah 2x sewa disini, ga mengecewakan"</b>
+                  <span>- Luna, Padarincang</span>
+                  <div class="compact-stars">★★★★★</div>
+                </div>
+
+                <div class="compact-testimoni-item">
+                  <b>"Admin fast respon, murah dan oke!."</b>
+                  <span>- Reza, Kragilan</span>
+                  <div class="compact-stars">★★★★★</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="compact-testimoni-dots" id="compactTestimoniDots"></div>
+          </div>
         </div>
 
         <div class="hero-side">
-          <div class="panel">
-            <p class="panel-title">Aktivitas Penyewa Saat Ini</p>
-            <div class="ai-main" id="aiSummary">Membaca aktivitas penyewa terbaru...</div>
-            <div class="insight-list" id="aiInsightList">
-              <div class="insight-item">
-                <span class="dot" style="background:#22d3ee"></span>
-                <div>Aktivitas penyewa akan muncul setelah data termuat.</div>
+          <div class="promo-slider" aria-label="Slide promo dan testimoni PinjemGeh">
+            <div class="slide active" style="--slide-bg: url('/dev/assets/promo-1.png')">
+              <img src="/assets/promo-1.png" alt="Promo sewa iPhone PinjemGeh">
+            </div>
+
+            <div class="slide" style="--slide-bg: url('/dev/assets/promo-2.png')">
+              <img src="/assets/promo-2.png" alt="Promo iPhone terbaru PinjemGeh">
+            </div>
+
+            <div class="slide" style="--slide-bg: url('/dev/assets/testimoni-1.png')">
+              <img src="/assets/testimoni-1.png" alt="Testimoni penyewa PinjemGeh">
+              <div class="slide-caption">
+                <strong>Apa Kata Mereka?</strong>
+                <span>"Kapan lagi bisa sewa iPhone 12 Pro mulai dari Rp. 55.000 - Dewi</span>
               </div>
             </div>
+
+            <div class="slide" style="--slide-bg: url('/dev/assets/testimoni-2.png')">
+              <img src="/assets/testimoni-2.png" alt="Bukti testimoni customer PinjemGeh">
+              <div class="slide-caption">
+                <strong>Dipercaya Banyak Penyewa</strong>
+                <span>"Sempet cari tempat sewa iPhone, terus ketemu PinjemGeh yang ga ribet - Damar</span>
+              </div>
+            </div>
+
+            <button class="slide-btn prev" type="button" onclick="changePromoSlide(-1)" aria-label="Slide sebelumnya">‹</button>
+            <button class="slide-btn next" type="button" onclick="changePromoSlide(1)" aria-label="Slide berikutnya">›</button>
+            <div class="slide-dots" id="promoDots"></div>
           </div>
 
-          <div class="mini-grid">
-            <div class="mini-card panel">
-              <div class="mini-label">Paling Banyak Disewa</div>
-              <div class="mini-value" id="topDevice">-</div>
-              <div class="mini-note">Pilihan favorit penyewa saat ini</div>
-            </div>
-            <div class="mini-card panel">
-              <div class="mini-label">Lewat Jadwal Kembali</div>
-              <div class="mini-value" id="lateCount">0</div>
-              <div class="mini-note">Penyewaan aktif yang melewati jadwal</div>
-            </div>
+          <!-- ID ini tetap disediakan agar fungsi statistik lama tidak error -->
+          <div class="dashboard-hidden-stats">
+            <div id="aiSummary"></div>
+            <div id="aiInsightList"></div>
+            <div id="topDevice"></div>
+            <div id="lateCount">0</div>
           </div>
         </div>
       </div>
@@ -1527,6 +1862,95 @@
         renderPagination(0, 1);
       }
     }
+
+
+    /* ===== Promo & Testimoni Slider ===== */
+    let promoSlideIndex = 0;
+    let promoSlideTimer = null;
+
+    function renderPromoDots() {
+      const slides = document.querySelectorAll('.promo-slider .slide');
+      const dots = document.getElementById('promoDots');
+      if (!dots || !slides.length) return;
+
+      dots.innerHTML = Array.from(slides).map((_, index) => {
+        return `<span class="slide-dot ${index === promoSlideIndex ? 'active' : ''}" onclick="goToPromoSlide(${index})"></span>`;
+      }).join('');
+    }
+
+    function showPromoSlide(index) {
+      const slides = document.querySelectorAll('.promo-slider .slide');
+      if (!slides.length) return;
+
+      promoSlideIndex = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === promoSlideIndex);
+      });
+      renderPromoDots();
+    }
+
+    function changePromoSlide(direction) {
+      showPromoSlide(promoSlideIndex + direction);
+      restartPromoAutoSlide();
+    }
+
+    function goToPromoSlide(index) {
+      showPromoSlide(index);
+      restartPromoAutoSlide();
+    }
+
+    function restartPromoAutoSlide() {
+      if (promoSlideTimer) clearInterval(promoSlideTimer);
+      promoSlideTimer = setInterval(() => {
+        showPromoSlide(promoSlideIndex + 1);
+      }, 4500);
+    }
+
+    renderPromoDots();
+    restartPromoAutoSlide();
+
+
+    /* ===== Compact Testimoni Slider ===== */
+    let compactTestimoniIndex = 0;
+    let compactTestimoniTimer = null;
+
+    function renderCompactTestimoniDots() {
+      const slides = document.querySelectorAll('.compact-testimoni-slide');
+      const dots = document.getElementById('compactTestimoniDots');
+      if (!dots || !slides.length) return;
+
+      dots.innerHTML = Array.from(slides).map((_, index) => {
+        return `<span class="compact-testimoni-dot ${index === compactTestimoniIndex ? 'active' : ''}" onclick="goToCompactTestimoni(${index})"></span>`;
+      }).join('');
+    }
+
+    function showCompactTestimoni(index) {
+      const slides = document.querySelectorAll('.compact-testimoni-slide');
+      if (!slides.length) return;
+
+      compactTestimoniIndex = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === compactTestimoniIndex);
+      });
+
+      renderCompactTestimoniDots();
+    }
+
+    function goToCompactTestimoni(index) {
+      showCompactTestimoni(index);
+      restartCompactTestimoniSlide();
+    }
+
+    function restartCompactTestimoniSlide() {
+      if (compactTestimoniTimer) clearInterval(compactTestimoniTimer);
+      compactTestimoniTimer = setInterval(() => {
+        showCompactTestimoni(compactTestimoniIndex + 1);
+      }, 4500);
+    }
+
+    renderCompactTestimoniDots();
+    restartCompactTestimoniSlide();
+
 
     bindFilters();
     rowsPerPage = Number(rowsPerPageSelect.value) || 10;
