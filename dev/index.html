@@ -738,6 +738,114 @@
 
 
 
+    /* ===== Compact Testimoni Slider - 2 testimoni per slide ===== */
+    .compact-testimoni {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 22px;
+      border: 1px solid rgba(96, 165, 250, 0.22);
+      background:
+        radial-gradient(circle at top left, rgba(34, 211, 238, 0.10), transparent 34%),
+        rgba(255, 255, 255, 0.045);
+      backdrop-filter: var(--glass);
+      box-shadow: var(--shadow), inset 0 1px 0 rgba(255,255,255,.05);
+      overflow: hidden;
+    }
+
+    .compact-testimoni-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      color: #dbeafe;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    .compact-testimoni-slider {
+      position: relative;
+      min-height: 122px;
+    }
+
+    .compact-testimoni-slide {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      opacity: 0;
+      transform: translateX(14px);
+      pointer-events: none;
+      transition: opacity .35s ease, transform .35s ease;
+    }
+
+    .compact-testimoni-slide.active {
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
+    }
+
+    .compact-testimoni-item {
+      min-height: 108px;
+      padding: 14px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(148, 163, 184, 0.14);
+      transition: transform .18s ease, border-color .18s ease, background .18s ease;
+    }
+
+    .compact-testimoni-item:hover {
+      transform: translateY(-2px);
+      border-color: rgba(96, 165, 250, 0.30);
+      background: rgba(255,255,255,.07);
+    }
+
+    .compact-testimoni-item b {
+      display: block;
+      margin-bottom: 9px;
+      color: #e5eefc;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .compact-testimoni-item span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
+
+    .compact-stars {
+      color: #fbbf24;
+      font-size: 14px;
+      letter-spacing: 1px;
+      line-height: 1;
+    }
+
+    .compact-testimoni-dots {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .compact-testimoni-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.35);
+      cursor: pointer;
+      transition: width .18s ease, background .18s ease;
+    }
+
+    .compact-testimoni-dot.active {
+      width: 22px;
+      background: #22d3ee;
+    }
+
     /* ===== Promo & Testimoni Slider - Blur Background 3:4 ===== */
     .promo-slider {
       position: relative;
@@ -996,6 +1104,15 @@
     grid-template-columns: 1fr;
   }
 
+  .compact-testimoni-list {
+    grid-template-columns: 1fr;
+  }
+
+  .compact-testimoni-title {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .chart-card {
     min-height: auto;
     padding: 16px;
@@ -1011,6 +1128,14 @@
 
   .pagination {
     width: 100%;
+  }
+
+  .compact-testimoni-slider {
+    min-height: 240px;
+  }
+
+  .compact-testimoni-slide {
+    grid-template-columns: 1fr;
   }
 }
   </style>
@@ -1083,6 +1208,44 @@
               <div class="kpi-sub"><span class="trend trend-up" id="trendSelesai">0%</span> Dari total penyewaan</div>
             </div>
           </div>
+
+          <div class="compact-testimoni">
+            <div class="compact-testimoni-title">
+              <span>💬 Testimoni Penyewa</span>
+            </div>
+
+            <div class="compact-testimoni-slider">
+              <div class="compact-testimoni-slide active">
+                <div class="compact-testimoni-item">
+                  <b>"iPhone mulus banget, admin ramah!"</b>
+                  <span>- Tasya, Ciruas</span>
+                  <div class="compact-stars">★★★★★</div>
+                </div>
+
+                <div class="compact-testimoni-item">
+                  <b>"Udah langganan beberapa kali, terbaik pokoknya!"</b>
+                  <span>- Dewi, Ciomas</span>
+                  <div class="compact-stars">★★★★★</div>
+                </div>
+              </div>
+
+              <div class="compact-testimoni-slide">
+                <div class="compact-testimoni-item">
+                  <b>"Udah 2x sewa disini, ga mengecewakan"</b>
+                  <span>- Luna, Padarincang</span>
+                  <div class="compact-stars">★★★★★</div>
+                </div>
+
+                <div class="compact-testimoni-item">
+                  <b>"Admin fast respon, murah dan oke!."</b>
+                  <span>- Reza, Kragilan</span>
+                  <div class="compact-stars">★★★★★</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="compact-testimoni-dots" id="compactTestimoniDots"></div>
+          </div>
         </div>
 
         <div class="hero-side">
@@ -1099,7 +1262,7 @@
               <img src="/dev/assets/testimoni-1.png" alt="Testimoni penyewa PinjemGeh">
               <div class="slide-caption">
                 <strong>Apa Kata Mereka?</strong>
-                <span>"Baru kali ini nemu tempat sewa iPhone ter-murah di Kota Serang mulai dari Rp. 55.000 - Dewi</span>
+                <span>Customer puas karena unit mulus, pelayanan ramah, dan proses sewa mudah.</span>
               </div>
             </div>
 
@@ -1107,7 +1270,7 @@
               <img src="/dev/assets/testimoni-2.png" alt="Bukti testimoni customer PinjemGeh">
               <div class="slide-caption">
                 <strong>Dipercaya Banyak Penyewa</strong>
-                <span>"Sempet cari tempat sewa iPhone, tapi yang ga ribet cuma disini - Damar</span>
+                <span>Tampilkan screenshot testimoni real dari WhatsApp atau Instagram di sini.</span>
               </div>
             </div>
 
@@ -1745,6 +1908,48 @@
 
     renderPromoDots();
     restartPromoAutoSlide();
+
+
+    /* ===== Compact Testimoni Slider ===== */
+    let compactTestimoniIndex = 0;
+    let compactTestimoniTimer = null;
+
+    function renderCompactTestimoniDots() {
+      const slides = document.querySelectorAll('.compact-testimoni-slide');
+      const dots = document.getElementById('compactTestimoniDots');
+      if (!dots || !slides.length) return;
+
+      dots.innerHTML = Array.from(slides).map((_, index) => {
+        return `<span class="compact-testimoni-dot ${index === compactTestimoniIndex ? 'active' : ''}" onclick="goToCompactTestimoni(${index})"></span>`;
+      }).join('');
+    }
+
+    function showCompactTestimoni(index) {
+      const slides = document.querySelectorAll('.compact-testimoni-slide');
+      if (!slides.length) return;
+
+      compactTestimoniIndex = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('active', i === compactTestimoniIndex);
+      });
+
+      renderCompactTestimoniDots();
+    }
+
+    function goToCompactTestimoni(index) {
+      showCompactTestimoni(index);
+      restartCompactTestimoniSlide();
+    }
+
+    function restartCompactTestimoniSlide() {
+      if (compactTestimoniTimer) clearInterval(compactTestimoniTimer);
+      compactTestimoniTimer = setInterval(() => {
+        showCompactTestimoni(compactTestimoniIndex + 1);
+      }, 4500);
+    }
+
+    renderCompactTestimoniDots();
+    restartCompactTestimoniSlide();
 
 
     bindFilters();
