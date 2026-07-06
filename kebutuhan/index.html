@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Persetujuan Penyewaan Elektronik - PinjemGeh</title>
+  <style>
+    :root {
+      --text: #0f172a;
+      --muted: #475569;
+      --line: #cbd5e1;
+      --blue: #1d4ed8;
+      --blue-soft: #eff6ff;
+      --warn: #9a3412;
+      --warn-soft: #fff7ed;
+      --warn-line: #fdba74;
+      --danger: #991b1b;
+      --danger-soft: #fef2f2;
+      --danger-line: #fca5a5;
+      --success: #166534;
+      --success-soft: #f0fdf4;
+      --success-line: #86efac;
+    }
+
+    * { box-sizing: border-box; }
+    html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body {
+      margin: 0;
+      font-family: Inter, Arial, sans-serif;
+      color: var(--text);
+      background: #eef4ff;
+    }
+    .container { max-width: 920px; margin: 0 auto; padding: 28px 18px 40px; }
+    .sheet {
+      background: #fff;
+      border: 1px solid #dbe4f0;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+    }
+    .hero {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 24px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      margin-bottom: 18px;
+    }
+    .hero h1 { margin: 0 0 10px; font-size: 34px; line-height: 1.2; }
+    .hero p { margin: 0; color: var(--muted); font-size: 16px; line-height: 1.8; }
+    .meta-grid { margin-top: 18px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .meta-card { border: 1px solid var(--line); border-radius: 16px; padding: 14px; background: #fff; }
+    .meta-label { font-size: 12px; color: #64748b; margin-bottom: 6px; }
+    .meta-value { font-size: 16px; font-weight: 700; }
+    .section {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+      background: #fff;
+      margin-bottom: 14px;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+    .number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: var(--blue-soft);
+      color: var(--blue);
+      font-weight: 800;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+    h2 { margin: 0 0 10px; font-size: 28px; line-height: 1.25; }
+    p { margin: 0 0 12px; color: #334155; font-size: 16px; line-height: 1.8; }
+    ul { margin: 10px 0 0; padding-left: 22px; }
+    li { margin-bottom: 10px; color: #334155; font-size: 16px; line-height: 1.8; }
+    .note { margin-top: 14px; padding: 14px 16px; border-radius: 14px; border: 1px solid #bfdbfe; background: #f8fbff; }
+    .note.warning { border-color: var(--warn-line); background: var(--warn-soft); }
+    .note.danger { border-color: var(--danger-line); background: var(--danger-soft); }
+    .note.success { border-color: var(--success-line); background: var(--success-soft); }
+    .note-title { margin-bottom: 6px; font-size: 12px; font-weight: 800; letter-spacing: 0.04em; text-transform: uppercase; color: var(--blue); }
+    .note.warning .note-title { color: var(--warn); }
+    .note.danger .note-title { color: var(--danger); }
+    .note.success .note-title { color: var(--success); }
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin-top: 12px; }
+    .form-field label { display: block; margin-bottom: 6px; font-size: 13px; font-weight: 800; color: #334155; }
+    .form-field input {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 15px;
+      outline: none;
+    }
+    .form-field input:focus { border-color: var(--blue); box-shadow: 0 0 0 3px #dbeafe; }
+    .agreement-box {
+      border: 2px solid var(--blue);
+      border-radius: 18px;
+      padding: 18px;
+      background: #f8fbff;
+      margin-top: 14px;
+    }
+    .agreement-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      cursor: pointer;
+      font-size: 15px;
+      line-height: 1.7;
+      color: #1e293b;
+      font-weight: 700;
+    }
+    .agreement-check input { width: 22px; height: 22px; margin-top: 3px; accent-color: var(--blue); flex: 0 0 auto; }
+    .status-text { margin-top: 12px; font-size: 13px; color: #64748b; }
+    .status-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 12px; }
+    .status-item { border: 1px solid var(--success-line); border-radius: 12px; padding: 10px 12px; background: #fff; }
+    .status-label { font-size: 11px; color: #64748b; margin-bottom: 4px; font-weight: 800; text-transform: uppercase; }
+    .status-value { font-size: 13px; color: #0f172a; word-break: break-word; }
+    .signature-page { page-break-before: always; break-before: page; margin-top: 0; }
+    .signature-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .signature-card { border: 1px solid var(--line); border-radius: 18px; padding: 18px; min-height: 220px; }
+    .signature-role { font-size: 18px; font-weight: 700; margin-bottom: 20px; }
+    .signature-field { margin-bottom: 22px; font-size: 15px; color: #475569; }
+    .signature-space { height: 72px; }
+    .signature-line { border-top: 1px solid #0f172a; margin-bottom: 10px; }
+    .signature-name { font-size: 14px; color: #475569; }
+    .footer-note { margin-top: 18px; padding-top: 12px; border-top: 1px dashed var(--line); font-size: 13px; color: #64748b; line-height: 1.7; }
+    .print-actions {
+      position: sticky;
+      bottom: 0;
+      margin-top: 18px;
+      padding: 14px 0 0;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      background: linear-gradient(180deg, rgba(238,244,255,0), #eef4ff 35%);
+    }
+    .print-btn {
+      border: none;
+      background: #1d4ed8;
+      color: #fff;
+      font-size: 14px;
+      font-weight: 800;
+      border-radius: 12px;
+      padding: 12px 18px;
+      cursor: pointer;
+    }
+    .print-btn:disabled { background: #94a3b8; cursor: not-allowed; }
+    .ghost-btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: #0f172a;
+      font-size: 14px;
+      font-weight: 800;
+      border-radius: 12px;
+      padding: 12px 18px;
+      cursor: pointer;
+    }
+
+    .status-wide { grid-column: 1 / -1; }
+    .certificate-page { page-break-before: always; break-before: page; }
+    .certificate-head { text-align: center; margin-bottom: 18px; }
+    .certificate-head h2 { margin-bottom: 8px; }
+    .certificate-badge { display: inline-block; padding: 8px 12px; border-radius: 999px; background: var(--blue-soft); color: var(--blue); font-size: 12px; font-weight: 800; letter-spacing: .08em; margin-bottom: 10px; }
+    .certificate-status { border: 1px solid var(--success-line); background: var(--success-soft); color: var(--success); font-weight: 900; text-align: center; border-radius: 16px; padding: 16px; font-size: 20px; margin-bottom: 18px; }
+    .certificate-grid { margin-top: 0; }
+
+    @page { size: A4; margin: 14mm; }
+    @media (max-width: 760px) {
+      .meta-grid, .signature-grid, .form-grid, .status-grid { grid-template-columns: 1fr; }
+      .hero h1, h2 { font-size: 26px; }
+      .print-actions { flex-direction: column; }
+    }
+    @media print {
+      body { background: #fff; }
+      .container { max-width: 100%; padding: 0; }
+      .sheet { border: none; border-radius: 0; box-shadow: none; padding: 0; }
+      .print-actions { display: none; }
+      .hero { padding: 16px 18px; margin-bottom: 10px; border-radius: 14px; }
+      .hero h1 { font-size: 23px; margin-bottom: 6px; }
+      .hero p, p, li { font-size: 11.2px; line-height: 1.55; }
+      .meta-grid { margin-top: 12px; gap: 8px; }
+      .meta-card { padding: 10px 12px; border-radius: 12px; }
+      .meta-label { font-size: 10px; }
+      .meta-value { font-size: 11.5px; }
+      .section { padding: 14px 16px; margin-bottom: 8px; border-radius: 12px; }
+      .number { width: 24px; height: 24px; font-size: 10px; margin-bottom: 8px; }
+      h2 { font-size: 18px; margin-bottom: 6px; }
+      ul { margin-top: 6px; padding-left: 18px; }
+      .note, .agreement-box { margin-top: 8px; padding: 10px 12px; border-radius: 10px; }
+      .note-title { font-size: 9.5px; margin-bottom: 5px; }
+      .agreement-check { font-size: 11px; line-height: 1.5; }
+      .agreement-check input { width: 16px; height: 16px; }
+      .status-text, .status-label, .status-value { font-size: 9.5px; }
+      .form-grid, .status-grid { grid-template-columns: repeat(2, 1fr); gap: 6px; }
+      .form-field input { border: none; border-bottom: 1px solid #0f172a; border-radius: 0; padding: 4px 0; font-size: 11px; }
+      .signature-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      .signature-card { min-height: 160px; padding: 12px; border-radius: 12px; }
+      .signature-role { font-size: 12px; margin-bottom: 12px; }
+      .signature-field, .signature-name { font-size: 10.5px; }
+      .signature-space { height: 42px; }
+      .footer-note { font-size: 9.5px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="sheet">
+      <section class="hero">
+        <h1>Persetujuan Penyewaan Elektronik iPhone</h1>
+        <p>PinjemGeh.id by PT RZKYPay Solusi Digital. Dokumen ini merupakan persetujuan penyewaan elektronik antara PinjemGeh dan penyewa. Penyewa wajib membaca seluruh ketentuan sebelum melakukan booking, pembayaran, menerima unit, atau menggunakan unit yang disewa.</p>
+        <div class="meta-grid">
+          <div class="meta-card"><div class="meta-label">Durasi Paket</div><div class="meta-value">12 Jam & 24 Jam</div></div>
+          <div class="meta-card"><div class="meta-label">Denda Keterlambatan</div><div class="meta-value">Rp10.000 / 10 Menit</div></div>
+          <div class="meta-card"><div class="meta-label">Area Gratis Antar/Kembali</div><div class="meta-value">Ciruas</div></div>
+        </div>
+      </section>
+
+      <section class="section"><div class="number">1</div><h2>Informasi Umum</h2><p>Dengan melakukan booking, pembayaran, menerima unit, atau menggunakan unit yang disewa, penyewa menyatakan telah membaca, memahami, dan menyetujui seluruh syarat dan ketentuan yang berlaku.</p></section>
+      <section class="section"><div class="number">2</div><h2>Booking & Down Payment (DP)</h2><p>DP tidak wajib, namun penyewa dapat melakukan DP minimal 50% dari harga sewa untuk mengamankan unit dan tanggal penyewaan.</p><div class="note"><div class="note-title">Price List & Minimal DP</div><p><strong>iPhone 15</strong></p><ul><li>Paket 24 jam Rp120.000 - DP minimal Rp60.000</li><li>Paket 12 jam Rp60.000 - DP minimal Rp30.000</li></ul><p><strong>iPhone 12 Pro</strong></p><ul><li>Paket 24 jam Rp110.000 - DP minimal Rp55.000</li><li>Paket 12 jam Rp55.000 - DP minimal Rp25.000</li></ul></div><div class="note warning"><div class="note-title">Catatan Penting</div><p>Harga berlaku khusus wilayah Banten dan belum termasuk biaya tambahan apabila unit dibawa ke luar wilayah Banten.</p></div><p>Jika penyewa tidak melakukan DP, ketersediaan unit tidak dapat dijamin. DP tidak dapat dikembalikan apabila pembatalan dilakukan oleh penyewa atau penyewa tidak memenuhi syarat penyewaan. Jika pembatalan terjadi karena kendala dari pihak pemilik, DP dikembalikan kepada penyewa.</p></section>
+      <section class="section"><div class="number">3</div><h2>Metode Pembayaran</h2><ul><li>Bank BCA - 2451343191 - a/n Muhammad Rizky Ramadhan</li><li>GoPay - 0851-5532-2281 - a/n Muhammad Rizky Ramadhan</li><li>QRIS - a/n PT RZKYPay Solusi Digital</li></ul></section>
+      <section class="section"><div class="number">4</div><h2>Bukti Pembayaran</h2><p>Setelah pembayaran diterima, penyewa akan mendapatkan invoice atau bukti pembayaran sebagai bukti resmi transaksi penyewaan.</p></section>
+      <section class="section"><div class="number">5</div><h2>Kondisi Unit</h2><p>Unit iPhone diserahkan dalam kondisi baik, normal, dan berfungsi sebagaimana mestinya. Penyewa dianggap telah memeriksa dan menyetujui kondisi unit saat serah terima.</p></section>
+      <section class="section"><div class="number">6</div><h2>Durasi Sewa</h2><p>Durasi sewa dihitung sejak waktu serah terima unit kepada penyewa hingga waktu pengembalian yang telah disepakati.</p></section>
+      <section class="section"><div class="number">7</div><h2>Keterlambatan Pengembalian</h2><p>Keterlambatan pengembalian unit dikenakan denda sebesar Rp10.000 setiap 10 menit.</p><div class="note warning"><div class="note-title">Catatan Penting</div><p>Apabila keterlambatan melebihi batas waktu wajar tanpa konfirmasi, pemilik berhak mengambil tindakan lebih lanjut.</p></div></section>
+      <section class="section"><div class="number">8</div><h2>Perpanjangan Masa Sewa</h2><p>Penyewa wajib menginformasikan minimal 20 menit sebelum waktu sewa berakhir dan melakukan pembayaran tambahan sesuai tarif yang berlaku. Perpanjangan hanya dapat dilakukan apabila unit tidak sedang dibooking penyewa lain.</p></section>
+      <section class="section"><div class="number">9</div><h2>Identitas & Jaminan Penyewa</h2><p>Penyewa wajib menyerahkan minimal 2 dokumen sebagai jaminan selama masa sewa, dengan ketentuan minimal 1 dokumen merupakan jaminan kuat.</p><p>Identitas diri yang dapat diserahkan:</p><ul><li>KTP</li><li>Paspor</li><li>Kartu Pelajar</li><li>Kartu Keluarga (KK)</li></ul><p>Jaminan kuat minimal salah satu:</p><ul><li>STNK</li><li>BPKB</li><li>SIM</li><li>Surat berharga lainnya yang memiliki nilai kuat dan disetujui pemilik</li></ul><div class="note warning"><div class="note-title">Catatan</div><p>Tanpa jaminan kuat, penyewaan tidak dapat dilakukan. Kombinasi dokumen tanpa jaminan kuat seperti KTP + Kartu Pelajar atau KTP + KK tidak dapat diterima.</p></div></section>
+      <section class="section"><div class="number">10</div><h2>Tanggung Jawab Kerusakan</h2><p>Segala bentuk kerusakan pada unit selama masa sewa menjadi tanggung jawab penyewa, baik kerusakan ringan maupun berat, termasuk biaya perbaikan yang timbul.</p></section>
+      <section class="section"><div class="number">11</div><h2>Kehilangan Unit</h2><p>Apabila unit hilang, tidak dapat dikembalikan, atau berada di luar kendali pemilik akibat kelalaian penyewa, penyewa wajib mengganti unit sesuai harga pasar iPhone yang disewa atau sesuai kesepakatan dengan pemilik.</p></section>
+      <section class="section"><div class="number">12</div><h2>Sistem Keamanan & Pelacakan</h2><p>Unit iPhone dilengkapi sistem keamanan dan pelacakan. Pemilik berhak melakukan pelacakan perangkat apabila terjadi pelanggaran, keterlambatan pengembalian, atau indikasi kehilangan unit.</p></section>
+      <section class="section"><div class="number">13</div><h2>Larangan Penggunaan</h2><p>Penyewa dilarang:</p><ul><li>Melakukan reset perangkat</li><li>Mengeluarkan perangkat dari sistem pelacakan</li><li>Mengubah nama iCloud</li><li>Login menggunakan akun iCloud pribadi</li><li>Mengubah pengaturan keamanan perangkat</li><li>Menggadaikan, menjual, atau memindahtangankan unit tanpa izin pemilik</li></ul><div class="note danger"><div class="note-title">Sanksi Pelanggaran</div><p>Pelanggaran dapat dikenakan denda minimal Rp1.500.000 dan maksimal Rp50.000.000, serta penyewa tetap bertanggung jawab atas seluruh kerugian yang timbul.</p></div></section>
+      <section class="section"><div class="number">14</div><h2>Penggunaan yang Melanggar Hukum</h2><p>Unit iPhone tidak boleh digunakan untuk kegiatan yang melanggar hukum. Segala bentuk penyalahgunaan perangkat sepenuhnya menjadi tanggung jawab penyewa dan dapat diproses sesuai hukum yang berlaku.</p></section>
+      <section class="section"><div class="number">15</div><h2>Hak Pemilik</h2><p>Pemilik berhak menolak, membatalkan, atau menghentikan penyewaan apabila penyewa tidak memenuhi syarat atau melanggar ketentuan yang berlaku.</p></section>
+      <section class="section"><div class="number">16</div><h2>Biaya Pengambilan & Pengembalian</h2><p>Pengambilan dan pengembalian unit gratis apabila dilakukan di wilayah Ciruas. Apabila lokasi pertemuan berada di luar wilayah tersebut, dikenakan biaya tambahan sebesar Rp15.000 setiap 10 km.</p></section>
+      <section class="section"><div class="number">17</div><h2>Penyelesaian Sengketa</h2><p>Apabila terjadi perselisihan antara pemilik dan penyewa, penyelesaian akan diupayakan terlebih dahulu secara musyawarah. Apabila tidak tercapai kesepakatan, penyelesaian dilakukan sesuai hukum yang berlaku di wilayah domisili pemilik.</p></section>
+
+      <section class="section">
+        <div class="number">18</div>
+        <h2>Persetujuan Penyewaan Elektronik</h2>
+        <p>Dengan mengisi nama lengkap, mencentang kotak persetujuan, dan menekan tombol Setuju & Download PDF, penyewa menyatakan telah membaca seluruh isi dokumen, memahami konsekuensinya, dan menyetujui semua ketentuan penyewaan yang berlaku.</p>
+        <div class="form-grid" style="margin-bottom:14px;">
+          <div class="form-field">
+            <label for="tenantName">Nama Lengkap Penyewa</label>
+            <input type="text" id="tenantName" placeholder="Masukkan nama lengkap penyewa" autocomplete="name" required />
+          </div>
+          <div class="form-field">
+            <label>Pemilik</label>
+            <input type="text" value="PinjemGeh" readonly />
+          </div>
+        </div>
+        <div class="agreement-box">
+          <label class="agreement-check">
+            <input type="checkbox" id="agreeCheck" />
+            <span>Saya sebagai penyewa menyatakan telah membaca, memahami, dan menyetujui seluruh syarat, ketentuan, kewajiban, denda, serta tanggung jawab dalam dokumen Syarat & Ketentuan Penyewaan iPhone PinjemGeh ini.</span>
+          </label>
+          <div class="status-text" id="quickStatus">Status: Belum disetujui.</div>
+        </div>
+        <div class="note success" id="approvalStatus" style="display:none;">
+          <div class="note-title">Status Persetujuan</div>
+          <div class="status-grid">
+            <div class="status-item"><div class="status-label">Status</div><div class="status-value">Disetujui secara elektronik</div></div>
+            <div class="status-item"><div class="status-label">Nama Penyewa</div><div class="status-value" id="statusTenantName">-</div></div>
+            <div class="status-item"><div class="status-label">Pemilik</div><div class="status-value">PinjemGeh</div></div>
+            <div class="status-item"><div class="status-label">Disetujui Pada</div><div class="status-value" id="statusTime">-</div></div>
+            <div class="status-item"><div class="status-label">Lokasi Dokumen</div><div class="status-value">Serang</div></div>
+            <div class="status-item"><div class="status-label">Agreement ID</div><div class="status-value" id="statusAgreementId">-</div></div>
+            <div class="status-item"><div class="status-label">Perangkat</div><div class="status-value" id="statusDevice">-</div></div>
+            <div class="status-item"><div class="status-label">Browser</div><div class="status-value" id="statusBrowser">-</div></div>
+            <div class="status-item"><div class="status-label">Sistem Operasi</div><div class="status-value" id="statusOS">-</div></div>
+            <div class="status-item"><div class="status-label">Versi Dokumen</div><div class="status-value">v1.0</div></div>
+            <div class="status-item status-wide"><div class="status-label">User Agent</div><div class="status-value" id="statusUA">-</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section certificate-page" id="approvalCertificate" style="display:none;">
+        <div class="certificate-head">
+          <div class="certificate-badge">E-AGREEMENT</div>
+          <h2>Sertifikat Persetujuan Penyewaan Elektronik</h2>
+          <p>Dokumen ini telah disetujui secara elektronik oleh penyewa melalui sistem persetujuan PinjemGeh.</p>
+        </div>
+
+        <div class="certificate-status">✓ DISETUJUI</div>
+
+        <div class="status-grid certificate-grid">
+          <div class="status-item"><div class="status-label">Nama Penyewa</div><div class="status-value" id="certTenantName">-</div></div>
+          <div class="status-item"><div class="status-label">Pemilik</div><div class="status-value">PinjemGeh</div></div>
+          <div class="status-item"><div class="status-label">Disetujui Pada</div><div class="status-value" id="certTime">-</div></div>
+          <div class="status-item"><div class="status-label">Lokasi Dokumen</div><div class="status-value">Serang</div></div>
+          <div class="status-item"><div class="status-label">Agreement ID</div><div class="status-value" id="certAgreementId">-</div></div>
+          <div class="status-item"><div class="status-label">Versi Dokumen</div><div class="status-value">v1.0</div></div>
+          <div class="status-item"><div class="status-label">Perangkat</div><div class="status-value" id="certDevice">-</div></div>
+          <div class="status-item"><div class="status-label">Browser</div><div class="status-value" id="certBrowser">-</div></div>
+          <div class="status-item"><div class="status-label">Sistem Operasi</div><div class="status-value" id="certOS">-</div></div>
+          <div class="status-item status-wide"><div class="status-label">User Agent</div><div class="status-value" id="certUA">-</div></div>
+        </div>
+
+        <div class="footer-note">Syarat & ketentuan ini berlaku untuk layanan penyewaan iPhone PinjemGeh.id by PT RZKYPay Solusi Digital. Sertifikat ini dibuat otomatis saat penyewa menekan tombol persetujuan elektronik.</div>
+      </section>
+    </div>
+
+    <div class="print-actions">
+      <button class="ghost-btn" type="button" onclick="resetApproval()">Reset Persetujuan</button>
+      <button class="print-btn" id="downloadBtn" type="button" onclick="downloadPdf()" disabled>Setuju & Download PDF</button>
+    </div>
+  </div>
+
+  <script>
+    const tenantInput = document.getElementById('tenantName');
+    const agreeCheck = document.getElementById('agreeCheck');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const quickStatus = document.getElementById('quickStatus');
+    const approvalStatus = document.getElementById('approvalStatus');
+    const approvalCertificate = document.getElementById('approvalCertificate');
+
+    let agreementId = '';
+
+    function formatWibDate(date = new Date()) {
+      const parts = new Intl.DateTimeFormat('id-ID', {
+        timeZone: 'Asia/Jakarta',
+        day: '2-digit',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      }).format(date);
+      return parts.replace('pukul ', '') + ' WIB';
+    }
+
+    function getWibDateCode(date = new Date()) {
+      const parts = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'Asia/Jakarta',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      }).formatToParts(date).reduce((acc, item) => {
+        acc[item.type] = item.value;
+        return acc;
+      }, {});
+      return `${parts.year}${parts.month}${parts.day}-${parts.hour}${parts.minute}${parts.second}`;
+    }
+
+    function generateAgreementId() {
+      if (agreementId) return agreementId;
+      const random = Math.floor(1000 + Math.random() * 9000);
+      agreementId = `PG-${getWibDateCode(new Date())}-${random}`;
+      return agreementId;
+    }
+
+    function getBrowserName() {
+      const ua = navigator.userAgent;
+      if (ua.includes('Edg/')) return 'Microsoft Edge';
+      if (ua.includes('Chrome/') && !ua.includes('Edg/')) return 'Chrome';
+      if (ua.includes('Firefox/')) return 'Firefox';
+      if (ua.includes('Safari/') && !ua.includes('Chrome/')) return 'Safari';
+      return 'Browser tidak terdeteksi';
+    }
+
+    function getDeviceType() {
+      const ua = navigator.userAgent;
+      if (/Tablet|iPad/i.test(ua)) return 'Tablet';
+      if (/Mobi|Android|iPhone|iPod/i.test(ua)) return 'Mobile';
+      return 'Desktop/Laptop';
+    }
+
+    function getOperatingSystem() {
+      const ua = navigator.userAgent;
+      if (/Windows NT 10.0/i.test(ua)) return 'Windows 10/11';
+      if (/Windows NT 6.3/i.test(ua)) return 'Windows 8.1';
+      if (/Windows NT 6.2/i.test(ua)) return 'Windows 8';
+      if (/Windows NT 6.1/i.test(ua)) return 'Windows 7';
+      if (/Android/i.test(ua)) return 'Android';
+      if (/iPhone|iPad|iPod/i.test(ua)) return 'iOS / iPadOS';
+      if (/Mac OS X/i.test(ua)) return 'macOS';
+      if (/Linux/i.test(ua)) return 'Linux';
+      return 'Tidak terdeteksi';
+    }
+
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = value;
+    }
+
+    function fillApprovalData() {
+      const tenantName = tenantInput.value.trim();
+      const approvedTime = formatWibDate(new Date());
+      const id = generateAgreementId();
+      const device = getDeviceType();
+      const browser = getBrowserName();
+      const os = getOperatingSystem();
+      const ua = navigator.userAgent || '-';
+
+      setText('statusTenantName', tenantName || '-');
+      setText('statusTime', approvedTime);
+      setText('statusAgreementId', id);
+      setText('statusDevice', device);
+      setText('statusBrowser', browser);
+      setText('statusOS', os);
+      setText('statusUA', ua);
+
+      setText('certTenantName', tenantName || '-');
+      setText('certTime', approvedTime);
+      setText('certAgreementId', id);
+      setText('certDevice', device);
+      setText('certBrowser', browser);
+      setText('certOS', os);
+      setText('certUA', ua);
+
+      approvalStatus.style.display = 'block';
+      approvalCertificate.style.display = 'block';
+      quickStatus.textContent = 'Status: Disetujui pada ' + approvedTime + '. Agreement ID: ' + id + '.';
+    }
+
+    function validateApproval() {
+      const tenantName = tenantInput.value.trim();
+
+      if (!tenantName) {
+        agreeCheck.checked = false;
+        downloadBtn.disabled = true;
+        alert('Nama lengkap penyewa wajib diisi terlebih dahulu.');
+        tenantInput.focus();
+        return false;
+      }
+
+      if (agreeCheck.checked) {
+        fillApprovalData();
+        downloadBtn.disabled = false;
+        return true;
+      }
+
+      approvalStatus.style.display = 'none';
+      approvalCertificate.style.display = 'none';
+      quickStatus.textContent = 'Status: Belum disetujui.';
+      downloadBtn.disabled = true;
+      return false;
+    }
+
+    function downloadPdf() {
+      if (!agreeCheck.checked || !tenantInput.value.trim()) {
+        validateApproval();
+        return;
+      }
+      fillApprovalData();
+      document.title = 'Persetujuan-Penyewaan-PinjemGeh-' + tenantInput.value.trim().replace(/\s+/g, '-');
+      window.print();
+    }
+
+    function resetApproval() {
+      agreementId = '';
+      agreeCheck.checked = false;
+      downloadBtn.disabled = true;
+      approvalStatus.style.display = 'none';
+      approvalCertificate.style.display = 'none';
+      quickStatus.textContent = 'Status: Belum disetujui.';
+    }
+
+    tenantInput.addEventListener('input', () => {
+      if (agreeCheck.checked) fillApprovalData();
+    });
+
+    agreeCheck.addEventListener('change', validateApproval);
+  </script>
+</body>
+</html>
