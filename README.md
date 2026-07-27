@@ -1,70 +1,125 @@
-📱 PinjemGeh Dashboard
-Tentang Project
+=========================================================
+                    PINJEMGEH
+          Dashboard Sewa iPhone (2026 Edition)
+=========================================================
 
-PinjemGeh Dashboard merupakan halaman transparansi penyewaan yang dirancang untuk memberikan informasi aktivitas rental iPhone secara real-time kepada calon maupun pelanggan PinjemGeh.
+Author  : Muhammad Rizky Ramadhan
+Website : https://www.pinjemgeh.my.id
+Project : Dashboard Penyewaan iPhone Real-time
 
-Dashboard ini dibuat dengan fokus pada pengalaman pengguna (User Experience) yang sederhana, modern, dan mudah dipahami sehingga pengunjung dapat melihat aktivitas penyewaan secara terbuka sebelum memutuskan untuk menyewa.
+=========================================================
+DESKRIPSI
+=========================================================
 
-Tujuan
+PinjemGeh adalah dashboard penyewaan iPhone berbasis web yang
+menampilkan aktivitas penyewaan secara real-time.
 
-PinjemGeh percaya bahwa transparansi dapat meningkatkan kepercayaan pelanggan.
+Dashboard ini dibuat agar calon penyewa dapat melihat
+transparansi aktivitas penyewaan sehingga meningkatkan
+kepercayaan pelanggan.
 
-Melalui dashboard ini, pengunjung dapat melihat bahwa aktivitas penyewaan benar-benar berjalan secara aktif, mulai dari jumlah penyewaan, status unit, hingga statistik penggunaan tanpa harus menghubungi admin terlebih dahulu.
+=========================================================
+FITUR
+=========================================================
 
-Fitur Utama
-📊 Statistik Penyewaan
+✓ Dashboard modern (Glassmorphism UI)
+✓ Statistik penyewaan real-time
+✓ Total penyewaan
+✓ Unit sedang dipesan
+✓ Unit sedang disewa
+✓ Riwayat penyewaan selesai
+✓ Grafik tren penyewaan
+✓ Grafik status penyewaan
+✓ Riwayat transaksi
+✓ Pencarian data
+✓ Filter status
+✓ Sorting data
+✓ Pagination
+✓ Testimoni pelanggan
+✓ Promo slider
+✓ Responsive desktop & mobile
+✓ Refresh data otomatis
+✓ Integrasi API
 
-Menampilkan ringkasan aktivitas penyewaan secara real-time seperti:
+=========================================================
+TEKNOLOGI
+=========================================================
 
-Total penyewaan
-Unit yang sedang dipesan
-Unit yang sedang digunakan
-Penyewaan yang telah selesai
-🎉 Promo & Testimoni
+Frontend
+---------
+- HTML5
+- CSS3
+- Vanilla JavaScript
 
-Dashboard dilengkapi dengan slider yang menampilkan berbagai promo serta dokumentasi dan testimoni pelanggan sebagai bentuk social proof.
+Library
+--------
+- Chart.js
 
-Konten dapat diperbarui secara berkala sesuai kebutuhan.
+Backend
+-------
+- REST API
+- Config melalui config.js
 
-💬 Testimoni Pelanggan
+=========================================================
+STRUKTUR
+=========================================================
 
-Bagian testimoni menampilkan pengalaman penyewa secara ringkas dengan tampilan yang ringan dan mudah dibaca sehingga pengunjung dapat melihat kepuasan pelanggan sebelumnya.
+index.html
+config.js
+assets/
+    promo-1.png
+    promo-2.png
+    testimoni-1.png
+    testimoni-2.png
 
-📈 Visualisasi Data
+=========================================================
+FITUR DASHBOARD
+=========================================================
 
-Grafik interaktif digunakan untuk memperlihatkan tren aktivitas penyewaan dan distribusi status rental sehingga informasi dapat dipahami dengan cepat.
+• Statistik penyewaan
+• Grafik aktivitas
+• Grafik status
+• Daftar penyewaan
+• Search
+• Filter
+• Sorting
+• Pagination
+• Testimoni
+• Promo Slider
 
-🔍 Riwayat Penyewaan
+=========================================================
+STATUS PENYEWAAN
+=========================================================
 
-Dashboard menyediakan daftar aktivitas penyewaan yang dapat difilter dan dicari untuk meningkatkan transparansi terhadap kondisi operasional.
+- Booking
+- Sedang Disewa
+- Selesai
+- Terlambat
 
-Filosofi Desain
+=========================================================
+RESPONSIVE
+=========================================================
 
-Seluruh tampilan dirancang menggunakan pendekatan modern dengan konsep:
+Desktop
+Tablet
+Mobile
 
-Dark Theme
-Glassmorphism
-Clean Layout
-Responsive Design
-Mobile First Experience
-Fokus pada keterbacaan data
+=========================================================
+TUJUAN
+=========================================================
 
-Desain dibuat agar tetap nyaman digunakan baik pada perangkat desktop maupun smartphone tanpa mengurangi kualitas pengalaman pengguna.
+Memberikan transparansi data penyewaan sehingga pelanggan
+dapat melihat aktivitas penyewaan secara langsung dan
+meningkatkan kepercayaan terhadap layanan PinjemGeh.
 
-Transparansi
+=========================================================
+COPYRIGHT
+=========================================================
 
-Dashboard ini bertujuan memberikan gambaran aktivitas penyewaan secara terbuka kepada pengunjung.
+© 2026 PinjemGeh
+Supported by PT RZKYPay Solusi Digital
 
-Informasi yang ditampilkan telah disesuaikan agar tetap menjaga privasi pelanggan dan hanya digunakan sebagai bentuk transparansi operasional.
+Dashboard Redesain 2026
+Author : Muhammad Rizky Ramadhan
 
-Tentang PinjemGeh
-
-PinjemGeh merupakan layanan penyewaan iPhone yang berfokus pada kemudahan proses, harga terjangkau, dan pelayanan yang cepat.
-
-Dengan menghadirkan dashboard ini, PinjemGeh berupaya membangun kepercayaan melalui penyajian informasi yang jelas, modern, dan mudah diakses oleh siapa saja.
-
-Visi
-
-Menjadi layanan penyewaan iPhone yang terpercaya dengan mengedepankan transparansi, kemudahan, dan pengalaman pengguna yang terbaik melalui pemanfaatan teknologi digital.
-
-© PinjemGeh. All rights reserved.
+=========================================================
